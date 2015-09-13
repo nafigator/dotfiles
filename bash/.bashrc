@@ -12,16 +12,11 @@ case $- in
 	  *) return;;
 esac
 
-MC_PATH=$(which mc)
-MC_PREFIX=${MC_PATH%/bin/mc}
-
 # Set special theme for root editor and file manager
-if [ -f "$MC_PREFIX/share/mc/skins/modarin256.ini" ] && [ $EUID -ne 0 ]; then
+if [ $EUID -ne 0 ]; then
 	MC_SKIN='modarin256'
-elif [ -f "$MC_PREFIX/share/mc/skins/modarin256root.ini" ]; then
-	MC_SKIN='modarin256root'
 else
-	MC_SKIN='default'
+	MC_SKIN='modarin256root'
 fi
 
 export MC_SKIN
