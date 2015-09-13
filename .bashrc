@@ -3,6 +3,9 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+# Tabs size
+env TERM=linux setterm -regtabs 4
+
 # If not running interactively, don't do anything
 case $- in
 	*i*) ;;
@@ -25,9 +28,6 @@ export MC_SKIN
 
 # Set default editor
 export EDITOR=mc
-
-# Tabs size
-env TERM=linux setterm -regtabs 4
 
 # Show current git branch
 parse_git_branch() {
