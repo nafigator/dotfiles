@@ -110,7 +110,7 @@ alias t='python ~/.tasks/t.py --task-dir ~/.tasks --list tasks.txt'
 alias leafpad='leafpad --tab-width=4'
 alias c='echo -e "\033\0143"'
 
-alias diff='diff --tabsize=4'
+[ $(uname -s) != 'OpenBSD' ] && alias diff='diff --tabsize=4'
 alias err='tail -f /var/log/php.err'
 alias coverage-report-veles="
 	rm -rf $PROJECT_PATH/Veles/coverage-report;
