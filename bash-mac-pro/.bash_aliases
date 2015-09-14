@@ -106,7 +106,7 @@ alias phpcs_itvault='
 		--encoding=utf-8 \
 		--extensions=php,phtml ./'
 
-alias mysql='mysql --auto-vertical-output'
+alias mysql='mysql --auto-vertical-output --prompt="\R:\m:\s (\u@\h) [\d]>"'
 alias t='python ~/.tasks/t.py --task-dir ~/.tasks --list tasks.txt'
 alias leafpad='leafpad --tab-width=4'
 alias c='echo -e "\033\0143"'
