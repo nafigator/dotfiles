@@ -4,7 +4,7 @@
 # for examples
 
 # Tabs size
-env TERM=linux setterm -regtabs 4
+#setterm -regtabs 4
 
 # If not running interactively, don't do anything
 case $- in
@@ -26,6 +26,11 @@ export EDITOR=mcedit
 
 # Set less options
 export LESS='-FRX -x4'
+
+# Enable color ls output
+export CLICOLOR=yes
+# Flag terminal as color-capable
+export TERM=xterm-256color
 
 # Show current git branch
 parse_git_branch() {
