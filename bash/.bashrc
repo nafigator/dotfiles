@@ -25,7 +25,7 @@ export MC_SKIN
 export EDITOR=mcedit
 
 # Set less options
-export LESS='-FRX -x4'
+export LESS='-MFR -x4'
 
 # Enable color ls output
 export CLICOLOR=yes
