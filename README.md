@@ -23,6 +23,11 @@ Clone this repo into ~/.dotfiles folder:
     $ cd ~/.dotfiles
     $ git clone https://github.com/nafigator/dotfiles.git .
 
+Backup your previous dotfiles:
+
+    $ cd && mkdir .dotfiles.bkp
+    $ mv .profile .bashrc .bash_aliases .bash_logout .gitconfig .gitignore .dotfiles.bkp
+
 Then use stow utility to create symlinks:
 
     $ stow bash
