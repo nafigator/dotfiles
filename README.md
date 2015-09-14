@@ -1,3 +1,5 @@
+[![GitHub license][License img]][License src]
+
 # dotfiles
 
 My .files
@@ -35,3 +37,5 @@ Then use stow utility to create symlinks:
     $ . ~/.profile
 
   [GNU stow]: https://www.gnu.org/software/stow
+  [License img]: https://img.shields.io/badge/license-MIT-brightgreen.svg
+  [License src]: https://tldrlegal.com/license/mit-license
