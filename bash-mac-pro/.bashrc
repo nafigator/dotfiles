@@ -28,7 +28,7 @@ export LESS='-MFRX -x4'
 export TERM=xterm-256color
 
 # Tabs size
-tabs -4 +m0
+[ $(uname -s) != 'OpenBSD' ] && tabs -4 +m0
 
 # Show current git branch
 parse_git_branch() {
