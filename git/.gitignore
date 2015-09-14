@@ -1,0 +1,19 @@
+# Komodo files
+*.komodoproject
+
+# Komodo folders
+.komodotools
+
+# GIT ignore file
+.gitignore
+
+.buildpath
+.project
+.settings/
+lib
+
+documentation/
+build/
+
+# PhpStorm files
+.idea
