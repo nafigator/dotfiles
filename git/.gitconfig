@@ -1,6 +1,7 @@
 [user]
 	name = Yancharuk Alexander
 	email = alex@itvault.info
+	signingkey = E4734C4C
 [core]
 	excludesfile = ~/.gitignore
 	whitespace = tabsize=4,indent-with-non-tab
