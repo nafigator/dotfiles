@@ -4,7 +4,7 @@
 [core]
     excludesfile = ~/.gitignore
 	whitespace = tabsize=4,indent-with-non-tab
-	pager = less -FSRX -x1,5
+	pager = less
 [alias]
     st = status -s
     ci = commit -m

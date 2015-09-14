@@ -8,6 +8,8 @@ export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
 export EDITOR=mcedit
 export PAGER=less
+# Set less options
+export LESS='-FRX -x4'
 
 # Tabs size
 tabs -4 +m0
