@@ -148,3 +148,5 @@ alias api-prod='
 	git describe'
 
 unset PROJECT_PATH WWW_ROOT
+
+alias bash-reload='unalias -a && . ~/.profile'

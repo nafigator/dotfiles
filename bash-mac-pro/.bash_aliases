@@ -148,3 +148,6 @@ alias api-prod='
 	git describe'
 
 unset PROJECT_PATH WWW_ROOT
+
+alias svnd='svn diff | colordiff'
+alias bash-reload='unalias -a && . ~/.profile'
