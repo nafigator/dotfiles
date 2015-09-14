@@ -6,10 +6,25 @@ export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 export MANPATH="/usr/local/opt/gnu-sed/libexec/gnuman:$MANPATH"
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
-export EDITOR=mcedit
 export PAGER=less
+
+# Set special theme for root editor and file manager
+if [ $EUID -ne 0 ]; then
+	MC_SKIN='modarin256'
+else
+	MC_SKIN='modarin256root'
+fi
+
+export MC_SKIN
+
+# Set default editor
+export EDITOR=mcedit
+
 # Set less options
 export LESS='-FRX -x4'
+
+# Flag terminal as color-capable
+export TERM=xterm-256color
 
 # Tabs size
 tabs -4 +m0
