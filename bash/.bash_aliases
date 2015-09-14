@@ -3,8 +3,18 @@
 PROJECT_PATH="$HOME/dev"
 WWW_ROOT='/home/web'
 
-alias ll='ls -hlAX --file-type --group-directories-first'
-alias la='ls -hAv --group-directories-first'
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+	alias ls='ls --color=auto'
+	#alias dir='dir --color=auto'
+	#alias vdir='vdir --color=auto'
+
+	export GREP_OPTIONS='--color=auto'
+fi
+
+alias ll='ls -hHAXl --file-type --group-directories-first'
+alias la='ls -hHAv --group-directories-first'
 alias l='ls -CF'
 alias webon='
 	sudo service mysql start && \
@@ -98,11 +108,9 @@ alias phpcs_itvault='
 
 alias mysql='mysql --auto-vertical-output'
 alias t='python ~/.tasks/t.py --task-dir ~/.tasks --list tasks.txt'
-alias make='make -p'
 alias leafpad='leafpad --tab-width=4'
-alias less='less -FSRX -x4'
 alias c='echo -e "\033\0143"'
-alias grep='grep --color=auto'
+
 alias diff='diff --tabsize=4'
 alias err='tail -f /var/log/php.err'
 alias coverage-report-veles="
