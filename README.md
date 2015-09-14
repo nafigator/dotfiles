@@ -15,7 +15,7 @@ Install [GNU stow] utility:
 
 #### OpenBSD:
 
-    $ pkg_add stow
+    $ sudo pkg_add stow
 
 Clone this repo into ~/.dotfiles folder:
 
