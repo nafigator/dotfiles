@@ -1,59 +1,59 @@
 [user]
 	name = Yancharuk Alexander
-    email = alex@itvault.info
+	email = alex@itvault.info
 [core]
-    excludesfile = ~/.gitignore
+	excludesfile = ~/.gitignore
 	whitespace = tabsize=4,indent-with-non-tab
 	pager = less
 [alias]
-    st = status -s
-    ci = commit -m
-    co = checkout
-    br = branch
-    rom = reset --hard origin/master
-    rh = reset --hard HEAD
-    df = diff -w
-    dc = diff --cached -w
-    g  = grep -npz
-    lg = log -p
-    standup = log --since='5 day ago' --oneline --author='Yancharuk Alexander'
-    hi = log --pretty=format:\"%C(yellow)%h %C(cyan)%ad%C(green bold)%d% C(reset)%s %C(green dim)[%cn]\" --date=short
-    his = log --pretty=format:\"%C(yellow)%h %C(cyan)%ad %C(yellow bold)%d%C(reset) %s %C(green dim)[%cn]\" --date=short --stat
-    ls = log --pretty=format:\"%C(yellow)%h %C(blue)%ad%C(red)%d %C(reset)%s%C(green) [%cn]\" --decorate --date=short
-    tree = log --graph --pretty=oneline --decorate
-    t = tag -m
-    td = tag -d
-    pom = pull --rebase origin master
-    show = show -w
-    amend = commit --amend -c HEAD
-    lol = log --graph --decorate --pretty=oneline --abbrev-commit
-    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
-    ign = ls-files -o -i --exclude-standard
+	st = status -s
+	ci = commit -m
+	co = checkout
+	br = branch
+	rom = reset --hard origin/master
+	rh = reset --hard HEAD
+	df = diff -w
+	dc = diff --cached -w
+	g  = grep -npz
+	lg = log -p
+	standup = log --since='5 day ago' --oneline --author='Yancharuk Alexander'
+	hi = log --pretty=format:\"%C(yellow)%h %C(cyan)%ad%C(green bold)%d %C(reset)%s %C(green dim)[%cn]\" --date=short
+	his = log --pretty=format:\"%C(yellow)%h %C(cyan)%ad %C(yellow bold)%d%C(reset) %s %C(green dim)[%cn]\" --date=short --stat
+	ls = log --pretty=format:\"%C(yellow)%h %C(blue)%ad%C(red)%d %C(reset)%s%C(green) [%cn]\" --decorate --date=short
+	tree = log --graph --pretty=oneline --decorate
+	t = tag -m
+	td = tag -d
+	pom = pull --rebase origin master
+	show = show -w
+	amend = commit --amend -c HEAD
+	lol = log --graph --decorate --pretty=oneline --abbrev-commit
+	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	ign = ls-files -o -i --exclude-standard
 [color]
-    branch = auto
-    diff = auto
-    status = auto
-    interactive = auto
-    grep = auto
-    ui = true
-    pager = true
+	branch = auto
+	diff = auto
+	status = auto
+	interactive = auto
+	grep = auto
+	ui = true
+	pager = true
 [color "branch"]
-    current = green reverse
-    local = yellow
-    remote = cyan
+	current = green reverse
+	local = yellow
+	remote = cyan
 [color "diff"]
-    meta = yellow bold
-    frag = magenta bold
-    old = red bold
-    new = green bold
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
 [color "status"]
-    added = yellow
-    changed = green
-    untracked = cyan
+	added = yellow
+	changed = green
+	untracked = cyan
 [color "grep"]
-    function = yellow bold
-    match = red bold
-    linenumber = cyan
+	function = yellow bold
+	match = red bold
+	linenumber = cyan
 [diff]
 	tool = meld
 [difftool]

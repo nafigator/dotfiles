@@ -22,7 +22,7 @@ export MC_SKIN
 export EDITOR=mcedit
 
 # Set less options
-export LESS='-MFR -x4'
+export LESS='-MFRX -x4'
 
 # Flag terminal as color-capable
 export TERM=xterm-256color
