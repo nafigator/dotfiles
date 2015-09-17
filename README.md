@@ -2,7 +2,7 @@
 
 # dotfiles
 
-My .files
+Yancharuk Alexander .files
 
 ## Install
 

@@ -14,8 +14,6 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 alias ll='ls -hHAXl --file-type --group-directories-first'
-alias la='ls -hHAv --group-directories-first'
-alias l='ls -CF'
 alias webon='
 	sudo service mysql start && \
 	sudo service php5-fpm start && \
@@ -148,4 +146,4 @@ alias api-prod='
 
 unset PROJECT_PATH WWW_ROOT
 
-alias bash-reload='unalias -a && . ~/.profile'
+alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'
