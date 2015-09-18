@@ -111,7 +111,7 @@ alias leafpad='leafpad --tab-width=4'
 alias c='echo -e "\033\0143"'
 
 [ $(uname -s) != 'OpenBSD' ] && alias diff='diff --tabsize=4'
-alias err='tail -f /var/log/php.err'
+alias err='tail -f /var/log/php_error.log'
 alias coverage-report-veles="
 	rm -rf $PROJECT_PATH/Veles/coverage-report;
 	cd $PROJECT_PATH/Veles && \
