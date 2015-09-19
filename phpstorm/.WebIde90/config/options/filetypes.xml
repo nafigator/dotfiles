@@ -8,6 +8,7 @@
       <mapping pattern=".my.cnf" type="Ini" />
       <mapping pattern=".curlrc" type="Ini" />
       <mapping pattern=".stow-local-ignore" type="PLAIN_TEXT" />
+      <mapping pattern=".colordiffrc" type="PLAIN_TEXT" />
     </extensionMap>
   </component>
 </application>

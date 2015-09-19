@@ -13,7 +13,23 @@ if [ -x /usr/bin/dircolors ]; then
 	export GREP_OPTIONS='--color=auto'
 fi
 
-alias ll='ls -hHAXl --file-type --group-directories-first'
+ll_options='-lh'
+la_options='-Alh'
+options='-H -X --file-type --group-directories-first'
+
+# Test ls for available options
+for i in ${options}; do
+	ls ${i} >/dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		ll_options="$ll_options $i"
+		la_options="$la_options $i"
+	fi
+done
+
+alias ll="ls $ll_options"
+alias la="ls $la_options"
+unset la_options ll_options options
+
 alias webon='
 	sudo service mysql start && \
 	sudo service php5-fpm start && \
