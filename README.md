@@ -2,7 +2,7 @@
 
 # dotfiles
 
-Yancharuk Alexander .files
+Yancharuk Alexander .files optimized for personal needs
 ###### WARNING: There is no guarantee that this will work in your environment
 
 ## Install
