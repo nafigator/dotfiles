@@ -13,22 +13,18 @@ if [ -x /usr/bin/dircolors ]; then
 	export GREP_OPTIONS='--color=auto'
 fi
 
-ll_options='-lh'
-la_options='-Alh'
 options='-H -X --file-type --group-directories-first'
-
-# Test ls for available options
+# Test ls for available non-standard options
 for i in ${options}; do
-	ls ${i} >/dev/null 2>&1
+	command ls ${i} >/dev/null 2>&1
 	if [ $? -eq 0 ]; then
-		ll_options="$ll_options $i"
-		la_options="$la_options $i"
+		ls_options="$ls_options $i"
 	fi
 done
 
-alias ll="ls $ll_options"
-alias la="ls $la_options"
-unset la_options ll_options options
+alias ll="ls -lh $ls_options"
+alias la="ls -Alh $ls_options"
+unset ls_options options
 
 alias webon='
 	sudo service mysql start && \
@@ -124,7 +120,22 @@ alias t='python ~/.tasks/t.py --task-dir ~/.tasks --list tasks.txt'
 alias leafpad='leafpad --tab-width=4'
 alias c='echo -e "\033\0143"'
 
-alias diff='diff --tabsize=4'
+# Check available diff options
+options='--tabsize=4'
+diff_cmd='diff -u'
+for i in ${options}; do
+	command diff ${i} ~/.dotfiles/bash/.bashrc ~/.dotfiles/bash/.bashrc >/dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		diff_options="$diff_options $i"
+	fi
+done
+# Use colored diff if available
+command -v colordiff >/dev/null 2>&1
+if [ $? -eq 0 ]; then diff_cmd='colordiff -u'; fi
+
+alias diff="$diff_cmd $diff_options"
+unset diff_cmd diff_options options
+
 alias err='tail -f /var/log/php_error.log'
 alias coverage-report-veles="
 	rm -rf $PROJECT_PATH/Veles/coverage-report;
