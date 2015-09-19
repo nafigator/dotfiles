@@ -3,6 +3,7 @@
 # dotfiles
 
 Yancharuk Alexander .files
+###### WARNING: There is no guarantee that this will work in your environment
 
 ## Install
 
