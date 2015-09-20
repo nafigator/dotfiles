@@ -5,11 +5,11 @@
       <mapping pattern=".bash_*" type="Bash" />
       <mapping pattern=".bashrc" type="Bash" />
       <mapping pattern=".profile" type="Bash" />
+      <mapping pattern=".colordiffrc" type="Ini" />
+      <mapping pattern=".wgetrc" type="Ini" />
       <mapping pattern=".my.cnf" type="Ini" />
       <mapping pattern=".curlrc" type="Ini" />
       <mapping pattern=".stow-local-ignore" type="PLAIN_TEXT" />
-      <mapping pattern=".colordiffrc" type="Ini" />
-      <mapping pattern=".wgetrc" type="Ini" />
     </extensionMap>
   </component>
 </application>

@@ -14,7 +14,7 @@ digga() {
 bash-reload() {
 	unalias -a 		&& \
 	. ~/.profile 	&& \
-	echo -en "\e[0;33mBash reloading ... [\e[0;32mOK\e[0;33m]\e[0m\n"
+	echo -e "\e[0;33mBash reloading ... [\e[0;32mOK\e[0;33m]\e[0m"
 }
 
 # Calculator
