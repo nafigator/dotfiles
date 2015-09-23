@@ -1,0 +1,15 @@
+/*
+ * International and national calendar files
+ *
+ * $FreeBSD: src/usr.bin/calendar/calendars/calendar.all,v 1.10 2007/06/09 05:51:24 grog Exp $
+ */
+
+#ifndef _calendar_all_
+#define _calendar_all_
+
+#include <calendar.world>
+#include <calendar.russian>
+#include <calendar.music>
+#include <calendar.computer>
+
+#endif /* !_calendar_all_ */
