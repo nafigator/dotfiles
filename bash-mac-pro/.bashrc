@@ -35,7 +35,8 @@ if [ $(uname -s) = 'OpenBSD' ]; then
 	# export PKG_PATH=ftp://ftp.OpenBSD.org/pub/OpenBSD/5.7/packages/amd64/
 
 	# Yandex mirror
-	export PKG_PATH=ftp://mirror.yandex.ru/pub/OpenBSD/5.7/packages/amd64/
+	#export PKG_PATH=ftp://mirror.yandex.ru/pub/OpenBSD/5.7/packages/amd64/
+	export PKG_PATH=http://mirror.yandex.ru/pub/OpenBSD/5.7/packages/amd64/
 fi
 
 # Show current git branch
