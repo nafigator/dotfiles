@@ -29,6 +29,15 @@ export TERM=xterm-256color
 # Tabs size
 [ $(uname -s) != 'OpenBSD' ] && tabs -4 +m0
 
+# OpenBSD specific variables
+if [ $(uname -s) = 'OpenBSD' ]; then
+	# Official OpenBSD mirror
+	# export PKG_PATH=ftp://ftp.OpenBSD.org/pub/OpenBSD/5.7/packages/amd64/
+
+	# Yandex mirror
+	export PKG_PATH=ftp://mirror.yandex.ru/pub/OpenBSD/5.7/packages/amd64/
+fi
+
 # Show current git branch
 parse_git_branch() {
 	git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/[\1]/'
