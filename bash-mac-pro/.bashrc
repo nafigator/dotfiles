@@ -3,7 +3,6 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-export MANPATH="/usr/local/opt/gnu-sed/libexec/gnuman:$MANPATH"
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
 export PAGER=less
