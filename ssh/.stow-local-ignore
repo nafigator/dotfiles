@@ -16,4 +16,4 @@ _darcs
 .+~          # emacs backup files
 \#.*\#       # emacs autosave files
 
-.config.gpg
+/.ssh/config\.gpg
