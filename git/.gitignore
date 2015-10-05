@@ -17,3 +17,6 @@ build/
 
 # PhpStorm files
 .idea
+
+# ssh configuration
+ssh/.ssh/config
