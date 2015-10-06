@@ -13,6 +13,7 @@ digga() {
 # Reload Bash dotfiles
 bash_reload() {
 	unalias -a 		&& \
+	unset -f parse_git_branch digga bash_reload calc && \
 	. ~/.profile 	&& \
 	printf "\e[0;33mBash reloading ... [\e[0;32mOK\e[0;33m]\e[0m\n"
 }
