@@ -13,7 +13,7 @@ esac
 [[ $(uname -s) == "Linux" ]] && env TERM=linux setterm -regtabs 4
 
 # Set special theme for root editor and file manager
-if [ $EUID -ne 0 ]; then
+if [ $(id -u) -ne 0 ]; then
 	MC_SKIN='modarin256'
 else
 	MC_SKIN='modarin256root'

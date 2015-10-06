@@ -8,7 +8,7 @@ export LSCOLORS=GxFxCxDxBxegedabagaced
 export PAGER=less
 
 # Set special theme for root editor and file manager
-if [ $EUID -ne 0 ]; then
+if [ $(id -u) -ne 0 ]; then
 	MC_SKIN='modarin256'
 else
 	MC_SKIN='modarin256root'
@@ -38,10 +38,10 @@ if [ $(uname -s) = 'OpenBSD' ]; then
 	export PKG_PATH=http://mirror.yandex.ru/pub/OpenBSD/5.7/packages/amd64/
 fi
 
-# Show current git branch
-parse_git_branch() {
-	git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/[\1]/'
-}
+# Functions definitions
+if [ -f ~/.bash_functions ]; then
+	. ~/.bash_functions
+fi
 
 PS1='\u@\h:\[\e[1;32m\]$(parse_git_branch)\[\e[0m\]\w\$ '
 
