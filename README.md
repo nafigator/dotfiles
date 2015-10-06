@@ -40,3 +40,18 @@ Then use stow utility to create symlinks:
   [GNU stow]: https://www.gnu.org/software/stow
   [License img]: https://img.shields.io/badge/license-MIT-brightgreen.svg
   [License src]: https://tldrlegal.com/license/mit-license
+
+#### SSH section workflow:
+###### Save config changes
+
+    cd ssh/.ssh
+    # gpg --output config.gpg --encrypt --recipient <email> config
+    gpg -o config.gpg -e -r <email> config
+    git commit && git push
+
+###### Load config changes
+
+    git pull
+    cd ssh/.ssh
+    # gpg --output config --decrypt config.gpg
+    gpg -o config -d config.gpg
