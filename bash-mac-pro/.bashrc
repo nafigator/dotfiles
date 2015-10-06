@@ -55,6 +55,8 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 # Show tasks
-export task_count='\[\e[0;33m\]$(t | wc -l | sed -e "s/^ *\([1-9][0-9]*\)$/[\1] /" -e "s/^ *0$//")\[\e[0m\]'
-export PS1="$task_count$PS1"
-unset task_count
+if [ $(uname -s) != 'OpenBSD' ]; then
+	export task_count='\[\e[0;33m\]$(t | wc -l | sed -e "s/^ *\([1-9][0-9]*\)$/[\1] /" -e "s/^ *0$//")\[\e[0m\]'
+	export PS1="$task_count$PS1"
+	unset task_count
+fi
