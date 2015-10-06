@@ -174,3 +174,4 @@ alias api-prod='
 unset PROJECT_PATH WWW_ROOT
 
 alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'
+alias fix-resolution='xrandr --output LVDS-0 --mode 1920x1080'
