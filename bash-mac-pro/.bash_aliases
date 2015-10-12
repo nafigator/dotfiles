@@ -157,17 +157,17 @@ alias api-test="
 	BRANCH_NAME=$(git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/\1/") && \
 	git co test && \
 	git pull && \
-	git merge --ff-only $BRANCH_NAME && \
+	git merge --ff-only ${BRANCH_NAME} && \
 	git push && \
-	git co $BRANCH_NAME"
+	git co ${BRANCH_NAME}"
 
 alias api-prod="
 	BRANCH_NAME=$(git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/\1/") && \
 	git pull --rebase origin prod && \
 	git co prod && \
 	git pull && \
-	git rebase $BRANCH_NAME && \
-	git br -d $BRANCH_NAME && \
+	git rebase ${BRANCH_NAME} && \
+	git br -d ${BRANCH_NAME} && \
 	git push && \
 	git describe"
 
@@ -177,6 +177,6 @@ alias coverage-report-idb-api="
 	phpunit -c phpunit-local.xml --coverage-html coverage-report;
 	cd - >/dev/null"
 
-unset PROJECT_PATH WWW_ROOT
+unset PROJECT_PATH WWW_ROOT BRANCH_NAME
 
 alias svnd='svn diff | colordiff'
