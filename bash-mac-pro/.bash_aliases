@@ -153,15 +153,15 @@ alias phpunit-veles="
 	cd $PROJECT_PATH/Veles && \
 	phpunit -c phpunit.xml --exclude-group=apc;
 	cd - >/dev/null"
-alias api-test='
+alias api-test="
 	BRANCH_NAME=$(git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/\1/") && \
 	git co test && \
 	git pull && \
 	git merge --ff-only $BRANCH_NAME && \
 	git push && \
-	git co $BRANCH_NAME'
+	git co $BRANCH_NAME"
 
-alias api-prod='
+alias api-prod="
 	BRANCH_NAME=$(git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/\1/") && \
 	git pull --rebase origin prod && \
 	git co prod && \
@@ -169,7 +169,13 @@ alias api-prod='
 	git rebase $BRANCH_NAME && \
 	git br -d $BRANCH_NAME && \
 	git push && \
-	git describe'
+	git describe"
+
+alias coverage-report-idb-api="
+	rm -rf $PROJECT_PATH/api-iledebeaute/tests/coverage-report;
+	cd $PROJECT_PATH/api-iledebeaute/tests && \
+	phpunit -c phpunit-local.xml --coverage-html coverage-report;
+	cd - >/dev/null"
 
 unset PROJECT_PATH WWW_ROOT
 
