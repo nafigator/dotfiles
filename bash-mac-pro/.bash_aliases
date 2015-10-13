@@ -176,10 +176,10 @@ alias coverage-report-idb-api="
 	cd $PROJECT_PATH/api-iledebeaute/tests && \
 	phpunit -c phpunit-local.xml --coverage-html coverage-report;
 	cd - >/dev/null"
-alias phpunit-api='
+alias phpunit-api="
 	cd $PROJECT_PATH/api-iledebeaute/tests && \
 	phpunit -c phpunit-local.xml
-	cd - >/dev/null'
+	cd - >/dev/null"
 
 unset PROJECT_PATH WWW_ROOT BRANCH_NAME
 
