@@ -115,8 +115,10 @@ alias phpcs_itvault='
 		--standard=PSR1 \
 		--encoding=utf-8 \
 		--extensions=php,phtml ./'
-
+# Cli task manager
 alias t='python ~/.tasks/t.py --task-dir ~/.tasks --list tasks.txt'
+# Completed tasks cleanup
+alias tc='rm ~/.tasks/.tasks.txt.done'
 alias leafpad='leafpad --tab-width=4'
 alias c='echo -e "\033\0143"'
 
