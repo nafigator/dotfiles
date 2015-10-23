@@ -173,6 +173,17 @@ alias api-prod='
 	git push && \
 	git describe'
 
+alias coverage-report-idb-api="
+	rm -rf $PROJECT_PATH/api-iledebeaute/tests/coverage-report;
+	cd $PROJECT_PATH/api-iledebeaute/tests && \
+	phpunit -c phpunit-local.xml --coverage-html coverage-report;
+	cd - >/dev/null"
+
+alias phpunit-api="
+	cd $PROJECT_PATH/api-iledebeaute/tests && \
+	phpunit -c phpunit-local.xml
+	cd - >/dev/null"
+
 unset PROJECT_PATH WWW_ROOT
 
 alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'
