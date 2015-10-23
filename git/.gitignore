@@ -4,9 +4,6 @@
 # Komodo folders
 .komodotools
 
-# GIT ignore file
-.gitignore
-
 .buildpath
 .project
 .settings/
