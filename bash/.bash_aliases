@@ -173,7 +173,7 @@ alias api-prod='
 	git push && \
 	git describe'
 
-alias coverage-report-idb-api="
+alias coverage-report-api="
 	rm -rf $PROJECT_PATH/api-iledebeaute/tests/coverage-report;
 	cd $PROJECT_PATH/api-iledebeaute/tests && \
 	phpunit -c phpunit-local.xml --coverage-html coverage-report;
