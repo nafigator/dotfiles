@@ -13,7 +13,7 @@ digga() {
 # Reload Bash dotfiles
 bash_reload() {
 	unalias -a 		&& \
-	unset -f parse_git_branch digga bash_reload calc curl_get curl_post && \
+	unset -f parse_git_branch digga bash_reload calc api_get api_post && \
 	. ~/.xsessionrc	&& \
 	printf "\e[0;33mBash reloading ... [\e[0;32mOK\e[0;33m]\e[0m\n"
 }
@@ -24,7 +24,7 @@ calc() {
 }
 
 # Aliases for testing API with curl
-curl_get() {
+api_get() {
 	echo -e "\033\0143" && \
 	curl -i \
 		--user "1:1111111111111111111111111111111111111111" \
@@ -33,7 +33,7 @@ curl_get() {
 	echo
 }
 
-curl_post() {
+api_post() {
 	echo -e "\033\0143" && \
 	curl -i \
 		--user "1:1111111111111111111111111111111111111111" \
