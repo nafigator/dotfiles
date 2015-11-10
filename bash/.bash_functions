@@ -27,6 +27,7 @@ calc() {
 api_get() {
 	echo -e "\033\0143" && \
 	curl -i \
+		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
 		--user-agent "Iledebeaute Mobile Application/4.3.3 API/0.0.2" \
 		http://api.lo$1
@@ -36,6 +37,7 @@ api_get() {
 api_post() {
 	echo -e "\033\0143" && \
 	curl -i \
+		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
 		--user-agent "Iledebeaute Mobile Application/4.3.3 API/0.0.2" \
 		--header "Content-Type: application/x-www-form-urlencoded" \
