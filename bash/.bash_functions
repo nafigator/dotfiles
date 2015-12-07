@@ -28,11 +28,12 @@ api_get() {
 		printf "\e[0;31mERROR:\e[0m Not found required parameters!\n"
 		return 1
 	fi
-	if [ -n $1 ] && [ -n $2 ]; then
-		options="--data-binary \"$1\" http://api.lo$2"
-	else
+	if [ -z $2 ]; then
 		options="http://api.lo$1"
+	else
+		options="--data-binary \"$1\" http://api.lo$2"
 	fi
+
 	clear && \
 	curl -i \
 		--cookie "XDEBUG_SESSION=1" \
