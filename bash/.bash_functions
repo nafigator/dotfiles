@@ -1,5 +1,4 @@
-#@IgnoreInspection BashAddShebang
-
+#!/usr/bin/env bash
 # Show current git branch
 parse_git_branch() {
 	git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/[\1]/'
@@ -25,23 +24,36 @@ calc() {
 
 # Aliases for testing API with curl
 api_get() {
-	echo -e "\033\0143" && \
+	if [ -z $1 ]; then
+		printf "\e[0;31mERROR:\e[0m Not found required parameters!\n"
+		return 1
+	fi
+	if [ -n $1 ] && [ -n $2 ]; then
+		options="--data-binary \"$1\" http://api.lo$2"
+	else
+		options="http://api.lo$1"
+	fi
+	clear && \
 	curl -i \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
 		--user-agent "Iledebeaute Mobile Application/4.3.3 API/0.0.2" \
-		http://api.lo$1
+		${options}
 	echo
 }
 
 api_post() {
-	echo -e "\033\0143" && \
+	if [ -z $1 ] || [ -z $2 ]; then
+		printf "\e[0;31mERROR:\e[0m Not found required parameters!\n"
+		return 1
+	fi
+	clear && \
 	curl -i \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
 		--user-agent "Iledebeaute Mobile Application/4.3.3 API/0.0.2" \
-		--header "Content-Type: application/x-www-form-urlencoded" \
-		--data "$1" \
+		--header "Content-Type: application/json" \
+		--data-binary "$1" \
 		http://api.lo$2
 	echo
 }
