@@ -142,7 +142,7 @@ alias err='tail -f /var/log/php_errors.log'
 alias coverage-report-veles="
 	rm -rf $PROJECT_PATH/Veles/coverage-report;
 	cd $PROJECT_PATH/Veles && \
-	phpunit -c phpunit.xml --coverage-html coverage-report;
+	phpunit -c Tests/phpunit.xml --coverage-html coverage-report;
 	cd - >/dev/null"
 
 alias coverage-report-zero="
@@ -153,7 +153,7 @@ alias coverage-report-zero="
 
 alias phpunit-veles="
 	cd $PROJECT_PATH/Veles && \
-	phpunit -c phpunit.xml --exclude-group=apc;
+	phpunit -c Tests/phpunit.xml --exclude-group=apc;
 	cd - >/dev/null"
 alias api-test='
 	BRANCH_NAME=$(git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/\1/") && \
