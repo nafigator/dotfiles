@@ -38,7 +38,7 @@ api_get() {
 	curl -i \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
-		--user-agent "Iledebeaute Mobile Application/4.3.3 API/0.0.2" \
+		--user-agent "IledebeauteMobileApp/1.3.3 (curl request) API/0.0" \
 		${options}
 	echo
 }
@@ -52,7 +52,24 @@ api_post() {
 	curl -i \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
-		--user-agent "Iledebeaute Mobile Application/4.3.3 API/0.0.2" \
+		--user-agent "IledebeauteMobileApp/1.3.3 (curl request) API/0.0" \
+		--header "Content-Type: application/json" \
+		--data-binary "$1" \
+		http://api.lo$2
+	echo
+}
+
+api_put() {
+	if [ -z $1 ] || [ -z $2 ]; then
+		printf "\e[0;31mERROR:\e[0m Not found required parameters!\n"
+		return 1
+	fi
+	clear && \
+	curl -i \
+		-X PUT \
+		--cookie "XDEBUG_SESSION=1" \
+		--user "1:1111111111111111111111111111111111111111" \
+		--user-agent "IledebeauteMobileApp/1.3.3 (curl request) API/0.0" \
 		--header "Content-Type: application/json" \
 		--data-binary "$1" \
 		http://api.lo$2
