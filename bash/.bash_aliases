@@ -155,20 +155,22 @@ alias phpunit-veles="
 	cd $PROJECT_PATH/Veles && \
 	phpunit -c Tests/phpunit.xml --exclude-group=apc;
 	cd - >/dev/null"
-alias api-test='
+alias git-test='
 	BRANCH_NAME=$(git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/\1/") && \
 	git co test && \
 	git pull && \
-	git merge --ff-only $BRANCH_NAME && \
+	git merge $BRANCH_NAME && \
+	git submodule update && \
 	git push && \
 	git co $BRANCH_NAME'
 
-alias api-prod='
+alias git-prod='
 	BRANCH_NAME=$(git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/\1/") && \
 	git pull --rebase origin prod && \
 	git co prod && \
 	git pull && \
 	git rebase $BRANCH_NAME && \
+	git submodule update && \
 	git br -d $BRANCH_NAME && \
 	git push && \
 	git describe'
