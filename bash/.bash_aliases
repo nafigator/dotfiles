@@ -184,7 +184,7 @@ alias git-prod-patch='
 	PATCH_VER=$((${VERSION_ARRAY[2]} + 1)) && \
 	NEW_API_VER="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.$PATCH_VER" && \
 	perl -pi -e "s/current_version = '\''[^'\'']+/current_version = '\''$NEW_API_VER/g" _modules/project/api/application.inc.php && \
-	git add _engine/_lib/start.inc.php && \
+	git add _modules/project/api/application.inc.php && \
 	git ci "Update API version" && \
 	git co test && \
 	git pull && \
@@ -211,7 +211,7 @@ alias git-prod-minor='
 	MINOR_VER=$((${VERSION_ARRAY[1]} + 1)) && \
 	NEW_API_VER="${VERSION_ARRAY[0]}.$MINOR_VER.0" && \
 	perl -pi -e "s/current_version = '\''[^'\'']+/current_version = '\''$NEW_API_VER/g" _modules/project/api/application.inc.php && \
-	git add _engine/_lib/start.inc.php && \
+	git add _modules/project/api/application.inc.php && \
 	git ci "Update API version" && \
 	git co test && \
 	git pull && \
