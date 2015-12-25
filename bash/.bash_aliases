@@ -183,7 +183,7 @@ alias git-prod-patch='
 	VERSION_ARRAY=(${CURRENT_API_VER//./ }) && \
 	PATCH_VER=$((${VERSION_ARRAY[2]} + 1)) && \
 	NEW_API_VER="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.$PATCH_VER" && \
-	perl -pi -e "s/x-idb-api-version: [^'\'']+/x-idb-api-version: $NEW_API_VER/g" _engine/_lib/start.inc.php && \
+	perl -pi -e "s/current_version = '\''[^'\'']+/current_version = '\''$NEW_API_VER/g" _modules/project/api/application.inc.php && \
 	git add _engine/_lib/start.inc.php && \
 	git ci "Update API version" && \
 	git co test && \
@@ -210,7 +210,7 @@ alias git-prod-minor='
 	VERSION_ARRAY=(${CURRENT_API_VER//./ }) && \
 	MINOR_VER=$((${VERSION_ARRAY[1]} + 1)) && \
 	NEW_API_VER="${VERSION_ARRAY[0]}.$MINOR_VER.0" && \
-	perl -pi -e "s/x-idb-api-version: [^'\'']+/x-idb-api-version: $NEW_API_VER/g" _engine/_lib/start.inc.php && \
+	perl -pi -e "s/current_version = '\''[^'\'']+/current_version = '\''$NEW_API_VER/g" _modules/project/api/application.inc.php && \
 	git add _engine/_lib/start.inc.php && \
 	git ci "Update API version" && \
 	git co test && \
