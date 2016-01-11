@@ -120,7 +120,7 @@ alias t='python ~/.tasks/t.py --task-dir ~/.tasks --list tasks.txt'
 # Completed tasks cleanup
 alias tc='[ -w ~/.tasks/.tasks.txt.done ] && rm ~/.tasks/.tasks.txt.done'
 alias leafpad='leafpad --tab-width=4'
-alias c='echo -e "\033\0143"'
+alias c='printf "\033c"'
 
 # Check available diff options
 options='--tabsize=4'
