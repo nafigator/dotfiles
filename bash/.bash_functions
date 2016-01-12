@@ -14,7 +14,7 @@ bash_reload() {
 	unalias -a 		&& \
 	unset -f parse_git_branch digga bash_reload calc api_get api_post api_put && \
 	. ~/.xsessionrc	&& \
-	printf "\e[0;33mBash reloading ... [\e[0;32mOK\e[0;33m]\e[0m\n"
+	printf "\033[0;33mBash reloading ... [\033[0;32mOK\033[0;33m]\033[0m\n"
 }
 
 # Calculator
@@ -25,7 +25,7 @@ calc() {
 # Aliases for testing API with curl
 api_get() {
 	if [ -z $1 ]; then
-		printf "\e[0;31mERROR:\e[0m Not found required parameters!\n"
+		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
 		return 1
 	fi
 	if [ -z $2 ]; then
@@ -34,7 +34,7 @@ api_get() {
 		options="--data-binary \"$1\" http://api.lo$2"
 	fi
 
-	clear && \
+	printf "\033c" && \
 	curl -i \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
@@ -45,10 +45,10 @@ api_get() {
 
 api_post() {
 	if [ -z $1 ] || [ -z $2 ]; then
-		printf "\e[0;31mERROR:\e[0m Not found required parameters!\n"
+		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
 		return 1
 	fi
-	clear && \
+	printf "\033c" && \
 	curl -i \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
@@ -61,10 +61,10 @@ api_post() {
 
 api_put() {
 	if [ -z $1 ] || [ -z $2 ]; then
-		printf "\e[0;31mERROR:\e[0m Not found required parameters!\n"
+		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
 		return 1
 	fi
-	clear && \
+	printf "\033c" && \
 	curl -i \
 		-X PUT \
 		--cookie "XDEBUG_SESSION=1" \
