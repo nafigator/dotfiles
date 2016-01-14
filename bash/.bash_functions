@@ -36,6 +36,7 @@ api_get() {
 
 	printf "\033c" && \
 	curl -i \
+		--request GET \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
 		--user-agent "IledebeauteMobileApp/1.3.3 (curl request) API/0.0" \
