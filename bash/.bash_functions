@@ -31,7 +31,7 @@ api_get() {
 	if [ -z $2 ]; then
 		options="http://api.lo$1"
 	else
-		options="--data-binary \"$1\" http://api.lo$2"
+		options="--data-binary $1 http://api.lo$2"
 	fi
 
 	printf "\033c" && \
