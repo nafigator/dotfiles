@@ -5,5 +5,5 @@
  *
  * @author    Yancharuk Alexander <ya@zerotech.ru>
  * @date      ${YEAR}-${MONTH}-${DAY} ${HOUR}:${MINUTE}
- * @copyright 2015 ZeroTech LLC
+ * @copyright 2015-2016 ZeroTech LLC
  */
