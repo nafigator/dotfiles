@@ -3,8 +3,8 @@
     <ignoreFiles list="*.hprof;*.o;*.obj;*.pyc;*.pyo;*.rbc;*~;.DS_Store;.bundle;.git;.hg;.svn;.tox;CVS;RCS;SCCS;__pycache__;_svn;rcs;vssver.scc;vssver2.scc;" />
     <extensionMap>
       <mapping pattern=".bash_*" type="Bash" />
-      <mapping pattern=".bashrc" type="Bash" />
       <mapping pattern=".profile" type="Bash" />
+      <mapping pattern=".bashrc" type="Bash" />
       <mapping pattern=".colordiffrc" type="Ini" />
       <mapping pattern=".wgetrc" type="Ini" />
       <mapping pattern=".my.cnf" type="Ini" />
