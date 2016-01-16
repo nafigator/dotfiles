@@ -23,6 +23,7 @@
     <option name="LOWER_CASE_BOOLEAN_CONST" value="true" />
     <option name="LOWER_CASE_NULL_CONST" value="true" />
     <option name="BLANK_LINE_BEFORE_RETURN_STATEMENT" value="true" />
+    <option name="ALIGN_CLASS_CONSTANTS" value="true" />
     <option name="FORCE_SHORT_DECLARATION_ARRAY_STYLE" value="true" />
   </PHPCodeStyleSettings>
   <XML>
@@ -34,11 +35,14 @@
     <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
     <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
     <option name="BLANK_LINES_AFTER_PACKAGE" value="1" />
+    <option name="ALIGN_MULTILINE_FOR" value="false" />
     <option name="ALIGN_MULTILINE_TERNARY_OPERATION" value="true" />
+    <option name="ALIGN_GROUP_FIELD_DECLARATIONS" value="true" />
     <option name="SPACE_AFTER_TYPE_CAST" value="true" />
     <option name="TERNARY_OPERATION_WRAP" value="1" />
     <option name="TERNARY_OPERATION_SIGNS_ON_NEXT_LINE" value="true" />
-    <option name="ARRAY_INITIALIZER_WRAP" value="1" />
+    <option name="FOR_STATEMENT_WRAP" value="5" />
+    <option name="ARRAY_INITIALIZER_WRAP" value="5" />
     <option name="ARRAY_INITIALIZER_LBRACE_ON_NEXT_LINE" value="true" />
     <option name="ARRAY_INITIALIZER_RBRACE_ON_NEXT_LINE" value="true" />
     <indentOptions>
