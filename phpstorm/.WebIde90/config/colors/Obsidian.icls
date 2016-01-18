@@ -743,9 +743,6 @@
     <option name="MULTIMARKDOWN.REFERENCE">
       <value />
     </option>
-    <option name="MULTIMARKDOWN.REFERENCE_IMAGE">
-      <value />
-    </option>
     <option name="MULTIMARKDOWN.REFERENCE_LINK">
       <value>
         <option name="EFFECT_COLOR" value="0" />

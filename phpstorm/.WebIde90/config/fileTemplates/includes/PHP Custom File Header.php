@@ -1,5 +1,5 @@
 /**
- * @file    ${FILE_NAME}
+ * @file      ${FILE_NAME}
  *
  * PHP version 5.4+
  *
