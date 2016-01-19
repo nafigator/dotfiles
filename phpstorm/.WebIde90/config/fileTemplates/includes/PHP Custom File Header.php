@@ -7,5 +7,5 @@
  * @copyright © 2012-2016 Alexander Yancharuk <alex at itvault at info>
  * @date      ${YEAR}-${MONTH}-${DAY} ${HOUR}:${MINUTE}
  * @license   The BSD 3-Clause License
- *            <http://opensource.org/licenses/BSD-3-Clause>
+ *            <https://tldrlegal.com/license/bsd-3-clause-license-(revised)>
  */

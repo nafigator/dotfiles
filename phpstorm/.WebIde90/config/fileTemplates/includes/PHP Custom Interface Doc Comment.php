@@ -1,4 +1,4 @@
 /**
  * Interface ${NAME}
- * @author   Yancharuk Alexander <ya@zerotech.ru>
+ * @author   Yancharuk Alexander <alex at itvault at info>
  */

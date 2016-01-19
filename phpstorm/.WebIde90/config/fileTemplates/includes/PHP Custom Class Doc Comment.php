@@ -1,4 +1,4 @@
 /**
- * Class ${NAME}
- * @author  Yancharuk Alexander <alex at itvault dot info> 
+ * Class   ${NAME}
+ * @author Yancharuk Alexander <alex at itvault at info>
  */
