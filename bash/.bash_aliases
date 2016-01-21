@@ -179,11 +179,11 @@ alias git-prod='
 
 alias git-prod-patch='
 	BRANCH_NAME=$(git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/\1/") && \
-	CURRENT_API_VER=$(git tag | sort -V | tail -n 1) && \
-	VERSION_ARRAY=(${CURRENT_API_VER//./ }) && \
+	CURRENT_VER=$(git tag | sort -V | tail -n 1) && \
+	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
 	PATCH_VER=$((${VERSION_ARRAY[2]} + 1)) && \
-	NEW_API_VER="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.$PATCH_VER" && \
-	perl -pi -e "s/current_version = '\''[^'\'']+/current_version = '\''$NEW_API_VER/g" _modules/project/api/application.inc.php && \
+	NEW_VER="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.$PATCH_VER" && \
+	perl -pi -e "s/current_version = '\''[^'\'']+/current_version = '\''$NEW_VER/g" _modules/project/api/application.inc.php && \
 	git add _modules/project/api/application.inc.php && \
 	git ci "Update API version" && \
 	git co test && \
@@ -199,18 +199,18 @@ alias git-prod-patch='
 	git submodule update && \
 	git br -d $BRANCH_NAME && \
 	git push && \
-	git t "Release $NEW_API_VER" $NEW_API_VER && \
+	git t "Release $NEW_VER" $NEW_VER && \
 	git push --tags && \
 	git describe && \
-	unset BRANCH_NAME CURRENT_API_VER VERSION_ARRAY PATCH_VER'
+	unset BRANCH_NAME CURRENT_VER VERSION_ARRAY PATCH_VER'
 
 alias git-prod-minor='
 	BRANCH_NAME=$(git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/\1/") && \
-	CURRENT_API_VER=$(git tag | sort -V | tail -n 1) && \
-	VERSION_ARRAY=(${CURRENT_API_VER//./ }) && \
+	CURRENT_VER=$(git tag | sort -V | tail -n 1) && \
+	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
 	MINOR_VER=$((${VERSION_ARRAY[1]} + 1)) && \
-	NEW_API_VER="${VERSION_ARRAY[0]}.$MINOR_VER.0" && \
-	perl -pi -e "s/current_version = '\''[^'\'']+/current_version = '\''$NEW_API_VER/g" _modules/project/api/application.inc.php && \
+	NEW_VER="${VERSION_ARRAY[0]}.$MINOR_VER.0" && \
+	perl -pi -e "s/current_version = '\''[^'\'']+/current_version = '\''$NEW_VER/g" _modules/project/api/application.inc.php && \
 	git add _modules/project/api/application.inc.php && \
 	git ci "Update API version" && \
 	git co test && \
@@ -226,10 +226,10 @@ alias git-prod-minor='
 	git submodule update && \
 	git br -d $BRANCH_NAME && \
 	git push && \
-	git t "Release $NEW_API_VER" $NEW_API_VER && \
+	git t "Release $NEW_VER" $NEW_VER && \
 	git push --tags && \
 	git describe && \
-	unset BRANCH_NAME CURRENT_API_VER VERSION_ARRAY MINOR_VER'
+	unset BRANCH_NAME CURRENT_VER VERSION_ARRAY MINOR_VER'
 
 alias coverage-report-api="
 	rm -rf $PROJECT_PATH/api-iledebeaute/tests/coverage-report;
