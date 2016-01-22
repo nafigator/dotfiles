@@ -43,7 +43,7 @@ if [ -f ~/.bash_functions ]; then
 	. ~/.bash_functions
 fi
 
-PS1='\u@\h:\[\e[1;32m\]$(parse_git_branch)\[\e[0m\]\w\$ '
+PS1='\u@\h:\[\e[1;32m\][$(parse_git_branch)]\[\e[0m\]\w\$ '
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like

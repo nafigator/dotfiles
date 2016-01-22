@@ -2,7 +2,12 @@
 
 # Show current git branch
 parse_git_branch() {
-	git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/[\1]/'
+	git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
+
+# Show current git project name
+parse_project_name() {
+	git config --local remote.origin.url | perl -p -e "s/.+(?:\/|:)([^.]+)(?:.git)?/\1/"
 }
 
 # Run `dig` and display the most useful info

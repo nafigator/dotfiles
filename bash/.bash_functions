@@ -1,7 +1,66 @@
 #!/usr/bin/env bash
 # Show current git branch
 parse_git_branch() {
-	git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/[\1]/'
+	git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
+
+# Show current git project name
+parse_project_name() {
+	git config --local remote.origin.url | perl -p -e "s/.+(?:\/|:)([^.]+)(?:.git)?/\1/"
+}
+
+# Show development branch name for current project
+get_test_branch() {
+	if [ -z $1 ]; then
+		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		return 1
+	fi
+
+	case $1 in
+		Veles) echo 'development' ;;
+		*)     echo 'test' ;;
+	esac
+}
+
+# Show production branch name for current project
+get_prod_branch() {
+	if [ -z $1 ]; then
+		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		return 1
+	fi
+
+	case $1 in
+		Veles) echo 'master' ;;
+		*)     echo 'prod' ;;
+	esac
+}
+
+# Show production branch name for current project
+get_version_file() {
+	if [ -z $1 ]; then
+		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		return 1
+	fi
+
+	case $1 in
+		Veles) echo 'README.md' ;;
+		api-iledebeaute) echo '_modules/project/api/application.inc.php' ;;
+		*) echo 'version.ini' ;;
+	esac
+}
+
+# Show version regular expression
+get_version_regex() {
+	if [ -z $1 ] || [ -z $2 ]; then
+		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		return 1
+	fi
+
+	case $1 in
+		Veles) echo "s/badge\/release-[^-]+/badge\/release-$2/g" ;;
+		api-iledebeaute) echo "s/current_version = '[^']+/current_version = '$2/g" ;;
+		*) echo "s/current_version = [^\s]+/current_version = $2/g" ;;
+	esac
 }
 
 # Run `dig` and display the most useful info
@@ -75,4 +134,114 @@ api_put() {
 		--data-binary "$1" \
 		http://api.lo$2
 	echo
+}
+
+git-test() {
+	BRANCH_NAME=$(parse_git_branch) && \
+	PROJECT_NAME=$(parse_project_name) && \
+	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
+		return 1
+	else
+		TEST_BRANCH=$(get_test_branch ${PROJECT_NAME})
+	fi && \
+	git co ${TEST_BRANCH} && \
+	git pull && \
+	git merge ${BRANCH_NAME} && \
+	git submodule update && \
+	git push && \
+	git co ${BRANCH_NAME} && \
+	unset BRANCH_NAME PROJECT_NAME TEST_BRANCH
+}
+
+git-prod() {
+	BRANCH_NAME=$(parse_git_branch) && \
+	PROJECT_NAME=$(parse_project_name) && \
+	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
+		return 1
+	else
+		PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME})
+	fi && \
+	git pull --rebase origin ${PROD_BRANCH} && \
+	git co ${PROD_BRANCH} && \
+	git pull && \
+	git rebase ${BRANCH_NAME} && \
+	git submodule update && \
+	git br -d ${BRANCH_NAME} && \
+	git push && \
+	git describe
+	unset BRANCH_NAME PROJECT_NAME PROD_BRANCH
+}
+
+git-prod-patch() {
+	BRANCH_NAME=$(parse_git_branch) && \
+	PROJECT_NAME=$(parse_project_name) && \
+	CURRENT_VER=$(git tag | sort -V | tail -n 1) && \
+	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
+	PATCH_VER=$((${VERSION_ARRAY[2]} + 1)) && \
+	NEW_VER="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.$PATCH_VER" && \
+	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
+		return 1
+	else
+		TEST_BRANCH=$(get_test_branch ${PROJECT_NAME})
+		PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME})
+		VERSION_FILE=$(get_version_file ${PROJECT_NAME})
+		VERSION_REGEX=$(get_version_regex ${PROJECT_NAME} ${NEW_VER})
+	fi && \
+	perl -pi -e ${VERSION_FILE} ${VERSION_REGEX} && \
+	git add ${VERSION_FILE} && \
+	git ci "Update version" && \
+	git co ${TEST_BRANCH} && \
+	git pull && \
+	git merge ${BRANCH_NAME} && \
+	git submodule update && \
+	git push && \
+	git co ${BRANCH_NAME} && \
+	git pull --rebase origin ${PROD_BRANCH} && \
+	git co ${PROD_BRANCH} && \
+	git pull && \
+	git rebase ${BRANCH_NAME} && \
+	git submodule update && \
+	git br -d ${BRANCH_NAME} && \
+	git push && \
+	git t "Release $NEW_VER" ${NEW_VER} && \
+	git push --tags && \
+	git describe
+	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY PATCH_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX
+}
+
+git-prod-minor() {
+	BRANCH_NAME=$(parse_git_branch) && \
+	PROJECT_NAME=$(parse_project_name) && \
+	CURRENT_VER=$(git tag | sort -V | tail -n 1) && \
+	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
+	MINOR_VER=$((${VERSION_ARRAY[1]} + 1)) && \
+	NEW_VER="${VERSION_ARRAY[0]}.$MINOR_VER.0" && \
+	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
+		return 1
+	else
+		TEST_BRANCH=$(get_test_branch ${PROJECT_NAME})
+		PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME})
+		VERSION_FILE=$(get_version_file ${PROJECT_NAME})
+		VERSION_REGEX=$(get_version_regex ${PROJECT_NAME} ${NEW_VER})
+	fi && \
+	perl -pi -e ${VERSION_FILE} ${VERSION_REGEX} && \
+	git add ${VERSION_FILE} && \
+	git ci "Update version" && \
+	git co ${TEST_BRANCH} && \
+	git pull && \
+	git merge ${BRANCH_NAME} && \
+	git submodule update && \
+	git push && \
+	git co ${BRANCH_NAME} && \
+	git pull --rebase origin ${PROD_BRANCH} && \
+	git co ${PROD_BRANCH} && \
+	git pull && \
+	git rebase ${BRANCH_NAME} && \
+	git submodule update && \
+	git br -d ${BRANCH_NAME} && \
+	git push && \
+	git t "Release $NEW_VER" ${NEW_VER} && \
+	git push --tags && \
+	git describe
+	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY MINOR_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX
 }

@@ -7,9 +7,6 @@ WWW_ROOT='/home/web'
 if [ -x /usr/bin/dircolors ]; then
 	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 	alias ls='ls --color=auto'
-	#alias dir='dir --color=auto'
-	#alias vdir='vdir --color=auto'
-
 	export GREP_OPTIONS='--color=auto'
 fi
 
@@ -155,81 +152,6 @@ alias phpunit-veles="
 	cd $PROJECT_PATH/Veles && \
 	phpunit -c Tests/phpunit.xml --exclude-group=apc;
 	cd - >/dev/null"
-alias git-test='
-	BRANCH_NAME=$(git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/\1/") && \
-	git co test && \
-	git pull && \
-	git merge $BRANCH_NAME && \
-	git submodule update && \
-	git push && \
-	git co $BRANCH_NAME && \
-	unset BRANCH_NAME'
-
-alias git-prod='
-	BRANCH_NAME=$(git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/\1/") && \
-	git pull --rebase origin prod && \
-	git co prod && \
-	git pull && \
-	git rebase $BRANCH_NAME && \
-	git submodule update && \
-	git br -d $BRANCH_NAME && \
-	git push && \
-	git describe && \
-	unset BRANCH_NAME'
-
-alias git-prod-patch='
-	BRANCH_NAME=$(git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/\1/") && \
-	CURRENT_VER=$(git tag | sort -V | tail -n 1) && \
-	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
-	PATCH_VER=$((${VERSION_ARRAY[2]} + 1)) && \
-	NEW_VER="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.$PATCH_VER" && \
-	perl -pi -e "s/current_version = '\''[^'\'']+/current_version = '\''$NEW_VER/g" _modules/project/api/application.inc.php && \
-	git add _modules/project/api/application.inc.php && \
-	git ci "Update API version" && \
-	git co test && \
-	git pull && \
-	git merge $BRANCH_NAME && \
-	git submodule update && \
-	git push && \
-	git co $BRANCH_NAME && \
-	git pull --rebase origin prod && \
-	git co prod && \
-	git pull && \
-	git rebase $BRANCH_NAME && \
-	git submodule update && \
-	git br -d $BRANCH_NAME && \
-	git push && \
-	git t "Release $NEW_VER" $NEW_VER && \
-	git push --tags && \
-	git describe && \
-	unset BRANCH_NAME CURRENT_VER VERSION_ARRAY PATCH_VER'
-
-alias git-prod-minor='
-	BRANCH_NAME=$(git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/\1/") && \
-	CURRENT_VER=$(git tag | sort -V | tail -n 1) && \
-	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
-	MINOR_VER=$((${VERSION_ARRAY[1]} + 1)) && \
-	NEW_VER="${VERSION_ARRAY[0]}.$MINOR_VER.0" && \
-	perl -pi -e "s/current_version = '\''[^'\'']+/current_version = '\''$NEW_VER/g" _modules/project/api/application.inc.php && \
-	git add _modules/project/api/application.inc.php && \
-	git ci "Update API version" && \
-	git co test && \
-	git pull && \
-	git merge $BRANCH_NAME && \
-	git submodule update && \
-	git push && \
-	git co $BRANCH_NAME && \
-	git pull --rebase origin prod && \
-	git co prod && \
-	git pull && \
-	git rebase $BRANCH_NAME && \
-	git submodule update && \
-	git br -d $BRANCH_NAME && \
-	git push && \
-	git t "Release $NEW_VER" $NEW_VER && \
-	git push --tags && \
-	git describe && \
-	unset BRANCH_NAME CURRENT_VER VERSION_ARRAY MINOR_VER'
 
 alias coverage-report-api="
 	rm -rf $PROJECT_PATH/api-iledebeaute/tests/coverage-report;
