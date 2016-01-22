@@ -30,7 +30,7 @@ get_prod_branch() {
 	fi
 
 	case $1 in
-		Veles) echo 'master' ;;
+		Veles|itvault) echo 'master' ;;
 		*)     echo 'prod' ;;
 	esac
 }
