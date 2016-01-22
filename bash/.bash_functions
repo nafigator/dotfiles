@@ -173,7 +173,7 @@ git-prod() {
 	git submodule update && \
 	git br -d ${BRANCH_NAME} && \
 	git push && \
-	git describe 2>/dev/null && git describe
+	git describe 2>/dev/null
 	unset BRANCH_NAME PROJECT_NAME PROD_BRANCH
 }
 
@@ -192,7 +192,7 @@ git-prod-patch() {
 		VERSION_FILE=$(get_version_file ${PROJECT_NAME})
 		VERSION_REGEX=$(get_version_regex ${PROJECT_NAME} ${NEW_VER})
 	fi && \
-	perl -pi -e ${VERSION_REGEX} ${VERSION_FILE} && \
+	perl -pi -e "${VERSION_REGEX}" "${VERSION_FILE}" && \
 	git add ${VERSION_FILE} && \
 	git ci "Update version" && \
 	git co ${TEST_BRANCH} && \
@@ -210,7 +210,7 @@ git-prod-patch() {
 	git push && \
 	git t "Release $NEW_VER" ${NEW_VER} && \
 	git push --tags && \
-	git describe 2>/dev/null && git describe
+	git describe 2>/dev/null
 	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY PATCH_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX
 }
 
@@ -229,7 +229,7 @@ git-prod-minor() {
 		VERSION_FILE=$(get_version_file ${PROJECT_NAME})
 		VERSION_REGEX=$(get_version_regex ${PROJECT_NAME} ${NEW_VER})
 	fi && \
-	perl -pi -e ${VERSION_REGEX} ${VERSION_FILE} && \
+	perl -pi -e "${VERSION_REGEX}" "${VERSION_FILE}" && \
 	git add ${VERSION_FILE} && \
 	git ci "Update version" && \
 	git co ${TEST_BRANCH} && \
@@ -247,6 +247,6 @@ git-prod-minor() {
 	git push && \
 	git t "Release $NEW_VER" ${NEW_VER} && \
 	git push --tags && \
-	git describe 2>/dev/null && git describe
+	git describe 2>/dev/null
 	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY MINOR_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX
 }
