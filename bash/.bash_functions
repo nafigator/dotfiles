@@ -168,7 +168,7 @@ git-prod() {
 	git submodule update && \
 	git br -d ${BRANCH_NAME} && \
 	git push && \
-	git describe
+	git describe 2>/dev/null && git describe
 	unset BRANCH_NAME PROJECT_NAME PROD_BRANCH
 }
 
@@ -205,7 +205,7 @@ git-prod-patch() {
 	git push && \
 	git t "Release $NEW_VER" ${NEW_VER} && \
 	git push --tags && \
-	git describe
+	git describe 2>/dev/null && git describe
 	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY PATCH_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX
 }
 
@@ -242,6 +242,6 @@ git-prod-minor() {
 	git push && \
 	git t "Release $NEW_VER" ${NEW_VER} && \
 	git push --tags && \
-	git describe
+	git describe 2>/dev/null && git describe
 	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY MINOR_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX
 }
