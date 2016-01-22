@@ -2,7 +2,11 @@
 
 # Show current git branch
 parse_git_branch() {
-	git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+	if [ -z $1 ]; then
+		git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+	elif [ $1 -eq 1 ]; then
+		git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/[\1]/'
+	fi
 }
 
 # Show current git project name
