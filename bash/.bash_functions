@@ -187,7 +187,7 @@ git-prod-patch() {
 		VERSION_FILE=$(get_version_file ${PROJECT_NAME})
 		VERSION_REGEX=$(get_version_regex ${PROJECT_NAME} ${NEW_VER})
 	fi && \
-	perl -pi -e ${VERSION_FILE} ${VERSION_REGEX} && \
+	perl -pi -e ${VERSION_REGEX} ${VERSION_FILE} && \
 	git add ${VERSION_FILE} && \
 	git ci "Update version" && \
 	git co ${TEST_BRANCH} && \
@@ -224,7 +224,7 @@ git-prod-minor() {
 		VERSION_FILE=$(get_version_file ${PROJECT_NAME})
 		VERSION_REGEX=$(get_version_regex ${PROJECT_NAME} ${NEW_VER})
 	fi && \
-	perl -pi -e ${VERSION_FILE} ${VERSION_REGEX} && \
+	perl -pi -e ${VERSION_REGEX} ${VERSION_FILE} && \
 	git add ${VERSION_FILE} && \
 	git ci "Update version" && \
 	git co ${TEST_BRANCH} && \
