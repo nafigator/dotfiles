@@ -250,3 +250,14 @@ git-prod-minor() {
 	git describe 2>/dev/null
 	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY MINOR_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX
 }
+
+api-dredd() {
+	APIB_FILE="$HOME/api/tests/iledebeaute.apib"
+	if [ ! -r ${APIB_FILE} ]; then
+		printf "\033[0;31mERROR:\033[0m Not found apib-file!\n"
+		return 1
+	fi
+
+	mysql -uroot zs_ru_etoya -e "DELETE FROM core_user WHERE email = 'unique_889988_addr@domain.ru'"
+	dredd ${APIB_FILE}
+}
