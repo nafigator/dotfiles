@@ -253,11 +253,15 @@ git-prod-minor() {
 
 api-dredd() {
 	APIB_FILE="$HOME/api/tests/iledebeaute.apib"
-	if [ ! -r ${APIB_FILE} ]; then
+	if [ ! -r "$APIB_FILE" ]; then
 		printf "\033[0;31mERROR:\033[0m Not found apib-file!\n"
 		return 1
 	fi
 
 	mysql -uroot zs_ru_etoya -e "DELETE FROM core_user WHERE email = 'unique_889988_addr@domain.ru'"
+	mysql -uroot zs_ru_etoya -e "DELETE FROM user_mail WHERE m_mail = 'unique_009988_addr@domain.ru' AND i_user_id = 1"
+
+	cd "$HOME/api"
 	dredd ${APIB_FILE}
+	cd - >/dev/null
 }
