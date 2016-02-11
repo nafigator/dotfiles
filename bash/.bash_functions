@@ -260,7 +260,7 @@ api-dredd() {
 
 	mysql -uroot zs_ru_etoya -e "DELETE FROM core_user WHERE email = 'unique_889988_addr@domain.ru'"
 	mysql -uroot zs_ru_etoya -e "DELETE FROM user_mail WHERE m_mail = 'unique_009988_addr@domain.ru' AND i_user_id = 1"
-	mysql -uroot zs_ru_etoya -e "INSERT IGNORE user_mail VALUES (1, 'unique_997799_addr@domain.ru', 1455026420, 0, '')"
+	mysql -uroot zs_ru_etoya -e "INSERT IGNORE user_mail VALUES (1, 'unique_997799_addr@domain.ru', 1455026420, 1455026420, '')"
 
 	cd "$HOME/api"
 	dredd ${APIB_FILE}
