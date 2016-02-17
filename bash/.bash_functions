@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# Screen cleanup
+c() {
+	printf "\033c";
+	[[ $(uname -s) == "Linux" ]] && env TERM=linux setterm -regtabs 4
+}
+
 # Show current git branch
 parse_git_branch() {
 	if [ -z $1 ]; then
@@ -76,7 +82,7 @@ digga() {
 # Reload Bash dotfiles
 bash_reload() {
 	unalias -a 		&& \
-	unset -f parse_git_branch parse_project_name get_test_branch get_prod_branch get_version_file get_version_regex digga bash_reload calc api_get api_post api_put git-test git-prod git-prod-patch git-prod-minor && \
+	unset -f c parse_git_branch parse_project_name get_test_branch get_prod_branch get_version_file get_version_regex digga bash_reload calc api_get api_post api_put git-test git-prod git-prod-patch git-prod-minor && \
 	. ~/.xsessionrc	&& \
 	printf "\033[0;33mBash reloading ... [\033[0;32mOK\033[0;33m]\033[0m\n"
 }
@@ -98,7 +104,7 @@ api_get() {
 		options="--data-binary $1 http://api.lo$2"
 	fi
 
-	printf "\033c" && \
+	c && \
 	curl -i \
 		--request GET \
 		--cookie "XDEBUG_SESSION=1" \
@@ -113,7 +119,7 @@ api_post() {
 		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
 		return 1
 	fi
-	printf "\033c" && \
+	c && \
 	curl -i \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
@@ -129,7 +135,7 @@ api_put() {
 		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
 		return 1
 	fi
-	printf "\033c" && \
+	c && \
 	curl -i \
 		-X PUT \
 		--cookie "XDEBUG_SESSION=1" \

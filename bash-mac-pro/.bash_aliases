@@ -101,7 +101,6 @@ alias t='python ~/.tasks/t.py --task-dir ~/.tasks --list tasks.txt'
 # Completed tasks cleanup
 alias tc='[ -w ~/.tasks/.tasks.txt.done ] && rm ~/.tasks/.tasks.txt.done'
 alias leafpad='leafpad --tab-width=4'
-alias c='printf "\033c"; [[ $(uname -s) == "Linux" ]] && env TERM=linux setterm -regtabs 4'
 
 # Check available diff options
 options='--tabsize=4'

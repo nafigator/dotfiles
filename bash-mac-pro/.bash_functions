@@ -1,5 +1,11 @@
 #@IgnoreInspection BashAddShebang
 
+# Screen cleanup
+c() {
+	printf "\033c";
+	[[ $(uname -s) == "Linux" ]] && env TERM=linux setterm -regtabs 4
+}
+
 # Show current git branch
 parse_git_branch() {
 	if [ -z $1 ]; then
@@ -22,7 +28,7 @@ digga() {
 # Reload Bash dotfiles
 bash_reload() {
 	unalias -a 		&& \
-	unset -f parse_git_branch digga bash_reload calc && \
+	unset -f c parse_git_branch digga bash_reload calc && \
 	. ~/.profile 	&& \
 	printf "\e[0;33mBash reloading ... [\e[0;32mOK\e[0;33m]\e[0m\n"
 }
