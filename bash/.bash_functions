@@ -295,7 +295,9 @@ api-dredd() {
 		REPLACE INTO store_user_order VALUES
 			(631224, '0cf54bd01ca0ff829773de3070096222f389fd3d', 1455542832, 1455792111, null, 0, 2310, 2310, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0, null);
 		REPLACE INTO store_user_order_list VALUES
-			(1963895, 631224, 15510, 2310, 2310, null, 1, 1455791602, 14830, 37694, 0)"
+			(1963895, 631224, 15510, 2310, 2310, null, 1, 1455791602, 14830, 37694, 0);
+		REPLACE INTO store_user_order_list VALUES
+			(1963895, 631224, 101037, 3860, 3860, null, 1, 1455791602, 14830, 37695, -1)"
 
 	cd "$HOME/api"
 	dredd ${APIB_FILE}
