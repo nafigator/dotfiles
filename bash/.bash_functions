@@ -299,11 +299,7 @@ api-dredd() {
 		REPLACE store_user_order_list VALUES
 			(1963896, 631224, 101037, 3860, 3860, null, 1, 1455791602, 14830, 85675, -1);
 		DELETE FROM store_user_wish where i_id = 134763;
-		DELETE FROM store_user_wish_list where i_ref_id = 134763;
-		REPLACE zs_ru_etoya.store_user_wish VALUES
-			(134763, '80e04502a86ddd9b0e54a5d6d842366b985e78fe', 1455879832, 1455886831, null, 0, 1, 8139, 8139, 0, '', '');
-		REPLACE zs_ru_etoya.store_user_wish_list VALUES
-			(252640, 134763, 92056, 1455886831, 0, 0, 2680, 2680, null, 80951)"
+		DELETE FROM store_user_wish_list where i_ref_id = 134763"
 
 	cd "$HOME/api"
 	dredd ${APIB_FILE}
