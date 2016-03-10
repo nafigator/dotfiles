@@ -168,6 +168,82 @@ api_del() {
 	echo
 }
 
+# Aliases for testing API with curl
+api_test_get() {
+	if [ -z $1 ]; then
+		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		return 1
+	fi
+	if [ -z $2 ]; then
+		options="http://api.etoya.ru.zerostudio.ru$1"
+	else
+		options="--data-binary $1 http://api.lo$2"
+	fi
+
+	c && \
+	curl -i \
+		--request GET \
+		--cookie "XDEBUG_SESSION=1" \
+		--user "1:1111111111111111111111111111111111111111" \
+		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0) API/0.3" \
+		${options}
+	echo
+}
+
+api_post() {
+	if [ -z $1 ] || [ -z $2 ]; then
+		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		return 1
+	fi
+	c && \
+	curl -i \
+		--cookie "XDEBUG_SESSION=1" \
+		--user "1:1111111111111111111111111111111111111111" \
+		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0) API/0.3" \
+		--header "Content-Type: application/json" \
+		--data-binary "$1" \
+		http://api.etoya.ru.zerostudio.ru$2
+	echo
+}
+
+api_put() {
+	if [ -z $1 ] || [ -z $2 ]; then
+		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		return 1
+	fi
+	c && \
+	curl -i \
+		-X PUT \
+		--cookie "XDEBUG_SESSION=1" \
+		--user "1:1111111111111111111111111111111111111111" \
+		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0) API/0.3" \
+		--header "Content-Type: application/json" \
+		--data-binary "$1" \
+		http://api.etoya.ru.zerostudio.ru$2
+	echo
+}
+
+api_del() {
+	if [ -z $1 ]; then
+		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		return 1
+	fi
+	if [ -z $2 ]; then
+		options="http://api.etoya.ru.zerostudio.ru$1"
+	else
+		options="--data-binary $1 http://api.lo$2"
+	fi
+
+	c && \
+	curl -i \
+		--request DELETE \
+		--cookie "XDEBUG_SESSION=1" \
+		--user "1:1111111111111111111111111111111111111111" \
+		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0) API/0.3" \
+		${options}
+	echo
+}
+
 git-test() {
 	BRANCH_NAME=$(parse_git_branch) && \
 	PROJECT_NAME=$(parse_project_name) && \
