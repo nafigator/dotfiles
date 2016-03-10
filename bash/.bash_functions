@@ -184,7 +184,7 @@ api_test_get() {
 	curl -i \
 		--request GET \
 		--cookie "XDEBUG_SESSION=1" \
-		--user "1:1111111111111111111111111111111111111111" \
+		--user "745:4fc4e63d0e952ee76bcf73b2d4cad0edc66f50f8" \
 		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0) API/0.3" \
 		${options}
 	echo
@@ -198,7 +198,7 @@ api_test_post() {
 	c && \
 	curl -i \
 		--cookie "XDEBUG_SESSION=1" \
-		--user "1:1111111111111111111111111111111111111111" \
+		--user "745:4fc4e63d0e952ee76bcf73b2d4cad0edc66f50f8" \
 		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0) API/0.3" \
 		--header "Content-Type: application/json" \
 		--data-binary "$1" \
@@ -215,7 +215,7 @@ api_test_put() {
 	curl -i \
 		-X PUT \
 		--cookie "XDEBUG_SESSION=1" \
-		--user "1:1111111111111111111111111111111111111111" \
+		--user "745:4fc4e63d0e952ee76bcf73b2d4cad0edc66f50f8" \
 		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0) API/0.3" \
 		--header "Content-Type: application/json" \
 		--data-binary "$1" \
@@ -238,7 +238,7 @@ api_test_del() {
 	curl -i \
 		--request DELETE \
 		--cookie "XDEBUG_SESSION=1" \
-		--user "1:1111111111111111111111111111111111111111" \
+		--user "745:4fc4e63d0e952ee76bcf73b2d4cad0edc66f50f8" \
 		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0) API/0.3" \
 		${options}
 	echo
