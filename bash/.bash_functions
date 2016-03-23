@@ -299,22 +299,70 @@ git-prod-patch() {
 	git add ${VERSION_FILE} && \
 	git ci "Update version" && \
 	git co ${TEST_BRANCH} && \
-	git pull && \
-	git merge ${BRANCH_NAME} && \
+	git pull
+	git merge ${BRANCH_NAME}
+
+	if [ ! $? -eq 0 ]; then
+		OUTPUT="$(git st | grep UU)"
+
+		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			return 1
+		fi
+
+		git checkout --theirs ${VERSION_FILE} && \
+		git add ${VERSION_FILE}
+		git commit --file .git/MERGE_MSG
+	fi
+
 	git submodule update && \
 	git push && \
 	git co ${BRANCH_NAME} && \
-	git pull --rebase origin ${PROD_BRANCH} && \
+	git pull --rebase origin ${PROD_BRANCH}
+
+	if [ ! $? -eq 0 ]; then
+		OUTPUT="$(git st | grep UU)"
+
+		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			return 1
+		fi
+
+		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
+		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+
+		git checkout --theirs ${VERSION_FILE} && \
+		git add ${VERSION_FILE}
+		git rebase --continue
+	fi
+
 	git co ${PROD_BRANCH} && \
 	git pull && \
-	git rebase ${BRANCH_NAME} && \
+	git rebase ${BRANCH_NAME}
+
+	if [ ! $? -eq 0 ]; then
+		OUTPUT="$(git st | grep UU)"
+
+		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			return 1
+		fi
+
+		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
+		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+
+		git checkout --theirs ${VERSION_FILE} && \
+		git add ${VERSION_FILE}
+		git rebase --continue
+	fi
+
 	git submodule update && \
 	git br -d ${BRANCH_NAME} && \
 	git push && \
 	git t "Release $NEW_VER" ${NEW_VER} && \
 	git push --tags && \
 	git describe 2>/dev/null
-	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY PATCH_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX
+	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY PATCH_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX OUTPUT
 }
 
 git-prod-minor() {
@@ -337,21 +385,72 @@ git-prod-minor() {
 	git ci "Update version" && \
 	git co ${TEST_BRANCH} && \
 	git pull && \
-	git merge ${BRANCH_NAME} && \
+	git merge ${BRANCH_NAME}
+
+	if [ ! $? -eq 0 ]; then
+		OUTPUT="$(git st | grep UU)"
+
+		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			return 1
+		fi
+
+		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
+		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+
+		git checkout --theirs ${VERSION_FILE} && \
+		git add ${VERSION_FILE}
+		git commit --file .git/MERGE_MSG
+	fi
+
 	git submodule update && \
 	git push && \
 	git co ${BRANCH_NAME} && \
-	git pull --rebase origin ${PROD_BRANCH} && \
+	git pull --rebase origin ${PROD_BRANCH}
+
+	if [ ! $? -eq 0 ]; then
+		OUTPUT="$(git st | grep UU)"
+
+		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			return 1
+		fi
+
+		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
+		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+
+		git checkout --theirs ${VERSION_FILE} && \
+		git add ${VERSION_FILE}
+		git rebase --continue
+	fi
+
 	git co ${PROD_BRANCH} && \
 	git pull && \
-	git rebase ${BRANCH_NAME} && \
+	git rebase ${BRANCH_NAME}
+
+	if [ ! $? -eq 0 ]; then
+		OUTPUT="$(git st | grep UU)"
+
+		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			return 1
+		fi
+
+		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
+		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+
+		git checkout --theirs ${VERSION_FILE} && \
+		git add ${VERSION_FILE}
+		git rebase --continue
+	fi
+
 	git submodule update && \
 	git br -d ${BRANCH_NAME} && \
 	git push && \
 	git t "Release $NEW_VER" ${NEW_VER} && \
 	git push --tags && \
 	git describe 2>/dev/null
-	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY MINOR_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX
+	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY MINOR_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX OUTPUT
 }
 
 api-dredd() {
