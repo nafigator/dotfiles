@@ -247,16 +247,56 @@ api_test_del() {
 git-test() {
 	BRANCH_NAME=$(parse_git_branch) && \
 	PROJECT_NAME=$(parse_project_name) && \
+
 	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
 		return 1
 	else
 		TEST_BRANCH=$(get_test_branch ${PROJECT_NAME})
+		VERSION_FILE=$(get_version_file ${PROJECT_NAME})
+
 	fi && \
 	git co ${TEST_BRANCH} && \
 	git pull && \
-	git merge ${BRANCH_NAME} && \
+	git merge ${BRANCH_NAME}
+
+	if [ ! $? -eq 0 ]; then
+		OUTPUT="$(git st | grep UU)"
+
+		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			return 1
+		fi
+
+		git checkout --theirs ${VERSION_FILE} && \
+		git add ${VERSION_FILE}
+		git commit --file .git/MERGE_MSG
+	fi && \
+	CURRENT_VER=$(git describe) && \
+	PROD_VER=$(git describe prod) && \
+	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
+	PATCH_ARRAY=(${VERSION_ARRAY[2]//-/ }) && \
+	CHECK_VER="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.${PATCH_ARRAY[0]}"
+
+	if [ "$CHECK_VER" != "$PROD_VER" ]; then
+		VERSION_ARRAY=(${PROD_VER//./ })
+		PATCH_ARRAY=(${VERSION_ARRAY[2]//-/ })
+	fi
+
+	if [ "${PATCH_ARRAY[1]}" = "dev" ]; then
+		DEV_VER=$((${PATCH_ARRAY[2]} + ${PATCH_ARRAY[3]} + 1))
+	else
+		DEV_VER=$((${PATCH_ARRAY[1]} + 1))
+	fi
+
+	NEW_VER="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.${PATCH_ARRAY[0]}-dev-${DEV_VER}" && \
+	VERSION_REGEX=$(get_version_regex ${PROJECT_NAME} ${NEW_VER}) && \
+	perl -pi -e "${VERSION_REGEX}" "${VERSION_FILE}" && \
+	git add ${VERSION_FILE} && \
+	git ci "Update version" && \
 	git submodule update && \
 	git push && \
+	git t "Release $NEW_VER" ${NEW_VER} && \
+	git push --tags && \
 	git co ${BRANCH_NAME} && \
 	unset BRANCH_NAME PROJECT_NAME TEST_BRANCH
 }
