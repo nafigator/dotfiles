@@ -325,7 +325,8 @@ git-prod-patch() {
 	PROJECT_NAME=$(parse_project_name) && \
 	CURRENT_VER=$(git tag | sort -V | tail -n 1) && \
 	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
-	PATCH_VER=$((${VERSION_ARRAY[2]} + 1)) && \
+	PATCH_ARRAY=(${VERSION_ARRAY[2]//-/ }) && \
+	PATCH_VER=$((${PATCH_ARRAY[0]} + 1)) && \
 	NEW_VER="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.$PATCH_VER" && \
 	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
 		return 1
