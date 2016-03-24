@@ -267,6 +267,9 @@ git-test() {
 			return 1
 		fi
 
+		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
+		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+
 		git checkout --theirs ${VERSION_FILE} && \
 		git add ${VERSION_FILE}
 		git commit --file .git/MERGE_MSG
@@ -289,7 +292,7 @@ git-test() {
 	fi
 
 	NEW_VER="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.${PATCH_ARRAY[0]}-dev-${DEV_VER}" && \
-	VERSION_REGEX=$(get_version_regex ${PROJECT_NAME} ${NEW_VER}) && \
+	VERSION_REGEX=$(get_version_regex "$PROJECT_NAME" "$NEW_VER") && \
 	perl -pi -e "${VERSION_REGEX}" "${VERSION_FILE}" && \
 	git add ${VERSION_FILE} && \
 	git ci "Update version" && \
@@ -298,7 +301,7 @@ git-test() {
 	git t "Release $NEW_VER" ${NEW_VER} && \
 	git push --tags && \
 	git co ${BRANCH_NAME} && \
-	unset BRANCH_NAME PROJECT_NAME TEST_BRANCH
+	unset BRANCH_NAME PROJECT_NAME TEST_BRANCH DEV_VER VERSION_REGEX NEW_VER PATCH_ARRAY VERSION_ARRAY CHECK_VER PROD_VER CURRENT_VER OUTPUT
 }
 
 git-prod() {
@@ -334,7 +337,7 @@ git-prod-patch() {
 		TEST_BRANCH=$(get_test_branch ${PROJECT_NAME})
 		PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME})
 		VERSION_FILE=$(get_version_file ${PROJECT_NAME})
-		VERSION_REGEX=$(get_version_regex ${PROJECT_NAME} ${NEW_VER})
+		VERSION_REGEX=$(get_version_regex "${PROJECT_NAME}" "${NEW_VER}")
 	fi && \
 	perl -pi -e "${VERSION_REGEX}" "${VERSION_FILE}" && \
 	git add ${VERSION_FILE} && \
@@ -419,7 +422,7 @@ git-prod-minor() {
 		TEST_BRANCH=$(get_test_branch ${PROJECT_NAME})
 		PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME})
 		VERSION_FILE=$(get_version_file ${PROJECT_NAME})
-		VERSION_REGEX=$(get_version_regex ${PROJECT_NAME} ${NEW_VER})
+		VERSION_REGEX=$(get_version_regex "${PROJECT_NAME}" "${NEW_VER}")
 	fi && \
 	perl -pi -e "${VERSION_REGEX}" "${VERSION_FILE}" && \
 	git add ${VERSION_FILE} && \
