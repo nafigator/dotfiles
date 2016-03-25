@@ -326,19 +326,21 @@ git-prod() {
 git-prod-patch() {
 	BRANCH_NAME=$(parse_git_branch) && \
 	PROJECT_NAME=$(parse_project_name) && \
+	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
+		return 1
+	fi
+
+	TEST_BRANCH=$(get_test_branch ${PROJECT_NAME}) && \
+	PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME}) && \
+	VERSION_FILE=$(get_version_file ${PROJECT_NAME}) && \
+	git co ${PROD_BRANCH} && \
 	CURRENT_VER=$(git tag | sort -V | tail -n 1) && \
+	git co ${BRANCH_NAME} && \
 	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
 	PATCH_ARRAY=(${VERSION_ARRAY[2]//-/ }) && \
 	PATCH_VER=$((${PATCH_ARRAY[0]} + 1)) && \
 	NEW_VER="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.$PATCH_VER" && \
-	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
-		return 1
-	else
-		TEST_BRANCH=$(get_test_branch ${PROJECT_NAME})
-		PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME})
-		VERSION_FILE=$(get_version_file ${PROJECT_NAME})
-		VERSION_REGEX=$(get_version_regex "${PROJECT_NAME}" "${NEW_VER}")
-	fi && \
+	VERSION_REGEX=$(get_version_regex "${PROJECT_NAME}" "${NEW_VER}") && \
 	perl -pi -e "${VERSION_REGEX}" "${VERSION_FILE}" && \
 	git add ${VERSION_FILE} && \
 	git ci "Update version" && \
@@ -412,18 +414,20 @@ git-prod-patch() {
 git-prod-minor() {
 	BRANCH_NAME=$(parse_git_branch) && \
 	PROJECT_NAME=$(parse_project_name) && \
+	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
+		return 1
+	fi
+
+	TEST_BRANCH=$(get_test_branch ${PROJECT_NAME}) && \
+	PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME}) && \
+	VERSION_FILE=$(get_version_file ${PROJECT_NAME}) && \
+	git co ${PROD_BRANCH} && \
 	CURRENT_VER=$(git tag | sort -V | tail -n 1) && \
+	git co ${BRANCH_NAME} && \
 	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
 	MINOR_VER=$((${VERSION_ARRAY[1]} + 1)) && \
 	NEW_VER="${VERSION_ARRAY[0]}.$MINOR_VER.0" && \
-	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
-		return 1
-	else
-		TEST_BRANCH=$(get_test_branch ${PROJECT_NAME})
-		PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME})
-		VERSION_FILE=$(get_version_file ${PROJECT_NAME})
-		VERSION_REGEX=$(get_version_regex "${PROJECT_NAME}" "${NEW_VER}")
-	fi && \
+	VERSION_REGEX=$(get_version_regex "${PROJECT_NAME}" "${NEW_VER}") && \
 	perl -pi -e "${VERSION_REGEX}" "${VERSION_FILE}" && \
 	git add ${VERSION_FILE} && \
 	git ci "Update version" && \
