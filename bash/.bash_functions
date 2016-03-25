@@ -247,14 +247,12 @@ api_test_del() {
 git-test() {
 	BRANCH_NAME=$(parse_git_branch) && \
 	PROJECT_NAME=$(parse_project_name) && \
-
 	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
 		return 1
-	else
-		TEST_BRANCH=$(get_test_branch ${PROJECT_NAME})
-		VERSION_FILE=$(get_version_file ${PROJECT_NAME})
+	fi
 
-	fi && \
+	TEST_BRANCH=$(get_test_branch ${PROJECT_NAME}) && \
+	VERSION_FILE=$(get_version_file ${PROJECT_NAME}) && \
 	git co ${TEST_BRANCH} && \
 	git pull && \
 	git merge ${BRANCH_NAME}
