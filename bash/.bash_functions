@@ -354,6 +354,9 @@ git-prod-patch() {
 			return 1
 		fi
 
+		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
+		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+
 		git checkout --theirs ${VERSION_FILE} && \
 		git add ${VERSION_FILE}
 		git commit --file .git/MERGE_MSG
