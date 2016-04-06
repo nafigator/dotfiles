@@ -517,7 +517,7 @@ api-dredd() {
 		DELETE FROM store_user_order_gift_list where i_ref_id = 631224;
 		DELETE FROM store_user_order_list WHERE i_ref_id = 631224;
 		REPLACE store_user_order VALUES
-			(631224, '0cf54bd01ca0ff829773de3070096222f389fd3d', 1455542832, 1455792111, null, 0, 2310, 2310, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0, null);
+			(631224, '0cf54bd01ca0ff829773de3070096222f389fd3d', 1455542832, 1455792111, null, 0, 2310, 2310, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0, null);
 		REPLACE store_user_order_list VALUES
 			(1963895, 631224, 15510, 2310, 2310, null, 1, 1455791602, 14830, 37694, 0);
 		REPLACE store_user_order_list VALUES
