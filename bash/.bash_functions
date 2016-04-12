@@ -80,9 +80,9 @@ digga() {
 }
 
 # Reload Bash dotfiles
-bash_reload() {
+bash-reload() {
 	unalias -a 		&& \
-	unset -f c parse_git_branch parse_project_name get_test_branch get_prod_branch get_version_file get_version_regex digga bash_reload calc api_get api_post api_put api_del api_test_get api_test_post api_test_put api_test_del git-test git-prod git-prod-patch git-prod-minor && \
+	unset -f c parse_git_branch parse_project_name get_test_branch get_prod_branch get_version_file get_version_regex digga bash-reload calc api-get api-post api-put api-del api-test-get api-test-post api-test-put api-test-del git-test git-prod git-prod-patch git-prod-minor && \
 	. ~/.xsessionrc	&& \
 	printf "\033[0;33mBash reloading ... [\033[0;32mOK\033[0;33m]\033[0m\n"
 }
