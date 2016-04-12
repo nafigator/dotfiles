@@ -93,7 +93,7 @@ calc() {
 }
 
 # Aliases for testing API with curl
-api_get() {
+api-get() {
 	if [ -z $1 ]; then
 		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
 		return 1
@@ -114,7 +114,7 @@ api_get() {
 	echo
 }
 
-api_post() {
+api-post() {
 	if [ -z $1 ] || [ -z $2 ]; then
 		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
 		return 1
@@ -130,7 +130,7 @@ api_post() {
 	echo
 }
 
-api_put() {
+api-put() {
 	if [ -z $1 ] || [ -z $2 ]; then
 		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
 		return 1
@@ -147,7 +147,7 @@ api_put() {
 	echo
 }
 
-api_del() {
+api-del() {
 	if [ -z $1 ]; then
 		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
 		return 1
@@ -169,7 +169,7 @@ api_del() {
 }
 
 # Aliases for testing API with curl
-api_test_get() {
+api-test-get() {
 	if [ -z $1 ]; then
 		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
 		return 1
@@ -190,7 +190,7 @@ api_test_get() {
 	echo
 }
 
-api_test_post() {
+api-test-post() {
 	if [ -z $1 ] || [ -z $2 ]; then
 		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
 		return 1
@@ -206,7 +206,7 @@ api_test_post() {
 	echo
 }
 
-api_test_put() {
+api-test-put() {
 	if [ -z $1 ] || [ -z $2 ]; then
 		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
 		return 1
@@ -223,7 +223,7 @@ api_test_put() {
 	echo
 }
 
-api_test_del() {
+api-test-del() {
 	if [ -z $1 ]; then
 		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
 		return 1
