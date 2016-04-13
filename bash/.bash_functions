@@ -525,7 +525,7 @@ api-dredd() {
 		DELETE FROM store_user_wish where i_id = 134763;
 		DELETE FROM store_user_wish_list where i_ref_id = 134763;
 		REPLACE zs_ru_etoya.store_user_wish VALUES
-			(134763, '80e04502a86ddd9b0e54a5d6d842366b985e78fe', 1455879832, 1455886831, null, 0, 1, 8139, 8139, 0, '', '');
+			(134763, '80e04502a86ddd9b0e54a5d6d842366b985e78fe', 1455879832, 1455886831, null, 0, 1, 8139, 8139, 0, '', '', '75193c864db229eae82f1dd38dca5e2cffc37a73134763');
 		REPLACE zs_ru_etoya.store_user_wish_list VALUES
 			(252640, 134763, 92056, 1455886831, 0, 0, 2680, 2680, null, 80951);
 		REPLACE store_gift_promo_code VALUES
