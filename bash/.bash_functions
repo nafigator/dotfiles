@@ -337,6 +337,7 @@ git-prod-patch() {
 	PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME}) && \
 	VERSION_FILE=$(get_version_file ${PROJECT_NAME}) && \
 	git co ${PROD_BRANCH} && \
+	git pull && \
 	CURRENT_VER=$(git tag | sort -V | tail -n 1) && \
 	git co ${BRANCH_NAME} && \
 	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
@@ -348,6 +349,7 @@ git-prod-patch() {
 	git add ${VERSION_FILE} && \
 	git ci "Update version" && \
 	git co ${TEST_BRANCH} && \
+	git submodule update && \
 	git pull
 	git merge ${BRANCH_NAME}
 
@@ -389,6 +391,7 @@ git-prod-patch() {
 	fi
 
 	git co ${PROD_BRANCH} && \
+	git submodule update && \
 	git pull && \
 	git rebase ${BRANCH_NAME}
 
@@ -428,6 +431,7 @@ git-prod-minor() {
 	PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME}) && \
 	VERSION_FILE=$(get_version_file ${PROJECT_NAME}) && \
 	git co ${PROD_BRANCH} && \
+	git pull && \
 	CURRENT_VER=$(git tag | sort -V | tail -n 1) && \
 	git co ${BRANCH_NAME} && \
 	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
@@ -438,6 +442,7 @@ git-prod-minor() {
 	git add ${VERSION_FILE} && \
 	git ci "Update version" && \
 	git co ${TEST_BRANCH} && \
+	git submodule update && \
 	git pull && \
 	git merge ${BRANCH_NAME}
 
@@ -460,6 +465,7 @@ git-prod-minor() {
 	git submodule update && \
 	git push && \
 	git co ${BRANCH_NAME} && \
+	git submodule update && \
 	git pull --rebase origin ${PROD_BRANCH}
 
 	if [ ! $? -eq 0 ]; then
@@ -479,6 +485,7 @@ git-prod-minor() {
 	fi
 
 	git co ${PROD_BRANCH} && \
+	git submodule update && \
 	git pull && \
 	git rebase ${BRANCH_NAME}
 
