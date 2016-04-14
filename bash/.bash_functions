@@ -254,6 +254,7 @@ git-test() {
 	TEST_BRANCH=$(get_test_branch ${PROJECT_NAME}) && \
 	VERSION_FILE=$(get_version_file ${PROJECT_NAME}) && \
 	git co ${TEST_BRANCH} && \
+	git submodule update && \
 	git pull && \
 	git merge ${BRANCH_NAME}
 
@@ -294,11 +295,11 @@ git-test() {
 	perl -pi -e "${VERSION_REGEX}" "${VERSION_FILE}" && \
 	git add ${VERSION_FILE} && \
 	git ci "Update version" && \
-	git submodule update && \
 	git push && \
 	git t "Release $NEW_VER" ${NEW_VER} && \
 	git push --tags && \
 	git co ${BRANCH_NAME} && \
+	git submodule update && \
 	unset BRANCH_NAME PROJECT_NAME TEST_BRANCH DEV_VER VERSION_REGEX NEW_VER PATCH_ARRAY VERSION_ARRAY CHECK_VER PROD_VER CURRENT_VER OUTPUT
 }
 
