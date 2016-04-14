@@ -252,7 +252,11 @@ git-test() {
 	fi
 
 	TEST_BRANCH=$(get_test_branch ${PROJECT_NAME}) && \
+	PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME}) && \
 	VERSION_FILE=$(get_version_file ${PROJECT_NAME}) && \
+	git co ${PROD_BRANCH} && \
+	git submodule update && \
+	git pull && \
 	git co ${TEST_BRANCH} && \
 	git submodule update && \
 	git pull && \
