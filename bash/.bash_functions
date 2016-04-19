@@ -516,34 +516,40 @@ git-prod-minor() {
 
 api-dredd() {
 	APIB_FILE="$HOME/api/tests/iledebeaute.apib"
+	SQL_DEFAULT_FILE="$HOME/api/tests/default.sql"
+	SQL_USER_FILE="$HOME/api/tests/default_user.sql"
 	if [ ! -r "$APIB_FILE" ]; then
 		printf "\033[0;31mERROR:\033[0m Not found apib-file!\n"
 		return 1
 	fi
 
-	mysql -uroot zs_ru_etoya -se "DELETE FROM core_user WHERE email = 'unique_889988_addr@domain.ru'"
-	mysql -uroot zs_ru_etoya -se "DELETE FROM user_mail WHERE m_mail = 'unique_009988_addr@domain.ru' AND i_user_id = 1"
-	mysql -uroot zs_ru_etoya -se "INSERT IGNORE user_mail VALUES (1, 'unique_997799_addr@domain.ru', 1455026420, 1455026420, ''),(1, 'unique_338899_addr@domain.ru', 1455026420, 0, '')"
-	mysql -uroot zs_ru_etoya -se  "
-		DELETE FROM store_user_order where i_id = 631224;
-		DELETE FROM store_user_order_gift_list where i_ref_id = 631224;
-		DELETE FROM store_user_order_list WHERE i_ref_id = 631224;
-		REPLACE store_user_order VALUES
-			(631224, '0cf54bd01ca0ff829773de3070096222f389fd3d', 1455542832, 1455792111, null, 0, 2310, 2310, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0, null, null);
-		REPLACE store_user_order_list VALUES
-			(1963895, 631224, 15510, 2310, 2310, null, 1, 1455791602, 14830, 37694, 0);
-		REPLACE store_user_order_list VALUES
-			(1963896, 631224, 101037, 3860, 3860, null, 1, 1455791602, 14830, 85675, -1);
-		DELETE FROM store_user_wish where i_id = 134763;
-		DELETE FROM store_user_wish_list where i_ref_id = 134763;
-		REPLACE store_user_wish VALUES
-			(134763, '80e04502a86ddd9b0e54a5d6d842366b985e78fe', 1455879832, 1455886831, null, 0, 1, 8139, 8139, 0, '', '', '75193c864db229eae82f1dd38dca5e2cffc37a73134763');
-		REPLACE zs_ru_etoya.store_user_wish_list VALUES
-			(252640, 134763, 92056, 1455886831, 0, 0, 2680, 2680, null, 80951);
-		REPLACE store_gift_promo_code VALUES
-			(75393, '74FHZT', 'disc_20', 1458310312, 2451934800, 0, 0, 0, 0, '')"
+	if [ ! -r "$SQL_DEFAULT_FILE" ]; then
+		printf "\033[0;31mERROR:\033[0m Not found default.sql!\n"
+		return 1
+	fi
+
+	if [ ! -r "$SQL_USER_FILE" ]; then
+		printf "\033[0;31mERROR:\033[0m Not found default_user.sql!\n"
+		return 1
+	fi
+
+	mysql -uroot zs_ru_etoya -s < "$SQL_DEFAULT_FILE"
+
+	if [ ! $? -eq 0 ]; then
+		printf "\033[0;31mERROR:\033[0m SQL_DEFAULT_FILE failure!\n"
+		return 1
+	fi
+
+	mysql -uroot zs_ru_etoya -s < "$SQL_USER_FILE"
+
+	if [ ! $? -eq 0 ]; then
+		printf "\033[0;31mERROR:\033[0m SQL_USER_FILE failure!\n"
+		return 1
+	fi
 
 	cd "$HOME/api"
 	dredd ${APIB_FILE}
+
+	unset APIB_FILE SQL_FILE
 	cd - >/dev/null
 }
