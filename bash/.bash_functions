@@ -350,7 +350,7 @@ git-prod-patch() {
 	git ci "Update version" && \
 	git co ${TEST_BRANCH} && \
 	git submodule update && \
-	git pull
+	git pull && \
 	git merge ${BRANCH_NAME}
 
 	if [ ! $? -eq 0 ]; then
@@ -372,6 +372,7 @@ git-prod-patch() {
 	git submodule update && \
 	git push && \
 	git co ${BRANCH_NAME} && \
+	git submodule update && \
 	git pull --rebase origin ${PROD_BRANCH}
 
 	if [ ! $? -eq 0 ]; then
