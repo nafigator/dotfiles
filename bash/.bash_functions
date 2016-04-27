@@ -515,6 +515,100 @@ git-prod-minor() {
 	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY MINOR_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX OUTPUT
 }
 
+git-prod-major() {
+	BRANCH_NAME=$(parse_git_branch) && \
+	PROJECT_NAME=$(parse_project_name) && \
+	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
+		return 1
+	fi
+
+	TEST_BRANCH=$(get_test_branch ${PROJECT_NAME}) && \
+	PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME}) && \
+	VERSION_FILE=$(get_version_file ${PROJECT_NAME}) && \
+	git co ${PROD_BRANCH} && \
+	git pull && \
+	CURRENT_VER=$(git tag | sort -V | tail -n 1) && \
+	git co ${BRANCH_NAME} && \
+	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
+	MAJOR_VER=$((${VERSION_ARRAY[0]} + 1)) && \
+	NEW_VER="$MAJOR_VER.0.0" && \
+	VERSION_REGEX=$(get_version_regex "${PROJECT_NAME}" "${NEW_VER}") && \
+	perl -pi -e "${VERSION_REGEX}" "${VERSION_FILE}" && \
+	git add ${VERSION_FILE} && \
+	git ci "Update version" && \
+	git co ${TEST_BRANCH} && \
+	git submodule update && \
+	git pull && \
+	git merge ${BRANCH_NAME}
+
+	if [ ! $? -eq 0 ]; then
+		OUTPUT="$(git st | grep UU)"
+
+		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			return 1
+		fi
+
+		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
+		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+
+		git checkout --theirs ${VERSION_FILE} && \
+		git add ${VERSION_FILE}
+		git commit --file .git/MERGE_MSG
+	fi
+
+	git submodule update && \
+	git push && \
+	git co ${BRANCH_NAME} && \
+	git submodule update && \
+	git pull --rebase origin ${PROD_BRANCH}
+
+	if [ ! $? -eq 0 ]; then
+		OUTPUT="$(git st | grep UU)"
+
+		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			return 1
+		fi
+
+		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
+		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+
+		git checkout --theirs ${VERSION_FILE} && \
+		git add ${VERSION_FILE}
+		git rebase --continue
+	fi
+
+	git co ${PROD_BRANCH} && \
+	git submodule update && \
+	git pull && \
+	git rebase ${BRANCH_NAME}
+
+	if [ ! $? -eq 0 ]; then
+		OUTPUT="$(git st | grep UU)"
+
+		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			return 1
+		fi
+
+		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
+		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+
+		git checkout --theirs ${VERSION_FILE} && \
+		git add ${VERSION_FILE}
+		git rebase --continue
+	fi
+
+	git submodule update && \
+	git br -d ${BRANCH_NAME} && \
+	git push && \
+	git t "Release $NEW_VER" ${NEW_VER} && \
+	git push --tags && \
+	git describe 2>/dev/null
+	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY MINOR_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX OUTPUT
+}
+
 api-dredd() {
 	APIB_FILE="$HOME/api/tests/iledebeaute.apib"
 	SQL_DEFAULT_FILE="$HOME/api/tests/default.sql"
