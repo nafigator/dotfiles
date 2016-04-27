@@ -109,7 +109,7 @@ api-get() {
 		--request GET \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/0.3" \
+		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
 		${options}
 	echo
 }
@@ -123,7 +123,7 @@ api-post() {
 	curl -i \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/0.3" \
+		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
 		--header "Content-Type: application/json" \
 		--data-binary "$1" \
 		http://api.lo$2
@@ -140,7 +140,7 @@ api-put() {
 		-X PUT \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/0.3" \
+		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
 		--header "Content-Type: application/json" \
 		--data-binary "$1" \
 		http://api.lo$2
@@ -163,7 +163,7 @@ api-del() {
 		--request DELETE \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/0.3" \
+		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
 		${options}
 	echo
 }
@@ -185,7 +185,7 @@ api-test-get() {
 		--request GET \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "745:4fc4e63d0e952ee76bcf73b2d4cad0edc66f50f8" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/0.3" \
+		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
 		${options}
 	echo
 }
@@ -199,7 +199,7 @@ api-test-post() {
 	curl -i \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "745:4fc4e63d0e952ee76bcf73b2d4cad0edc66f50f8" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/0.3" \
+		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
 		--header "Content-Type: application/json" \
 		--data-binary "$1" \
 		http://api.etoya.ru.zerostudio.ru$2
@@ -216,7 +216,7 @@ api-test-put() {
 		-X PUT \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "745:4fc4e63d0e952ee76bcf73b2d4cad0edc66f50f8" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/0.3" \
+		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
 		--header "Content-Type: application/json" \
 		--data-binary "$1" \
 		http://api.etoya.ru.zerostudio.ru$2
@@ -239,7 +239,7 @@ api-test-del() {
 		--request DELETE \
 		--cookie "XDEBUG_SESSION=1" \
 		--user "745:4fc4e63d0e952ee76bcf73b2d4cad0edc66f50f8" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/0.3" \
+		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
 		${options}
 	echo
 }
