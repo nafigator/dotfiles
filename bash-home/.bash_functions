@@ -278,7 +278,7 @@ git-test() {
 		git commit --file .git/MERGE_MSG
 	fi && \
 	CURRENT_VER=$(git describe) && \
-	PROD_VER=$(git describe prod) && \
+	PROD_VER=$(git describe ${PROD_BRANCH}) && \
 	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
 	PATCH_ARRAY=(${VERSION_ARRAY[2]//-/ }) && \
 	CHECK_VER="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.${PATCH_ARRAY[0]}"
