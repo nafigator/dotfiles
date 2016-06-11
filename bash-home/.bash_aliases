@@ -84,6 +84,8 @@ alias chatupd="
 		--delete-after \
 		-Ravry $PROJECT_PATH/./chat.itvault/www/ itvault:$WWW_ROOT"
 
+alias eva="$PROJECT_PATH/eva/build/eva"
+alias eva_build_doc='rm -rf ~/dev/eva/documentation && doxygen ~/Progects/eva/src/doxygen.eva.cfg'
 alias phpcs_itvault='
 	phpcs -s -v --tab-width=4 \
 		--report=full \
@@ -145,3 +147,4 @@ alias phpunit-api="
 unset PROJECT_PATH WWW_ROOT
 
 alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'
+alias fix-resolution='xrandr --output LVDS-0 --mode 1920x1080'
