@@ -6,6 +6,21 @@ c() {
 	[[ $(uname -s) == "Linux" ]] && env TERM=linux setterm -regtabs 4
 }
 
+# Function for error
+err() {
+	printf "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: \033[0;31mERROR:\033[0m $@\n" >&2
+}
+
+# Function for informational messages
+inform() {
+	printf "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: \033[0;32mINFO:\033[0m $@\n"
+}
+
+# Function for warning messages
+warn() {
+	printf "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: \033[0;33mWARNING:\033[0m $@\n"
+}
+
 # Show current git branch
 parse_git_branch() {
 	if [ -z $1 ]; then
@@ -23,7 +38,7 @@ parse_project_name() {
 # Show development branch name for current project
 get_test_branch() {
 	if [ -z $1 ]; then
-		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		err "Not found required parameters!"
 		return 1
 	fi
 
@@ -36,7 +51,7 @@ get_test_branch() {
 # Show production branch name for current project
 get_prod_branch() {
 	if [ -z $1 ]; then
-		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		err "Not found required parameters!"
 		return 1
 	fi
 
@@ -49,7 +64,7 @@ get_prod_branch() {
 # Show production branch name for current project
 get_version_file() {
 	if [ -z $1 ]; then
-		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		err "Not found required parameters!"
 		return 1
 	fi
 
@@ -63,7 +78,7 @@ get_version_file() {
 # Show version regular expression
 get_version_regex() {
 	if [ -z $1 ] || [ -z $2 ]; then
-		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		err "Not found required parameters!"
 		return 1
 	fi
 
@@ -95,7 +110,7 @@ calc() {
 # Aliases for testing API with curl
 api-get() {
 	if [ -z $1 ]; then
-		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		err "Not found required parameters!"
 		return 1
 	fi
 	if [ -z $2 ]; then
@@ -116,7 +131,7 @@ api-get() {
 
 api-post() {
 	if [ -z $1 ] || [ -z $2 ]; then
-		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		err "Not found required parameters!"
 		return 1
 	fi
 	c && \
@@ -132,7 +147,7 @@ api-post() {
 
 api-put() {
 	if [ -z $1 ] || [ -z $2 ]; then
-		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		err "Not found required parameters!"
 		return 1
 	fi
 	c && \
@@ -149,7 +164,7 @@ api-put() {
 
 api-del() {
 	if [ -z $1 ]; then
-		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		err "Not found required parameters!"
 		return 1
 	fi
 	if [ -z $2 ]; then
@@ -171,7 +186,7 @@ api-del() {
 # Aliases for testing API with curl
 api-test-get() {
 	if [ -z $1 ]; then
-		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		err "Not found required parameters!"
 		return 1
 	fi
 	if [ -z $2 ]; then
@@ -192,7 +207,7 @@ api-test-get() {
 
 api-test-post() {
 	if [ -z $1 ] || [ -z $2 ]; then
-		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		err "Not found required parameters!"
 		return 1
 	fi
 	c && \
@@ -208,7 +223,7 @@ api-test-post() {
 
 api-test-put() {
 	if [ -z $1 ] || [ -z $2 ]; then
-		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		err "Not found required parameters!"
 		return 1
 	fi
 	c && \
@@ -225,7 +240,7 @@ api-test-put() {
 
 api-test-del() {
 	if [ -z $1 ]; then
-		printf "\033[0;31mERROR:\033[0m Not found required parameters!\n"
+		err "Not found required parameters!"
 		return 1
 	fi
 	if [ -z $2 ]; then
@@ -266,12 +281,12 @@ git-test() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			err "Conflict in non-version files!"
 			return 1
 		fi
 
-		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
-		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+		inform "Conflict in version file."
+		inform "Trying to resolve..."
 
 		git checkout --theirs ${VERSION_FILE} && \
 		git add ${VERSION_FILE}
@@ -357,12 +372,12 @@ git-prod-patch() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			err "Conflict in non-version files!"
 			return 1
 		fi
 
-		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
-		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+		inform "Conflict in version file."
+		inform "Trying to resolve..."
 
 		git checkout --theirs ${VERSION_FILE} && \
 		git add ${VERSION_FILE}
@@ -379,12 +394,12 @@ git-prod-patch() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			err "Conflict in non-version files!"
 			return 1
 		fi
 
-		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
-		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+		inform "Conflict in version file."
+		inform "Trying to resolve..."
 
 		git checkout --theirs ${VERSION_FILE} && \
 		git add ${VERSION_FILE}
@@ -400,12 +415,12 @@ git-prod-patch() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			err "Conflict in non-version files!"
 			return 1
 		fi
 
-		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
-		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+		inform "Conflict in version file."
+		inform "Trying to resolve..."
 
 		git checkout --theirs ${VERSION_FILE} && \
 		git add ${VERSION_FILE}
@@ -451,12 +466,12 @@ git-prod-minor() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			err "Conflict in non-version files!"
 			return 1
 		fi
 
-		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
-		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+		inform "Conflict in version file."
+		inform "Trying to resolve..."
 
 		git checkout --theirs ${VERSION_FILE} && \
 		git add ${VERSION_FILE}
@@ -473,12 +488,12 @@ git-prod-minor() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			err "Conflict in non-version files!"
 			return 1
 		fi
 
-		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
-		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+		inform "Conflict in version file."
+		inform "Trying to resolve..."
 
 		git checkout --theirs ${VERSION_FILE} && \
 		git add ${VERSION_FILE}
@@ -494,12 +509,12 @@ git-prod-minor() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			err "Conflict in non-version files!"
 			return 1
 		fi
 
-		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
-		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+		inform "Conflict in version file."
+		inform "Trying to resolve..."
 
 		git checkout --theirs ${VERSION_FILE} && \
 		git add ${VERSION_FILE}
@@ -545,12 +560,12 @@ git-prod-major() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			err "Conflict in non-version files!"
 			return 1
 		fi
 
-		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
-		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+		inform "Conflict in version file."
+		inform "Trying to resolve..."
 
 		git checkout --theirs ${VERSION_FILE} && \
 		git add ${VERSION_FILE}
@@ -567,12 +582,12 @@ git-prod-major() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			err "Conflict in non-version files!"
 			return 1
 		fi
 
-		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
-		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+		inform "Conflict in version file."
+		inform "Trying to resolve..."
 
 		git checkout --theirs ${VERSION_FILE} && \
 		git add ${VERSION_FILE}
@@ -588,12 +603,12 @@ git-prod-major() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			printf "\033[0;31mERROR:\033[0m Conflict in non-version files!\n"
+			err "Conflict in non-version files!"
 			return 1
 		fi
 
-		printf "\033[0;32mINFO:\033[0m Conflict in version file.\n"
-		printf "\033[0;32mINFO:\033[0m Trying to resolve...\n"
+		inform "Conflict in version file."
+		inform "Trying to resolve..."
 
 		git checkout --theirs ${VERSION_FILE} && \
 		git add ${VERSION_FILE}
@@ -614,31 +629,31 @@ api-dredd() {
 	SQL_DEFAULT_FILE="$HOME/api/tests/default.sql"
 	SQL_USER_FILE="$HOME/api/tests/default_user.sql"
 	if [ ! -r "$APIB_FILE" ]; then
-		printf "\033[0;31mERROR:\033[0m Not found apib-file!\n"
+		err "Not found apib-file!"
 		return 1
 	fi
 
 	if [ ! -r "$SQL_DEFAULT_FILE" ]; then
-		printf "\033[0;31mERROR:\033[0m Not found default.sql!\n"
+		err "Not found default.sql!"
 		return 1
 	fi
 
 	if [ ! -r "$SQL_USER_FILE" ]; then
-		printf "\033[0;31mERROR:\033[0m Not found default_user.sql!\n"
+		err "Not found default_user.sql!"
 		return 1
 	fi
 
 	mysql -uroot zs_ru_etoya -s < "$SQL_DEFAULT_FILE"
 
 	if [ ! $? -eq 0 ]; then
-		printf "\033[0;31mERROR:\033[0m SQL_DEFAULT_FILE failure!\n"
+		err "SQL_DEFAULT_FILE failure!"
 		return 1
 	fi
 
 	mysql -uroot zs_ru_etoya -s < "$SQL_USER_FILE"
 
 	if [ ! $? -eq 0 ]; then
-		printf "\033[0;31mERROR:\033[0m SQL_USER_FILE failure!\n"
+		err "SQL_USER_FILE failure!"
 		return 1
 	fi
 
