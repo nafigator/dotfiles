@@ -5,6 +5,20 @@ c() {
 	printf "\033c";
 	[[ $(uname -s) == "Linux" ]] && env TERM=linux setterm -regtabs 4
 }
+# Function for error
+err() {
+	printf "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: \033[0;31mERROR:\033[0m $@\n" >&2
+}
+
+# Function for informational messages
+inform() {
+	printf "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: \033[0;32mINFO:\033[0m $@\n"
+}
+
+# Function for warning messages
+warn() {
+	printf "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: \033[0;33mWARNING:\033[0m $@\n" >&2
+}
 
 # Show current git branch
 parse_git_branch() {
@@ -28,7 +42,7 @@ digga() {
 # Reload Bash dotfiles
 bash_reload() {
 	unalias -a 		&& \
-	unset -f c parse_git_branch digga bash_reload calc && \
+	unset -f c err inform warn parse_git_branch digga bash_reload calc && \
 	. ~/.profile 	&& \
 	printf "\e[0;33mBash reloading ... [\e[0;32mOK\e[0;33m]\e[0m\n"
 }

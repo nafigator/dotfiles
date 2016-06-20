@@ -118,7 +118,6 @@ if [ $? -eq 0 ]; then diff_cmd='colordiff -u'; fi
 alias diff="$diff_cmd $diff_options"
 unset diff_cmd diff_options options
 
-alias err='tail -f /var/log/php_errors.log'
 alias coverage-report-veles="
 	rm -rf $PROJECT_PATH/Veles/coverage-report;
 	cd $PROJECT_PATH/Veles && \
