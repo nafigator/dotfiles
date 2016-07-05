@@ -71,6 +71,7 @@ get_version_file() {
 	case $1 in
 		Veles) echo 'README.md' ;;
 		api-iledebeaute) echo '_modules/project/api/application.inc.php' ;;
+		api-iledebeaute-test) echo '_modules/project/api/application.inc.php' ;;
 		*) echo 'version.ini' ;;
 	esac
 }
