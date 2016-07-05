@@ -86,6 +86,7 @@ get_version_regex() {
 	case $1 in
 		Veles) echo "s/badge\/release-[^-]+/badge\/release-$2/g" ;;
 		api-iledebeaute) echo "s/current_version = '[^']+/current_version = '$2/g" ;;
+		api-iledebeaute-test) echo "s/current_version = '[^']+/current_version = '$2/g" ;;
 		*) echo "s/current_version = [^\s]+/current_version = $2/g" ;;
 	esac
 }
