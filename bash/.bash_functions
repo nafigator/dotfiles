@@ -116,9 +116,9 @@ api-get() {
 		return 1
 	fi
 	if [ -z $2 ]; then
-		options="http://api.lo$1"
+		local options="http://api.lo$1"
 	else
-		options="--data-binary $1 http://api.lo$2"
+		local options="--data-binary $1 http://api.lo$2"
 	fi
 
 	c && \
@@ -127,7 +127,7 @@ api-get() {
 		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
 		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
-		${options}
+		"$options"
 	echo
 }
 
@@ -170,9 +170,9 @@ api-del() {
 		return 1
 	fi
 	if [ -z $2 ]; then
-		options="http://api.lo$1"
+		local options="http://api.lo$1"
 	else
-		options="--data-binary $1 http://api.lo$2"
+		local options="--data-binary $1 http://api.lo$2"
 	fi
 
 	c && \
@@ -181,7 +181,7 @@ api-del() {
 		--cookie "XDEBUG_SESSION=1" \
 		--user "1:1111111111111111111111111111111111111111" \
 		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
-		${options}
+		"$options"
 	echo
 }
 
@@ -192,9 +192,9 @@ api-test-get() {
 		return 1
 	fi
 	if [ -z $2 ]; then
-		options="http://api.etoya.ru.zerostudio.ru$1"
+		local options="http://api.etoya.ru.zerostudio.ru$1"
 	else
-		options="--data-binary $1 http://api.lo$2"
+		local options="--data-binary $1 http://api.lo$2"
 	fi
 
 	c && \
@@ -203,7 +203,7 @@ api-test-get() {
 		--cookie "XDEBUG_SESSION=1" \
 		--user "745:4fc4e63d0e952ee76bcf73b2d4cad0edc66f50f8" \
 		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
-		${options}
+		"$options"
 	echo
 }
 
@@ -246,9 +246,9 @@ api-test-del() {
 		return 1
 	fi
 	if [ -z $2 ]; then
-		options="http://api.etoya.ru.zerostudio.ru$1"
+		local options="http://api.etoya.ru.zerostudio.ru$1"
 	else
-		options="--data-binary $1 http://api.lo$2"
+		local options="--data-binary $1 http://api.lo$2"
 	fi
 
 	c && \
@@ -257,7 +257,7 @@ api-test-del() {
 		--cookie "XDEBUG_SESSION=1" \
 		--user "745:4fc4e63d0e952ee76bcf73b2d4cad0edc66f50f8" \
 		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
-		${options}
+		"$options"
 	echo
 }
 
