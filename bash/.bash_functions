@@ -21,6 +21,11 @@ warn() {
 	printf "[$(date --rfc-3339=seconds)]: \033[0;33mWARNING:\033[0m $@\n" >&2
 }
 
+# Function for debug messages
+debug() {
+	[ ! -z ${DEBUG} ] && printf "[$(date --rfc-3339=seconds)]: \033[0;32mDEBUG:\033[0m $@\n"
+}
+
 # Show current git branch
 parse_git_branch() {
 	if [ -z $1 ]; then
@@ -305,7 +310,7 @@ git-test() {
 		local patch_array=(${version_array[2]//-/ })
 	fi
 
-	if [ "$patch_array[1]" = "dev" ]; then
+	if [ "${patch_array[1]}" = "dev" ]; then
 		local dev_ver=$((${patch_array[2]} + ${patch_array[3]} + 1))
 	else
 		local dev_ver=$((${patch_array[1]} + 1))
