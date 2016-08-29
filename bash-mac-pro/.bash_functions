@@ -3,7 +3,7 @@
 # Screen cleanup
 c() {
 	printf "\033c";
-	[[ $(uname -s) == "Linux" ]] && env TERM=linux setterm -regtabs 4
+	[[ "$(uname -s)" == "Linux" ]] && env TERM=linux setterm -regtabs 4
 }
 # Function for error
 err() {
