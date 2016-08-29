@@ -10,7 +10,7 @@ case $- in
 esac
 
 # Tabs size
-[[ $(uname -s) == "Linux" ]] && env TERM=linux setterm -regtabs 4
+[[ "$(uname -s)" == "Linux" ]] && env TERM=linux setterm -regtabs 4
 
 # Set special theme for root editor and file manager
 if [ $(id -u) -ne 0 ]; then
