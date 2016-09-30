@@ -86,6 +86,26 @@ alias nachkiupd="
 		--delete-after \
 		-Ravry $PROJECT_PATH/./nachki/www/ itvault:$WWW_ROOT"
 
+alias countersupd="
+	rsync \
+		--rsync-path='sudo -u www rsync' \
+		--partial \
+		--partial-dir=.rsync-partial/ \
+		--copy-unsafe-links \
+		--delay-updates  \
+		--exclude-from=.rsync-exclude \
+		--delete \
+		--delete-excluded \
+		--delete-after \
+		-Ravry $PROJECT_PATH/test.alfaservisteplo/www/./ itvault:$WWW_ROOT/test.alfaservisteplo/"
+
+alias countersupl='
+	ssh itvault "
+		DIR_NAME=$(date "+%Y-%m-%d_%H-%M-%S") && \
+		cd $WWW_ROOT/alfaservisteplo/ && \
+		cp -R $WWW_ROOT/test.alfaservisteplo/ \$DIR_NAME && \
+		ln -shf \$DIR_NAME www"'
+
 alias chatupd="
 	rsync \
 		--partial \
