@@ -1,7 +1,7 @@
 #@IgnoreInspection BashAddShebang
 # Set path to project dir
 PROJECT_PATH="$HOME/dev"
-WWW_ROOT='/home/web'
+WWW_ROOT='/var/www'
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -39,6 +39,7 @@ alias weboff='
 
 alias itvaultupd="
 	rsync \
+		--rsync-path='sudo -u www rsync' \
 		--partial \
 		--partial-dir=.rsync-partial/ \
 		--copy-unsafe-links \
@@ -47,7 +48,7 @@ alias itvaultupd="
 		--delete \
 		--delete-excluded \
 		--delete-after \
-		-Ravry $PROJECT_PATH/./itvault/www/ itvault:$WWW_ROOT"
+		-Ravry $PROJECT_PATH/itvault/www/./ itvault:$WWW_ROOT/itvault/"
 
 alias articsupd="
 	rsync \
@@ -63,6 +64,7 @@ alias articsupd="
 
 alias mantisupd="
 	rsync \
+		--rsync-path='sudo -u www rsync' \
 		--partial \
 		--partial-dir=.rsync-partial/ \
 		--copy-unsafe-links \
@@ -70,7 +72,7 @@ alias mantisupd="
 		--exclude-from=.rsync-exclude \
 		--delete \
 		--delete-after \
-		-Ravry $PROJECT_PATH/./mantis/www/ itvault:$WWW_ROOT"
+		-Ravry $PROJECT_PATH/mantis/www/./ itvault:$WWW_ROOT/mantis/"
 
 alias nachkiupd="
 	rsync \
