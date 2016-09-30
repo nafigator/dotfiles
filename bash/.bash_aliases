@@ -1,7 +1,7 @@
 #@IgnoreInspection BashAddShebang
 # Set path to project dir
 PROJECT_PATH="$HOME/dev"
-WWW_ROOT='/home/web'
+WWW_ROOT='/var/www'
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -74,6 +74,7 @@ alias mantisupd="
 
 alias nachkiupd="
 	rsync \
+		--rsync-path='sudo -u www rsync' \
 		--partial \
 		--partial-dir=.rsync-partial/ \
 		--copy-unsafe-links \
