@@ -73,13 +73,13 @@ alias countersupd="
 		--delete \
 		--delete-excluded \
 		--delete-after \
-		-Ravry $PROJECT_PATH/test.alfaservisteplo/www/./ itvault:$WWW_ROOT/test.alfaservisteplo/"
+		-Ravry $PROJECT_PATH/test.alfaservisteplo/www/./ itvault:$WWW_ROOT/test.alfaservisteplo.ru/"
 
 alias countersupl='
 	ssh itvault "
 		DIR_NAME=$(date "+%Y-%m-%d_%H-%M-%S") && \
-		cd $WWW_ROOT/alfaservisteplo/ && \
-		cp -R $WWW_ROOT/test.alfaservisteplo/ \$DIR_NAME && \
+		cd $WWW_ROOT/alfaservisteplo.ru/ && \
+		cp -R $WWW_ROOT/test.alfaservisteplo.ru/ \$DIR_NAME && \
 		ln -shf \$DIR_NAME www"'
 
 alias eva="$PROJECT_PATH/eva/build/eva"
