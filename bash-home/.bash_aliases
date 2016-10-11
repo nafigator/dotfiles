@@ -77,6 +77,7 @@ alias countersupd="
 
 alias countersupl='
 	ssh itvault "
+		sudo -u www \
 		DIR_NAME=$(date "+%Y-%m-%d_%H-%M-%S") && \
 		cd $WWW_ROOT/alfaservisteplo.ru/ && \
 		cp -R $WWW_ROOT/test.alfaservisteplo.ru/ \$DIR_NAME && \
