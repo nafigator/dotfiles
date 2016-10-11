@@ -1,7 +1,7 @@
 #@IgnoreInspection BashAddShebang
 # Set path to project dir
 PROJECT_PATH="$HOME/dev"
-WWW_ROOT='/var/www'
+WWW_ROOT='/var/www/vhosts'
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -39,6 +39,7 @@ alias weboff='
 
 alias itvaultupd="
 	rsync \
+		--rsync-path='sudo -u www rsync' \
 		--partial \
 		--partial-dir=.rsync-partial/ \
 		--copy-unsafe-links \
@@ -47,32 +48,9 @@ alias itvaultupd="
 		--delete \
 		--delete-excluded \
 		--delete-after \
-		-Ravry $PROJECT_PATH/./itvault/www/ itvault:$WWW_ROOT"
-
-alias articsupd="
-	rsync \
-		--partial \
-		--partial-dir=.rsync-partial/ \
-		--copy-unsafe-links \
-		--delay-updates  \
-		--exclude-from=.rsync-exclude \
-		--delete \
-		--delete-excluded \
-		--delete-after \
-		-Ravry $PROJECT_PATH/./artics-test/ itvault:$WWW_ROOT"
+		-Ravry $PROJECT_PATH/itvault/www/./ itvault:$WWW_ROOT/www.itvault.info/"
 
 alias mantisupd="
-	rsync \
-		--partial \
-		--partial-dir=.rsync-partial/ \
-		--copy-unsafe-links \
-		--delay-updates \
-		--exclude-from=.rsync-exclude \
-		--delete \
-		--delete-after \
-		-Ravry $PROJECT_PATH/./mantis/www/ itvault:$WWW_ROOT"
-
-alias nachkiupd="
 	rsync \
 		--rsync-path='sudo -u www rsync' \
 		--partial \
@@ -81,21 +59,8 @@ alias nachkiupd="
 		--delay-updates \
 		--exclude-from=.rsync-exclude \
 		--delete \
-		--delete-excluded \
 		--delete-after \
-		-Ravry $PROJECT_PATH/./nachki/www/ itvault:$WWW_ROOT"
-
-alias chatupd="
-	rsync \
-		--partial \
-		--partial-dir=.rsync-partial/ \
-		--copy-unsafe-links \
-		--delay-updates \
-		--exclude-from=.rsync-exclude \
-		--delete \
-		--delete-excluded \
-		--delete-after \
-		-Ravry $PROJECT_PATH/./chat.itvault/www/ itvault:$WWW_ROOT"
+		-Ravry $PROJECT_PATH/mantis/www/./ itvault:$WWW_ROOT/mantis.itvault.info"
 
 alias phpcs_itvault='
 	phpcs -s -v --tab-width=4 \

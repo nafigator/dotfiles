@@ -1,7 +1,7 @@
 #@IgnoreInspection BashAddShebang
 # Set path to project dir
 PROJECT_PATH="$HOME/dev"
-WWW_ROOT='/var/www'
+WWW_ROOT='/var/www/vhosts'
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -48,19 +48,7 @@ alias itvaultupd="
 		--delete \
 		--delete-excluded \
 		--delete-after \
-		-Ravry $PROJECT_PATH/itvault/www/./ itvault:$WWW_ROOT/itvault/"
-
-alias articsupd="
-	rsync \
-		--partial \
-		--partial-dir=.rsync-partial/ \
-		--copy-unsafe-links \
-		--delay-updates  \
-		--exclude-from=.rsync-exclude \
-		--delete \
-		--delete-excluded \
-		--delete-after \
-		-Ravry $PROJECT_PATH/./artics-test/ itvault:$WWW_ROOT"
+		-Ravry $PROJECT_PATH/itvault/www/./ itvault:$WWW_ROOT/www.itvault.info/"
 
 alias mantisupd="
 	rsync \
@@ -72,19 +60,7 @@ alias mantisupd="
 		--exclude-from=.rsync-exclude \
 		--delete \
 		--delete-after \
-		-Ravry $PROJECT_PATH/mantis/www/./ itvault:$WWW_ROOT/mantis/"
-
-alias nachkiupd="
-	rsync \
-		--partial \
-		--partial-dir=.rsync-partial/ \
-		--copy-unsafe-links \
-		--delay-updates \
-		--exclude-from=.rsync-exclude \
-		--delete \
-		--delete-excluded \
-		--delete-after \
-		-Ravry $PROJECT_PATH/./nachki/www/ itvault:$WWW_ROOT"
+		-Ravry $PROJECT_PATH/mantis/www/./ itvault:$WWW_ROOT/mantis.itvault.info"
 
 alias countersupd="
 	rsync \
@@ -105,18 +81,6 @@ alias countersupl='
 		cd $WWW_ROOT/alfaservisteplo/ && \
 		cp -R $WWW_ROOT/test.alfaservisteplo/ \$DIR_NAME && \
 		ln -shf \$DIR_NAME www"'
-
-alias chatupd="
-	rsync \
-		--partial \
-		--partial-dir=.rsync-partial/ \
-		--copy-unsafe-links \
-		--delay-updates \
-		--exclude-from=.rsync-exclude \
-		--delete \
-		--delete-excluded \
-		--delete-after \
-		-Ravry $PROJECT_PATH/./chat.itvault/www/ itvault:$WWW_ROOT"
 
 alias eva="$PROJECT_PATH/eva/build/eva"
 alias eva_build_doc='rm -rf ~/dev/eva/documentation && doxygen ~/Progects/eva/src/doxygen.eva.cfg'
