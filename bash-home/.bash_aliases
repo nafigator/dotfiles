@@ -50,6 +50,19 @@ alias itvaultupd="
 		--delete-after \
 		-Ravry $PROJECT_PATH/itvault/www/./ itvault:$WWW_ROOT/www.itvault.info/"
 
+alias babyupd="
+	rsync \
+		--rsync-path='sudo -u www rsync' \
+		--partial \
+		--partial-dir=.rsync-partial/ \
+		--copy-unsafe-links \
+		--delay-updates  \
+		--exclude-from=.rsync-exclude \
+		--delete \
+		--delete-excluded \
+		--delete-after \
+		-Ravry $PROJECT_PATH/baby-test/./ itvault:$WWW_ROOT/baby.itvault.info/"
+
 alias mantisupd="
 	rsync \
 		--rsync-path='sudo -u www rsync' \
