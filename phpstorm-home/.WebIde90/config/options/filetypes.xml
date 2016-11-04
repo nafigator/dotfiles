@@ -11,6 +11,7 @@
       <mapping pattern=".curlrc" type="Ini" />
       <mapping pattern=".stow-local-ignore" type="PLAIN_TEXT" />
       <mapping pattern=".project" type="PLAIN_TEXT" />
+      <mapping pattern=".rsync-exclude" type="PLAIN_TEXT" />
       <mapping ext="apib" type="PLAIN_TEXT" />
       <mapping ext="dat" type="PLAIN_TEXT" />
     </extensionMap>
