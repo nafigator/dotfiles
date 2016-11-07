@@ -105,7 +105,7 @@ digga() {
 bash-reload() {
 	unalias -a 		&& \
 	unset -f c err inform warn parse_git_branch parse_project_name get_test_branch get_prod_branch get_version_file get_version_regex digga bash-reload calc api-get api-post api-put api-del api-test-get api-test-post api-test-put api-test-del git-test git-prod git-prod-patch git-prod-minor && \
-	. ~/.xsessionrc	&& \
+	. ~/.bashrc	&& \
 	printf "\033[0;33mBash reloading ... [\033[0;32mOK\033[0;33m]\033[0m\n"
 }
 
