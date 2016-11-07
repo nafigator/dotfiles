@@ -7,7 +7,7 @@ WWW_ROOT='/var/www/vhosts'
 if [ -x /usr/bin/dircolors ]; then
 	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 	alias ls='ls --color=auto'
-	export GREP_OPTIONS='--color=auto'
+	alias grep='grep --color=auto'
 fi
 
 options='-H -X --file-type --group-directories-first'
