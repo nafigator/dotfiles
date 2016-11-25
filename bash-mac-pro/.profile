@@ -13,6 +13,8 @@ export LC_ALL=en_US.UTF-8
 export LC_TIME=ru_RU.UTF-8
 export LANG=en_US
 
+umask 022
+
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
 	# include .bashrc if it exists
