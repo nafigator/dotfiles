@@ -127,17 +127,19 @@ api-get() {
 		return 1
 	fi
 	if [ -z $2 ]; then
-		local options="http://api.lo$1"
+		local options="http://json.nafigator.babysfera.ru$1"
+		#local options="https://json.babysfera.ru$1"
 	else
-		local options="--data-binary $1 http://api.lo$2"
+		local options="--data-binary $1 http://json.nafigator.babysfera.ru$2"
+		#local options="--data-binary $1 https://json.babysfera.ru$2"
 	fi
 
 	c && \
 	curl -i \
 		--request GET \
 		--cookie "XDEBUG_SESSION=1" \
-		--user "1:1111111111111111111111111111111111111111" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
+		--header "Authorization: b98cc897bb3a4c9dc865b0caef0eab0c36f62820f408a8ece4bebc9e972d1241" \
+		--user-agent "Curl v.7.40.0" \
 		"$options"
 	echo
 }
@@ -150,11 +152,10 @@ api-post() {
 	c && \
 	curl -i \
 		--cookie "XDEBUG_SESSION=1" \
-		--user "1:1111111111111111111111111111111111111111" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
-		--header "Content-Type: application/json" \
-		--data-binary "$1" \
-		http://api.lo$2
+		--header "Authorization: b98cc897bb3a4c9dc865b0caef0eab0c36f62820f408a8ece4bebc9e972d1241" \
+		--user-agent "Curl v.7.40.0" \
+		--data "$1" \
+		http://json.nafigator.babysfera.ru$2
 	echo
 }
 
