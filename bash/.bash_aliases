@@ -39,7 +39,7 @@ alias weboff='
 
 alias itvaultupd="
 	rsync \
-		--rsync-path='sudo -u www rsync' \
+		--rsync-path='doas -u www rsync' \
 		--partial \
 		--partial-dir=.rsync-partial/ \
 		--copy-unsafe-links \
@@ -52,7 +52,7 @@ alias itvaultupd="
 
 alias babyupd="
 	rsync \
-		--rsync-path='sudo -u www rsync' \
+		--rsync-path='doas -u www rsync' \
 		--partial \
 		--partial-dir=.rsync-partial/ \
 		--copy-unsafe-links \
@@ -65,7 +65,7 @@ alias babyupd="
 
 alias mantisupd="
 	rsync \
-		--rsync-path='sudo -u www rsync' \
+		--rsync-path='doas -u www rsync' \
 		--partial \
 		--partial-dir=.rsync-partial/ \
 		--copy-unsafe-links \
