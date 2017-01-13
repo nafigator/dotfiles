@@ -49,7 +49,7 @@ alias itvaultupd="
 		--delete-excluded \
 		--delete-after \
 		-Ravry $PROJECT_PATH/itvault/www/./ itvault:$WWW_ROOT/www.itvault.info/
-	doas -u www php $WWW_ROOT/www.itvault.info/project/bin/unset-routes-cache.php"
+	ssh itvault \"doas -u www php $WWW_ROOT/www.itvault.info/project/bin/unset-routes-cache.php\""
 
 alias babyupd="
 	rsync \
