@@ -63,7 +63,7 @@ alias adsamboupd="
 		--delete-excluded \
 		--delete-after \
 		-Ravry $PROJECT_PATH/adsambo/./ itvault:$WWW_ROOT/adsambo.itvault.info/
-	ssh itvault \"php $WWW_ROOT/adsambo.itvault.info/project/bin/unset-routes-cache.php\""
+	ssh itvault \"php $WWW_ROOT/adsambo.itvault.info/tools/unset-routes-cache.php\""
 
 alias babyupd="
 	rsync \
