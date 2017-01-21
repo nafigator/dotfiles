@@ -90,13 +90,21 @@ alias mantisupd="
 		--delete-after \
 		-Ravry $PROJECT_PATH/mantis/www/./ itvault:$WWW_ROOT/mantis.itvault.info"
 
-alias phpcs_itvault='
+alias phpcs-itvault='
 	phpcs -s -v --tab-width=4 \
 		--report=full \
 		--report-file=phpcs_report.txt \
 		--standard=PSR1 \
 		--encoding=utf-8 \
 		--extensions=php,phtml ./'
+
+alias phpcs-veles='
+	phpcs -s -v --tab-width=4 \
+		--encoding=utf-8 \
+		--standard=phpcs.xml \
+		--ignore=Tests,vendor,coverage-report \
+		--colors ./'
+
 # Cli task manager
 alias t='python ~/.tasks/t.py --task-dir ~/.tasks --list tasks.txt'
 # Completed tasks cleanup
