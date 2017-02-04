@@ -40,7 +40,7 @@ digga() {
 }
 
 # Reload Bash dotfiles
-bash_reload() {
+bash-reload() {
 	unalias -a 		&& \
 	unset -f c err inform warn parse_git_branch digga bash_reload calc && \
 	. ~/.profile 	&& \
