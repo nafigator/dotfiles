@@ -42,7 +42,7 @@ digga() {
 # Reload Bash dotfiles
 bash-reload() {
 	unalias -a 		&& \
-	unset -f c err inform warn parse_git_branch digga bash_reload calc && \
+	unset -f c err inform warn parse_git_branch digga bash-reload calc && \
 	. ~/.profile 	&& \
 	printf "\e[0;33mBash reloading ... [\e[0;32mOK\e[0;33m]\e[0m\n"
 }
