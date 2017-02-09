@@ -26,9 +26,7 @@ unset ls_options options
 alias webon='
 	sudo service mysql start && \
 	sudo service php5-fpm start && \
-	sudo service nginx start && \
-	sudo service memcached start && \
-	sudo service gearman-job-server start'
+	sudo service nginx start'
 
 alias weboff='
 	sudo service mysql stop && \
