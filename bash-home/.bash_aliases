@@ -57,6 +57,7 @@ alias adsamboupd="
 		--copy-unsafe-links \
 		--delay-updates  \
 		--exclude-from=.rsync-exclude \
+		--filter='P /public/i/t/' \
 		--delete \
 		--delete-excluded \
 		--delete-after \
