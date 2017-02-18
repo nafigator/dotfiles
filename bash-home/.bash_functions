@@ -114,16 +114,15 @@ api-get() {
 		return 1
 	fi
 	if [ -z $2 ]; then
-		options="http://api.lo$1"
+		options="http://adsambo.lo$1"
 	else
-		options="--data-binary $1 http://api.lo$2"
+		options="--data-binary $1 http://adsambo.lo$2"
 	fi
 
 	c && \
 	curl -i \
 		--request GET \
 		--cookie "XDEBUG_SESSION=1" \
-		--user "1:1111111111111111111111111111111111111111" \
 		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
 		${options}
 	echo
@@ -141,7 +140,7 @@ api-post() {
 		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
 		--header "Content-Type: application/json" \
 		--data-binary "$1" \
-		http://api.lo$2
+		http://adsambo.lo$2
 	echo
 }
 
@@ -158,7 +157,7 @@ api-put() {
 		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
 		--header "Content-Type: application/json" \
 		--data-binary "$1" \
-		http://api.lo$2
+		http://adsambo.lo$2
 	echo
 }
 
@@ -168,9 +167,9 @@ api-del() {
 		return 1
 	fi
 	if [ -z $2 ]; then
-		options="http://api.lo$1"
+		options="http://adsambo.lo$1"
 	else
-		options="--data-binary $1 http://api.lo$2"
+		options="--data-binary $1 http://adsambo.lo$2"
 	fi
 
 	c && \
