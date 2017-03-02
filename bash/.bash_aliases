@@ -156,6 +156,15 @@ alias phpunit-api="
 	phpunit -c phpunit-local.xml
 	cd - >/dev/null"
 
+alias update-api-documentation="
+	cd ~/test/ && \
+	cp ~/baby/mobile_api/tests/happy_mama.apib ~/test/tests/blueprint.apib && \
+	cp ~/baby/mobile_api/tests/schema-definitions.json ~/test/tests/schema-definitions.json && \
+	git add . && \
+	git ci 'Update documentation' && \
+	git push && \
+	cd -"
+
 unset PROJECT_PATH WWW_ROOT
 
 alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'
