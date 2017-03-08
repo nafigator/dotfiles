@@ -89,6 +89,18 @@ alias mantisupd="
 		--delete-after \
 		-Ravry $PROJECT_PATH/mantis/www/./ itvault:$WWW_ROOT/mantis.itvault.info"
 
+alias ishopupd="
+	rsync \
+		--rsync-path='doas -u www rsync' \
+		--partial \
+		--partial-dir=.rsync-partial/ \
+		--copy-unsafe-links \
+		--delay-updates \
+		--exclude-from=.rsync-exclude \
+		--delete \
+		--delete-after \
+		-Ravry $PROJECT_PATH/ishop/./ itvault:$WWW_ROOT/ishop.itvault.info"
+
 alias countersupd="
 	rsync \
 		--rsync-path='doas -u www rsync' \
