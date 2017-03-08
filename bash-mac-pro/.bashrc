@@ -19,11 +19,14 @@ export MC_SKIN
 # Set default editor
 export EDITOR=mcedit
 
+# Set default viewer
+export VIEWER=less
+
 # Set default pager
 export PAGER=less
 
 # Set less options
-export LESS='-MFRX -x4'
+export LESS='-MR -x4'
 
 # Flag terminal as color-capable
 export TERM=xterm-256color
