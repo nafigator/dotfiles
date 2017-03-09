@@ -162,7 +162,7 @@ alias update-api-documentation="
 	cp ~/baby/mobile_api/tests/schema-definitions.json ~/test/tests/schema-definitions.json && \
 	git add . && \
 	git ci 'Update documentation' && \
-	git push \
+	git push; \
 	cd -"
 
 unset PROJECT_PATH WWW_ROOT
