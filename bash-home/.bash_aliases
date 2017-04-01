@@ -47,7 +47,7 @@ alias itvaultupd="
 		--delete-excluded \
 		--delete-after \
 		-Ravry $PROJECT_PATH/itvault/www/./ itvault:$WWW_ROOT/www.itvault.info/
-	ssh itvault \"php $WWW_ROOT/www.itvault.info/tools/unset-routes-cache.php; $WWW_ROOT/www.itvault.info/tools/phinx -e production migrate\""
+	ssh itvault \"php $WWW_ROOT/www.itvault.info/tools/unset-routes-cache.php; $WWW_ROOT/www.itvault.info/tools/phinx migrate -e production\""
 
 alias adsamboupd="
 	rsync \
