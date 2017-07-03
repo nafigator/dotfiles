@@ -107,5 +107,12 @@ if ! shopt -oq posix; then
 	fi
 fi
 
+export LC_TIME=ru_RU.utf8
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+
 # Show tasks
 export PS1="\[\e[0;33m\]\$(t | wc -l | sed -e 's/^\([1-9][0-9]*\)$/[\1] /' | sed -e 's/^[0]$//')\[\e[0m\]$PS1"
