@@ -20,6 +20,7 @@ else
 fi
 
 export MC_SKIN
+export GPG_TTY=$(tty)
 
 # Set default editor
 export EDITOR=mcedit
