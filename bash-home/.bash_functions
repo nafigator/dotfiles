@@ -274,7 +274,7 @@ git-test() {
 	git co ${TEST_BRANCH} && \
 	git submodule update && \
 	git pull && \
-	git merge ${BRANCH_NAME}
+	git merge --no-edit ${BRANCH_NAME}
 
 	if [ ! $? -eq 0 ]; then
 		OUTPUT="$(git st | grep UU)"
