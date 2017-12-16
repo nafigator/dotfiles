@@ -1,24 +1,122 @@
 #!/usr/bin/env bash
 
+RED="\e[31m"
+GREEN="\e[32m"
+YELLOW="\e[33m"
+GRAY="\e[38;5;242m"
+BOLD="\e[1m"
+CLR="\e[0m"
+DEBUG=
+STATUS_LENGTH=60
+
 # Screen cleanup
 c() {
 	printf "\033c";
 	[[ "$(uname -s)" == "Linux" ]] && env TERM=linux setterm -regtabs 4
 }
 
-# Function for error
-err() {
-	printf "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: \033[0;31mERROR:\033[0m $@\n" >&2
+# Function for datetime output
+format_date() {
+	printf "$GRAY$(date +'%Y-%m-%d %H:%M:%S')$CLR"
+}
+
+# Function for error messages
+error() {
+	printf "[$(format_date)]: ${RED}ERROR:$CLR $@\n" >&2
 }
 
 # Function for informational messages
 inform() {
-	printf "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: \033[0;32mINFO:\033[0m $@\n"
+	printf "[$(format_date)]: ${GREEN}INFO:$CLR $@\n"
 }
 
 # Function for warning messages
-warn() {
-	printf "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: \033[0;33mWARNING:\033[0m $@\n" >&2
+warning() {
+	printf "[$(format_date)]: ${YELLOW}WARNING:$CLR $@\n" >&2
+}
+
+# Function for debug messages
+debug() {
+	[ ! -z ${DEBUG} ] && printf "[$(format_date)]: ${GREEN}DEBUG:$CLR $@\n"
+}
+
+# Function for operation status
+#
+# Usage: status MESSAGE STATUS
+# Examples:
+# status 'Upload scripts' $?
+# status 'Run operation' OK
+status() {
+	if [ -z "$1" ] || [ -z "$2" ]; then
+		error "status(): not found required parameters!"
+		return 1
+	fi
+
+	local result=0
+
+	if [ $2 = 'OK' ]; then
+		printf "[$(format_date)]: %-${STATUS_LENGTH}b[$GREEN%s$CLR]\n" "$1" "OK"
+	elif [ $2 = 'FAIL' ]; then
+		printf "[$(format_date)]: %-${STATUS_LENGTH}b[$RED%s$CLR]\n" "$1" "FAIL"
+		result=1
+	elif [ $2 = 0 ]; then
+		printf "[$(format_date)]: %-${STATUS_LENGTH}b[$GREEN%s$CLR]\n" "$1" "OK"
+	elif [ $2 -gt 0 ]; then
+		printf "[$(format_date)]: %-${STATUS_LENGTH}b[$RED%s$CLR]\n" "$1" "FAIL"
+		result=1
+	fi
+
+	return ${result}
+}
+
+# Function for status on some command in debug mode only
+status_dbg() {
+	[ -z ${DEBUG} ] && return 0
+
+	if [ -z "$1" ] || [ -z "$2" ]; then
+		error "status_dbg(): not found required parameters!"
+		return 1
+	fi
+
+	local length=$(( ${STATUS_LENGTH} - 7 ))
+	local result=0
+
+	#debug "status_dbg length: $length"
+
+	if [ $2 = 'OK' ]; then
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$GREEN%s$CLR]\n" "$1" "OK"
+	elif [ $2 = 'FAIL' ]; then
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$RED%s$CLR]\n" "$1" "FAIL"
+	elif [ $2 = 0 ]; then
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$GREEN%s$CLR]\n" "$1" "OK"
+	elif [ $2 -gt 0 ]; then
+		printf "[$(format_date)]: ${GREEN}DEBUG:$CLR %-${length}b[$RED%s$CLR]\n" "$1" "FAIL"
+		result=1
+	fi
+
+	return ${result}
+}
+
+# Function for checking script dependencies
+check_dependencies() {
+	local result=0
+	local cmd_status
+
+	for i in ${@}; do
+		command -v ${i} >/dev/null 2>&1
+		cmd_status=$?
+
+		#status_dbg "DEPENDENCY: $i" ${cmd_status}
+
+		if [ ${cmd_status} -ne 0 ]; then
+			warning "$i command not available"
+			result=1
+		fi
+	done
+
+	#debug "check_dependencies() result: $result"
+
+	return ${result}
 }
 
 # Show current git branch
@@ -38,7 +136,7 @@ parse_project_name() {
 # Show development branch name for current project
 get_test_branch() {
 	if [ -z $1 ]; then
-		err "Not found required parameters!"
+		error "Not found required parameters!"
 		return 1
 	fi
 
@@ -51,7 +149,7 @@ get_test_branch() {
 # Show production branch name for current project
 get_prod_branch() {
 	if [ -z $1 ]; then
-		err "Not found required parameters!"
+		error "Not found required parameters!"
 		return 1
 	fi
 
@@ -64,7 +162,7 @@ get_prod_branch() {
 # Show production branch name for current project
 get_version_file() {
 	if [ -z $1 ]; then
-		err "Not found required parameters!"
+		error "Not found required parameters!"
 		return 1
 	fi
 
@@ -78,7 +176,7 @@ get_version_file() {
 # Show version regular expression
 get_version_regex() {
 	if [ -z $1 ] || [ -z $2 ]; then
-		err "Not found required parameters!"
+		error "Not found required parameters!"
 		return 1
 	fi
 
@@ -97,165 +195,14 @@ digga() {
 # Reload Bash dotfiles
 bash-reload() {
 	unalias -a 		&& \
-	unset -f c err inform warn parse_git_branch parse_project_name get_test_branch get_prod_branch get_version_file get_version_regex digga bash-reload calc api-get api-post api-put api-del api-test-get api-test-post api-test-put api-test-del git-test git-prod git-prod-patch git-prod-minor && \
-	. ~/.xsessionrc	&& \
+	unset -f c error inform warning parse_git_branch parse_project_name get_test_branch get_prod_branch get_version_file get_version_regex digga bash-reload calc git-test git-prod git-prod-patch git-prod-minor webon weboff && \
+	. $HOME/.xsessionrc	&& \
 	printf "\033[0;33mBash reloading ... [\033[0;32mOK\033[0;33m]\033[0m\n"
 }
 
 # Calculator
 calc() {
 	echo "$*" | bc -l;
-}
-
-# Aliases for testing API with curl
-api-get() {
-	if [ -z $1 ]; then
-		err "Not found required parameters!"
-		return 1
-	fi
-	if [ -z $2 ]; then
-		options="http://adsambo.lo$1"
-	else
-		options="--data-binary $1 http://adsambo.lo$2"
-	fi
-
-	c && \
-	curl -i \
-		--request GET \
-		--cookie "XDEBUG_SESSION=1" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
-		${options}
-	echo
-}
-
-api-post() {
-	if [ -z $1 ] || [ -z $2 ]; then
-		err "Not found required parameters!"
-		return 1
-	fi
-	c && \
-	curl -i \
-		--cookie "XDEBUG_SESSION=1" \
-		--user "1:1111111111111111111111111111111111111111" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
-		--header "Content-Type: application/json" \
-		--data-binary "$1" \
-		http://adsambo.lo$2
-	echo
-}
-
-api-put() {
-	if [ -z $1 ] || [ -z $2 ]; then
-		err "Not found required parameters!"
-		return 1
-	fi
-	c && \
-	curl -i \
-		-X PUT \
-		--cookie "XDEBUG_SESSION=1" \
-		--user "1:1111111111111111111111111111111111111111" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
-		--header "Content-Type: application/json" \
-		--data-binary "$1" \
-		http://adsambo.lo$2
-	echo
-}
-
-api-del() {
-	if [ -z $1 ]; then
-		err "Not found required parameters!"
-		return 1
-	fi
-	if [ -z $2 ]; then
-		options="http://adsambo.lo$1"
-	else
-		options="--data-binary $1 http://adsambo.lo$2"
-	fi
-
-	c && \
-	curl -i \
-		--request DELETE \
-		--cookie "XDEBUG_SESSION=1" \
-		--user "1:1111111111111111111111111111111111111111" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
-		${options}
-	echo
-}
-
-# Aliases for testing API with curl
-api-test-get() {
-	if [ -z $1 ]; then
-		err "Not found required parameters!"
-		return 1
-	fi
-	if [ -z $2 ]; then
-		options="http://api.etoya.ru.zerostudio.ru$1"
-	else
-		options="--data-binary $1 http://api.lo$2"
-	fi
-
-	c && \
-	curl -i \
-		--request GET \
-		--cookie "XDEBUG_SESSION=1" \
-		--user "745:4fc4e63d0e952ee76bcf73b2d4cad0edc66f50f8" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
-		${options}
-	echo
-}
-
-api-test-post() {
-	if [ -z $1 ] || [ -z $2 ]; then
-		err "Not found required parameters!"
-		return 1
-	fi
-	c && \
-	curl -i \
-		--cookie "XDEBUG_SESSION=1" \
-		--user "745:4fc4e63d0e952ee76bcf73b2d4cad0edc66f50f8" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
-		--header "Content-Type: application/json" \
-		--data-binary "$1" \
-		http://api.etoya.ru.zerostudio.ru$2
-	echo
-}
-
-api-test-put() {
-	if [ -z $1 ] || [ -z $2 ]; then
-		err "Not found required parameters!"
-		return 1
-	fi
-	c && \
-	curl -i \
-		-X PUT \
-		--cookie "XDEBUG_SESSION=1" \
-		--user "745:4fc4e63d0e952ee76bcf73b2d4cad0edc66f50f8" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
-		--header "Content-Type: application/json" \
-		--data-binary "$1" \
-		http://api.etoya.ru.zerostudio.ru$2
-	echo
-}
-
-api-test-del() {
-	if [ -z $1 ]; then
-		err "Not found required parameters!"
-		return 1
-	fi
-	if [ -z $2 ]; then
-		options="http://api.etoya.ru.zerostudio.ru$1"
-	else
-		options="--data-binary $1 http://api.lo$2"
-	fi
-
-	c && \
-	curl -i \
-		--request DELETE \
-		--cookie "XDEBUG_SESSION=1" \
-		--user "745:4fc4e63d0e952ee76bcf73b2d4cad0edc66f50f8" \
-		--user-agent "IledebeauteMobileApp (apiary.io/1A; apib-file/1.0; UTC+3) API/1.0" \
-		${options}
-	echo
 }
 
 git-test() {
@@ -280,7 +227,7 @@ git-test() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			err "Conflict in non-version files!"
+			error "Conflict in non-version files!"
 			return 1
 		fi
 
@@ -371,7 +318,7 @@ git-prod-patch() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			err "Conflict in non-version files!"
+			error "Conflict in non-version files!"
 			return 1
 		fi
 
@@ -393,7 +340,7 @@ git-prod-patch() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			err "Conflict in non-version files!"
+			error "Conflict in non-version files!"
 			return 1
 		fi
 
@@ -414,7 +361,7 @@ git-prod-patch() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			err "Conflict in non-version files!"
+			error "Conflict in non-version files!"
 			return 1
 		fi
 
@@ -465,7 +412,7 @@ git-prod-minor() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			err "Conflict in non-version files!"
+			error "Conflict in non-version files!"
 			return 1
 		fi
 
@@ -487,7 +434,7 @@ git-prod-minor() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			err "Conflict in non-version files!"
+			error "Conflict in non-version files!"
 			return 1
 		fi
 
@@ -508,7 +455,7 @@ git-prod-minor() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			err "Conflict in non-version files!"
+			error "Conflict in non-version files!"
 			return 1
 		fi
 
@@ -559,7 +506,7 @@ git-prod-major() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			err "Conflict in non-version files!"
+			error "Conflict in non-version files!"
 			return 1
 		fi
 
@@ -581,7 +528,7 @@ git-prod-major() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			err "Conflict in non-version files!"
+			error "Conflict in non-version files!"
 			return 1
 		fi
 
@@ -602,7 +549,7 @@ git-prod-major() {
 		OUTPUT="$(git st | grep UU)"
 
 		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			err "Conflict in non-version files!"
+			error "Conflict in non-version files!"
 			return 1
 		fi
 
@@ -623,42 +570,68 @@ git-prod-major() {
 	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY MINOR_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX OUTPUT
 }
 
-api-dredd() {
-	APIB_FILE="$HOME/api/tests/iledebeaute.apib"
-	SQL_DEFAULT_FILE="$HOME/api/tests/default.sql"
-	SQL_USER_FILE="$HOME/api/tests/default_user.sql"
-	if [ ! -r "$APIB_FILE" ]; then
-		err "Not found apib-file!"
-		return 1
-	fi
+webon() {
+	local output
+	local result
 
-	if [ ! -r "$SQL_DEFAULT_FILE" ]; then
-		err "Not found default.sql!"
-		return 1
-	fi
+	output=$(sudo service mysql start 2>&1)
+	result=$?
 
-	if [ ! -r "$SQL_USER_FILE" ]; then
-		err "Not found default_user.sql!"
-		return 1
-	fi
+	status "Start mysql" ${result}
 
-	mysql -uroot zs_ru_etoya -s < "$SQL_DEFAULT_FILE"
+	[ ${result} -ne 0 ] && error "$output"
 
-	if [ ! $? -eq 0 ]; then
-		err "SQL_DEFAULT_FILE failure!"
-		return 1
-	fi
+	output=$(sudo service php7.0-fpm start 2>&1)
+	result=$?
 
-	mysql -uroot zs_ru_etoya -s < "$SQL_USER_FILE"
+	status "Start php7.0-fpm" ${result}
 
-	if [ ! $? -eq 0 ]; then
-		err "SQL_USER_FILE failure!"
-		return 1
-	fi
+	[ ${result} -ne 0 ] && error "$output"
 
-	cd "$HOME/api"
-	dredd ${APIB_FILE}
+	output=$(sudo service nginx start 2>&1)
+	result=$?
 
-	unset APIB_FILE SQL_FILE
-	cd - >/dev/null
+	status "Start nginx" ${result}
+
+	[ ${result} -ne 0 ] && error "$output"
+}
+
+weboff() {
+	local output
+	local result
+
+	output=$(sudo service mysql stop 2>&1)
+	result=$?
+
+	status "Stop mysql" ${result}
+
+	[ ${result} -ne 0 ] && error "$output"
+
+	output=$(sudo service php7.0-fpm stop 2>&1)
+	result=$?
+
+	status "Stop php7.0-fpm" ${result}
+
+	[ ${result} -ne 0 ] && error "$output"
+
+	output=$(sudo service nginx stop 2>&1)
+	result=$?
+
+	status "Stop nginx" $?
+
+	[ ${result} -ne 0 ] && error "$output"
+
+	output=$(sudo service memcached stop 2>&1)
+	result=$?
+
+	status "Stop memcache" ${result}
+
+	[ ${result} -ne 0 ] && error "$output"
+
+	output=$(sudo service gearman-job-server stop 2>&1)
+	result=$?
+
+	status "Stop gearman" ${result}
+
+	[ ${result} -ne 0 ] && error "$output"
 }

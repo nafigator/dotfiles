@@ -23,18 +23,6 @@ alias ll="ls -lh $ls_options"
 alias la="ls -Alh $ls_options"
 unset ls_options options
 
-alias webon='
-	sudo service mysql start && \
-	sudo service php7.0-fpm start && \
-	sudo service nginx start'
-
-alias weboff='
-	sudo service mysql stop && \
-	sudo service php7.0-fpm stop && \
-	sudo service nginx stop && \
-	sudo service memcached stop && \
-	sudo service gearman-job-server stop'
-
 alias itvaultupd="
 	rsync \
 		--rsync-path='doas -u www rsync' \
@@ -49,35 +37,6 @@ alias itvaultupd="
 		-Ravry $PROJECT_PATH/itvault/www/./ itvault:$WWW_ROOT/www.itvault.info/
 	ssh itvault \"php $WWW_ROOT/www.itvault.info/tools/unset-routes-cache.php;
 	cd $WWW_ROOT/www.itvault.info; tools/phinx migrate -e production\""
-
-alias adsamboupd="
-	rsync \
-		--rsync-path='doas -u www rsync' \
-		--partial \
-		--partial-dir=.rsync-partial/ \
-		--copy-unsafe-links \
-		--delay-updates  \
-		--exclude-from=.rsync-exclude \
-		--filter='P /public/i/t/' \
-		--delete \
-		--delete-excluded \
-		--delete-after \
-		-Ravry $PROJECT_PATH/adsambo/./ itvault:$WWW_ROOT/adsambo.itvault.info/
-	ssh itvault \"php $WWW_ROOT/adsambo.itvault.info/tools/unset-routes-cache.php;
-	cd $WWW_ROOT/adsambo.itvault.info; tools/phinx migrate -e testing\""
-
-alias babyupd="
-	rsync \
-		--rsync-path='doas -u www rsync' \
-		--partial \
-		--partial-dir=.rsync-partial/ \
-		--copy-unsafe-links \
-		--delay-updates  \
-		--exclude-from=.rsync-exclude \
-		--delete \
-		--delete-excluded \
-		--delete-after \
-		-Ravry $PROJECT_PATH/baby-test/./ itvault:$WWW_ROOT/baby.itvault.info/"
 
 alias mantisupd="
 	rsync \
@@ -102,37 +61,6 @@ alias ishopupd="
 		--delete \
 		--delete-after \
 		-Ravry $PROJECT_PATH/ishop/./ itvault:$WWW_ROOT/ishop.itvault.info"
-
-alias countersupd="
-	rsync \
-		--rsync-path='doas -u www rsync' \
-		--partial \
-		--partial-dir=.rsync-partial/ \
-		--copy-unsafe-links \
-		--delay-updates  \
-		--exclude-from=.rsync-exclude \
-		--delete \
-		--delete-excluded \
-		--delete-after \
-		-Ravry $PROJECT_PATH/test.alfaservisteplo/www/./ itvault:$WWW_ROOT/test.alfaservisteplo.ru/"
-
-alias countersupl='
-	ssh itvault "
-		doas -u www \
-		DIR_NAME=$(date "+%Y-%m-%d_%H-%M-%S") && \
-		cd $WWW_ROOT/alfaservisteplo.ru/ && \
-		cp -R $WWW_ROOT/test.alfaservisteplo.ru/ \$DIR_NAME && \
-		ln -shf \$DIR_NAME www"'
-
-alias eva="$PROJECT_PATH/eva/build/eva"
-alias eva_build_doc='rm -rf ~/dev/eva/documentation && doxygen ~/Progects/eva/src/doxygen.eva.cfg'
-alias phpcs-itvault='
-	phpcs -s -v --tab-width=4 \
-		--report=full \
-		--report-file=phpcs_report.txt \
-		--standard=PSR1 \
-		--encoding=utf-8 \
-		--extensions=php,phtml ./'
 
 alias phpcs-veles='
 	phpcs -s -v --tab-width=4 \
