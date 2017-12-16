@@ -23,20 +23,6 @@ alias ll="ls -lh $ls_options"
 alias la="ls -Alh $ls_options"
 unset ls_options options
 
-alias webon='
-	sudo service mysql start && \
-	sudo service php5-fpm start && \
-	sudo service nginx start && \
-	sudo service memcached start && \
-	sudo service gearman-job-server start'
-
-alias weboff='
-	sudo service mysql stop && \
-	sudo service php5-fpm stop && \
-	sudo service nginx stop && \
-	sudo service memcached stop && \
-	sudo service gearman-job-server stop'
-
 alias itvaultupd="
 	rsync \
 		--rsync-path='doas -u www rsync' \
@@ -51,35 +37,6 @@ alias itvaultupd="
 		-Ravry $PROJECT_PATH/itvault/www/./ itvault:$WWW_ROOT/www.itvault.info/
 	ssh itvault \"php $WWW_ROOT/www.itvault.info/tools/unset-routes-cache.php\""
 
-alias adsamboupd="
-	rsync \
-		--rsync-path='doas -u www rsync' \
-		--partial \
-		--partial-dir=.rsync-partial/ \
-		--copy-unsafe-links \
-		--delay-updates  \
-		--exclude-from=.rsync-exclude \
-		--filter='P /public/i/t/' \
-		--delete \
-		--delete-excluded \
-		--delete-after \
-		-Ravry $PROJECT_PATH/adsambo/./ itvault:$WWW_ROOT/adsambo.itvault.info/
-	ssh itvault \"php $WWW_ROOT/adsambo.itvault.info/tools/unset-routes-cache.php;
-	cd $WWW_ROOT/adsambo.itvault.info; tools/phinx migrate -e testing\""
-
-alias babyupd="
-	rsync \
-		--rsync-path='doas -u www rsync' \
-		--partial \
-		--partial-dir=.rsync-partial/ \
-		--copy-unsafe-links \
-		--delay-updates  \
-		--exclude-from=.rsync-exclude \
-		--delete \
-		--delete-excluded \
-		--delete-after \
-		-Ravry $PROJECT_PATH/baby-test/./ itvault:$WWW_ROOT/baby.itvault.info/"
-
 alias mantisupd="
 	rsync \
 		--rsync-path='doas -u www rsync' \
@@ -91,21 +48,6 @@ alias mantisupd="
 		--delete \
 		--delete-after \
 		-Ravry $PROJECT_PATH/mantis/www/./ itvault:$WWW_ROOT/mantis.itvault.info"
-
-alias phpcs-itvault='
-	phpcs -s -v --tab-width=4 \
-		--report=full \
-		--report-file=phpcs_report.txt \
-		--standard=PSR1 \
-		--encoding=utf-8 \
-		--extensions=php,phtml ./'
-
-alias phpcs-veles='
-	phpcs -s -v --tab-width=4 \
-		--encoding=utf-8 \
-		--standard=phpcs.xml \
-		--ignore=Tests,vendor,coverage-report \
-		--colors ./'
 
 # Cli task manager
 alias t='python ~/.tasks/t.py --task-dir ~/.tasks --list tasks.txt'
@@ -135,36 +77,15 @@ alias coverage-report-veles="
 	phpunit -c Tests/phpunit.xml --coverage-html coverage-report;
 	cd - >/dev/null"
 
-alias coverage-report-zero="
-	rm -rf $PROJECT_PATH/zerotech-test/coverage-report;
-	cd $PROJECT_PATH/zerotech-test && \
-	phpunit -c phpunit.xml --coverage-html coverage-report;
-	cd - >/dev/null"
-
 alias phpunit-veles="
 	cd $PROJECT_PATH/Veles && \
 	phpunit -c Tests/phpunit.xml --exclude-group=apc;
-	cd - >/dev/null"
-
-alias coverage-report-api="
-	rm -rf $PROJECT_PATH/api-iledebeaute/tests/coverage-report;
-	cd $PROJECT_PATH/api-iledebeaute/tests && \
-	phpunit -c phpunit-local.xml --coverage-html coverage-report;
 	cd - >/dev/null"
 
 alias phpunit-api="
 	cd $PROJECT_PATH/api-iledebeaute/tests && \
 	phpunit -c phpunit-local.xml
 	cd - >/dev/null"
-
-alias update-api-documentation="
-	cd ~/test/ && \
-	cp ~/baby/mobile_api/tests/happy_mama.apib ~/test/tests/blueprint.apib && \
-	cp ~/baby/mobile_api/tests/schema-definitions.json ~/test/tests/schema-definitions.json && \
-	git add . && \
-	git ci 'Update documentation' && \
-	git push; \
-	cd -"
 
 unset PROJECT_PATH WWW_ROOT
 

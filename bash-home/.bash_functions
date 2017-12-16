@@ -168,7 +168,6 @@ get_version_file() {
 
 	case $1 in
 		Veles) echo 'README.md' ;;
-		api-iledebeaute) echo '_modules/project/api/application.inc.php' ;;
 		*) echo 'version.ini' ;;
 	esac
 }
@@ -182,7 +181,6 @@ get_version_regex() {
 
 	case $1 in
 		Veles) echo "s/badge\/release-[^-]+/badge\/release-$2/g" ;;
-		api-iledebeaute) echo "s/current_version = '[^']+/current_version = '$2/g" ;;
 		*) echo "s/current_version = [^\s]+/current_version = $2/g" ;;
 	esac
 }
@@ -206,212 +204,214 @@ calc() {
 }
 
 git-test() {
-	BRANCH_NAME=$(parse_git_branch) && \
-	PROJECT_NAME=$(parse_project_name) && \
-	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
+	local branch_name="$(parse_git_branch)"
+	local project_name="$(parse_project_name)"
+
+	if [ -z "$project_name" ] || [ -z "$branch_name" ]; then
 		return 1
 	fi
 
-	TEST_BRANCH=$(get_test_branch ${PROJECT_NAME}) && \
-	PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME}) && \
-	VERSION_FILE=$(get_version_file ${PROJECT_NAME}) && \
-	git co ${PROD_BRANCH} && \
+	local test_branch="$(get_test_branch "$project_name")" && \
+	local prod_branch="$(get_prod_branch "$project_name")" && \
+	local version_file="$(get_version_file "$project_name")" && \
+	git co "$prod_branch" && \
 	git submodule update && \
 	git pull && \
-	git co ${TEST_BRANCH} && \
+	git co "$test_branch" && \
 	git submodule update && \
 	git pull && \
-	git merge --no-edit ${BRANCH_NAME}
+	git merge "$branch_name"
 
 	if [ ! $? -eq 0 ]; then
-		OUTPUT="$(git st | grep UU)"
+		local output="$(git st | grep UU)"
 
-		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			error "Conflict in non-version files!"
+		if [ "$output" != "UU $version_file" ]; then
+			err "Conflict in non-version files!"
 			return 1
 		fi
 
 		inform "Conflict in version file."
 		inform "Trying to resolve..."
 
-		git checkout --theirs ${VERSION_FILE} && \
-		git add ${VERSION_FILE}
+		git checkout --theirs "$version_file" && \
+		git add "$version_file"
 		git commit --file .git/MERGE_MSG
 	fi && \
-	CURRENT_VER=$(git describe) && \
-	PROD_VER=$(git describe ${PROD_BRANCH}) && \
-	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
-	PATCH_ARRAY=(${VERSION_ARRAY[2]//-/ }) && \
-	CHECK_VER="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.${PATCH_ARRAY[0]}"
+	local current_ver="$(git describe)" && \
+	local prod_ver="$(git describe "$prod_branch")" && \
+	local version_array=(${current_ver//./ }) && \
+	local patch_array=(${version_array[2]//-/ }) && \
+	local check_ver="${version_array[0]}.${version_array[1]}.${patch_array[0]}"
+	local dev_ver=
 
-	if [ "$CHECK_VER" != "$PROD_VER" ]; then
-		VERSION_ARRAY=(${PROD_VER//./ })
-		PATCH_ARRAY=(${VERSION_ARRAY[2]//-/ })
+	if [ "$check_ver" != "$prod_ver" ]; then
+		local version_array=(${prod_ver//./ })
+		local patch_array=(${version_array[2]//-/ })
 	fi
 
-	if [ "${PATCH_ARRAY[1]}" = "dev" ]; then
-		DEV_VER=$((${PATCH_ARRAY[2]} + ${PATCH_ARRAY[3]} + 1))
+	if [ "${patch_array[1]}" = "dev" ]; then
+		dev_ver=$((${patch_array[2]} + ${patch_array[3]} + 1))
 	else
-		DEV_VER=$((${PATCH_ARRAY[1]} + 1))
+		dev_ver=$((${patch_array[1]} + 1))
 	fi
 
-	NEW_VER="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.${PATCH_ARRAY[0]}-dev-${DEV_VER}" && \
-	VERSION_REGEX=$(get_version_regex "$PROJECT_NAME" "$NEW_VER") && \
-	perl -pi -e "${VERSION_REGEX}" "${VERSION_FILE}" && \
-	git add ${VERSION_FILE} && \
+	local new_ver="${version_array[0]}.${version_array[1]}.${patch_array[0]}-dev-${dev_ver}" && \
+	local version_regex=$(get_version_regex "$project_name" "$new_ver") && \
+	perl -pi -e "${version_regex}" "${version_file}" && \
+	git add "$version_file" && \
 	git ci "Update version" && \
 	git push && \
-	git t "Release $NEW_VER" ${NEW_VER} && \
+	git t "Release $new_ver" "$new_ver" && \
 	git push --tags && \
-	git co ${BRANCH_NAME} && \
-	git submodule update && \
-	unset BRANCH_NAME PROJECT_NAME TEST_BRANCH DEV_VER VERSION_REGEX NEW_VER PATCH_ARRAY VERSION_ARRAY CHECK_VER PROD_VER CURRENT_VER OUTPUT
+	git co "$branch_name" && \
+	git submodule update
 }
 
 git-prod() {
-	BRANCH_NAME=$(parse_git_branch) && \
-	PROJECT_NAME=$(parse_project_name) && \
-	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
+	local branch_name="$(parse_git_branch)"
+	local project_name="$(parse_project_name)"
+	local prod_branch=
+
+	if [ -z "$project_name" ] || [ -z "$branch_name" ]; then
 		return 1
 	else
-		PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME})
-	fi && \
-	git pull --rebase origin ${PROD_BRANCH} && \
-	git co ${PROD_BRANCH} && \
+		prod_branch="$(get_prod_branch "$project_name")"
+	fi
+
+	git pull --rebase origin "$prod_branch" && \
+	git co "$prod_branch" && \
 	git pull && \
-	git rebase ${BRANCH_NAME} && \
+	git rebase "$branch_name" && \
 	git submodule update && \
-	git br -d ${BRANCH_NAME} && \
+	git br -d "$branch_name" && \
 	git push && \
 	git describe 2>/dev/null
-	unset BRANCH_NAME PROJECT_NAME PROD_BRANCH
 }
 
 git-prod-patch() {
-	BRANCH_NAME=$(parse_git_branch) && \
-	PROJECT_NAME=$(parse_project_name) && \
-	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
+	local branch_name="$(parse_git_branch)" && \
+	local project_name="$(parse_project_name)" && \
+	if [ -z "$project_name" ] || [ -z "$branch_name" ]; then
 		return 1
 	fi
 
-	TEST_BRANCH=$(get_test_branch ${PROJECT_NAME}) && \
-	PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME}) && \
-	VERSION_FILE=$(get_version_file ${PROJECT_NAME}) && \
-	git co ${PROD_BRANCH} && \
+	local test_branch="$(get_test_branch "$project_name")" && \
+	local prod_branch="$(get_prod_branch "$project_name")" && \
+	local version_file="$(get_version_file "$project_name")" && \
+	git co "$prod_branch" && \
 	git pull && \
-	CURRENT_VER=$(git tag | sort -V | tail -n 1) && \
-	git co ${BRANCH_NAME} && \
-	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
-	PATCH_ARRAY=(${VERSION_ARRAY[2]//-/ }) && \
-	PATCH_VER=$((${PATCH_ARRAY[0]} + 1)) && \
-	NEW_VER="${VERSION_ARRAY[0]}.${VERSION_ARRAY[1]}.$PATCH_VER" && \
-	VERSION_REGEX=$(get_version_regex "${PROJECT_NAME}" "${NEW_VER}") && \
-	perl -pi -e "${VERSION_REGEX}" "${VERSION_FILE}" && \
-	git add ${VERSION_FILE} && \
+	local current_ver="$(git tag | sort -V | tail -n 1)" && \
+	git co "$branch_name" && \
+	local version_array=(${current_ver//./ }) && \
+	local patch_array=(${version_array[2]//-/ }) && \
+	local patch_ver=$((${patch_array[0]} + 1)) && \
+	local new_ver="${version_array[0]}.${version_array[1]}.$patch_ver" && \
+	local version_regex="$(get_version_regex "${project_name}" "${new_ver}")" && \
+	perl -pi -e "${version_regex}" "${version_file}" && \
+	git add "$version_file" && \
 	git ci "Update version" && \
-	git co ${TEST_BRANCH} && \
+	git co "$test_branch" && \
 	git submodule update && \
 	git pull && \
-	git merge ${BRANCH_NAME}
+	git merge "$branch_name"
 
 	if [ ! $? -eq 0 ]; then
-		OUTPUT="$(git st | grep UU)"
+		local output="$(git st | grep UU)"
 
-		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			error "Conflict in non-version files!"
+		if [ "$output" != "UU $version_file" ]; then
+			err "Conflict in non-version files!"
 			return 1
 		fi
 
 		inform "Conflict in version file."
 		inform "Trying to resolve..."
 
-		git checkout --theirs ${VERSION_FILE} && \
-		git add ${VERSION_FILE}
+		git checkout --theirs "$version_file" && \
+		git add "$version_file"
 		git commit --file .git/MERGE_MSG
 	fi
 
 	git submodule update && \
 	git push && \
-	git co ${BRANCH_NAME} && \
+	git co "$branch_name" && \
 	git submodule update && \
-	git pull --rebase origin ${PROD_BRANCH}
+	git pull --rebase origin "$prod_branch"
 
 	if [ ! $? -eq 0 ]; then
-		OUTPUT="$(git st | grep UU)"
+		local output="$(git st | grep UU)"
 
-		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			error "Conflict in non-version files!"
+		if [ "$output" != "UU $version_file" ]; then
+			err "Conflict in non-version files!"
 			return 1
 		fi
 
 		inform "Conflict in version file."
 		inform "Trying to resolve..."
 
-		git checkout --theirs ${VERSION_FILE} && \
-		git add ${VERSION_FILE}
+		git checkout --theirs "$version_file" && \
+		git add "$version_file"
 		git rebase --continue
 	fi
 
-	git co ${PROD_BRANCH} && \
+	git co "$prod_branch" && \
 	git submodule update && \
 	git pull && \
-	git rebase ${BRANCH_NAME}
+	git rebase "$branch_name"
 
 	if [ ! $? -eq 0 ]; then
-		OUTPUT="$(git st | grep UU)"
+		local output="$(git st | grep UU)"
 
-		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
-			error "Conflict in non-version files!"
+		if [ "$output" != "UU $version_file" ]; then
+			err "Conflict in non-version files!"
 			return 1
 		fi
 
 		inform "Conflict in version file."
 		inform "Trying to resolve..."
 
-		git checkout --theirs ${VERSION_FILE} && \
-		git add ${VERSION_FILE}
+		git checkout --theirs "$version_file" && \
+		git add "$version_file"
 		git rebase --continue
 	fi
 
 	git submodule update && \
-	git br -d ${BRANCH_NAME} && \
+	git br -d "$branch_name" && \
 	git push && \
-	git t "Release $NEW_VER" ${NEW_VER} && \
+	git t "Release $new_ver" "$new_ver" && \
 	git push --tags && \
 	git describe 2>/dev/null
-	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY PATCH_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX OUTPUT
 }
 
 git-prod-minor() {
-	BRANCH_NAME=$(parse_git_branch) && \
-	PROJECT_NAME=$(parse_project_name) && \
-	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
+	local branch_name="$(parse_git_branch)" && \
+	local project_name="$(parse_project_name)" && \
+	if [ -z "$project_name" ] || [ -z "$branch_name" ]; then
 		return 1
 	fi
 
-	TEST_BRANCH=$(get_test_branch ${PROJECT_NAME}) && \
-	PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME}) && \
-	VERSION_FILE=$(get_version_file ${PROJECT_NAME}) && \
-	git co ${PROD_BRANCH} && \
+	local test_branch="$(get_test_branch "$project_name")" && \
+	local prod_branch="$(get_prod_branch "$project_name")" && \
+	local version_file="$(get_version_file "$project_name")" && \
+	git co "$prod_branch" && \
 	git pull && \
-	CURRENT_VER=$(git tag | sort -V | tail -n 1) && \
-	git co ${BRANCH_NAME} && \
-	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
-	MINOR_VER=$((${VERSION_ARRAY[1]} + 1)) && \
-	NEW_VER="${VERSION_ARRAY[0]}.$MINOR_VER.0" && \
-	VERSION_REGEX=$(get_version_regex "${PROJECT_NAME}" "${NEW_VER}") && \
-	perl -pi -e "${VERSION_REGEX}" "${VERSION_FILE}" && \
-	git add ${VERSION_FILE} && \
+	local current_ver="$(git tag | sort -V | tail -n 1)" && \
+	git co "$branch_name" && \
+	local version_array=(${current_ver//./ }) && \
+	local minor_ver=$((${version_array[1]} + 1)) && \
+	local new_ver="${version_array[0]}.$minor_ver.0" && \
+	local version_regex="$(get_version_regex "${project_name}" "${new_ver}")" && \
+	perl -pi -e "${version_regex}" "${version_file}" && \
+	git add "$version_file" && \
 	git ci "Update version" && \
-	git co ${TEST_BRANCH} && \
+	git co "$test_branch" && \
 	git submodule update && \
 	git pull && \
-	git merge ${BRANCH_NAME}
+	git merge "$branch_name"
 
 	if [ ! $? -eq 0 ]; then
-		OUTPUT="$(git st | grep UU)"
+		local output="$(git st | grep UU)"
 
-		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+		if [ "$output" != "UU $version_file" ]; then
 			error "Conflict in non-version files!"
 			return 1
 		fi
@@ -419,21 +419,21 @@ git-prod-minor() {
 		inform "Conflict in version file."
 		inform "Trying to resolve..."
 
-		git checkout --theirs ${VERSION_FILE} && \
-		git add ${VERSION_FILE}
+		git checkout --theirs "$version_file" && \
+		git add "$version_file"
 		git commit --file .git/MERGE_MSG
 	fi
 
 	git submodule update && \
 	git push && \
-	git co ${BRANCH_NAME} && \
+	git co "$branch_name" && \
 	git submodule update && \
-	git pull --rebase origin ${PROD_BRANCH}
+	git pull --rebase origin "$prod_branch"
 
 	if [ ! $? -eq 0 ]; then
-		OUTPUT="$(git st | grep UU)"
+		local output="$(git st | grep UU)"
 
-		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+		if [ "$output" != "UU $version_file" ]; then
 			error "Conflict in non-version files!"
 			return 1
 		fi
@@ -441,20 +441,20 @@ git-prod-minor() {
 		inform "Conflict in version file."
 		inform "Trying to resolve..."
 
-		git checkout --theirs ${VERSION_FILE} && \
-		git add ${VERSION_FILE}
+		git checkout --theirs "$version_file" && \
+		git add "$version_file"
 		git rebase --continue
 	fi
 
-	git co ${PROD_BRANCH} && \
+	git co "$prod_branch" && \
 	git submodule update && \
 	git pull && \
-	git rebase ${BRANCH_NAME}
+	git rebase "$branch_name"
 
 	if [ ! $? -eq 0 ]; then
-		OUTPUT="$(git st | grep UU)"
+		local output="$(git st | grep UU)"
 
-		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+		if [ "$output" != "UU $version_file" ]; then
 			error "Conflict in non-version files!"
 			return 1
 		fi
@@ -462,50 +462,49 @@ git-prod-minor() {
 		inform "Conflict in version file."
 		inform "Trying to resolve..."
 
-		git checkout --theirs ${VERSION_FILE} && \
-		git add ${VERSION_FILE}
+		git checkout --theirs "$version_file" && \
+		git add "$version_file"
 		git rebase --continue
 	fi
 
 	git submodule update && \
-	git br -d ${BRANCH_NAME} && \
+	git br -d "$branch_name" && \
 	git push && \
-	git t "Release $NEW_VER" ${NEW_VER} && \
+	git t "Release $new_ver" "$new_ver" && \
 	git push --tags && \
 	git describe 2>/dev/null
-	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY MINOR_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX OUTPUT
 }
 
 git-prod-major() {
-	BRANCH_NAME=$(parse_git_branch) && \
-	PROJECT_NAME=$(parse_project_name) && \
-	if [ -z ${PROJECT_NAME} ] || [ -z ${BRANCH_NAME} ]; then
+	local branch_name="$(parse_git_branch)" && \
+	local project_name="$(parse_project_name)" && \
+	if [ -z "$project_name" ] || [ -z "$branch_name" ]; then
 		return 1
 	fi
 
-	TEST_BRANCH=$(get_test_branch ${PROJECT_NAME}) && \
-	PROD_BRANCH=$(get_prod_branch ${PROJECT_NAME}) && \
-	VERSION_FILE=$(get_version_file ${PROJECT_NAME}) && \
-	git co ${PROD_BRANCH} && \
+	local test_branch="$(get_test_branch "$project_name")" && \
+	local prod_branch="$(get_prod_branch "$project_name")" && \
+	local version_file="$(get_version_file "$project_name")" && \
+	git co "$prod_branch" && \
 	git pull && \
-	CURRENT_VER=$(git tag | sort -V | tail -n 1) && \
-	git co ${BRANCH_NAME} && \
-	VERSION_ARRAY=(${CURRENT_VER//./ }) && \
-	MAJOR_VER=$((${VERSION_ARRAY[0]} + 1)) && \
-	NEW_VER="$MAJOR_VER.0.0" && \
-	VERSION_REGEX=$(get_version_regex "${PROJECT_NAME}" "${NEW_VER}") && \
-	perl -pi -e "${VERSION_REGEX}" "${VERSION_FILE}" && \
-	git add ${VERSION_FILE} && \
+	local current_ver="$(git tag | sort -V | tail -n 1)" && \
+	git co "$branch_name" && \
+	local version_array=(${current_ver//./ }) && \
+	local major_ver=$((${version_array[0]} + 1)) && \
+	local new_ver="$major_ver.0.0" && \
+	local version_regex=$(get_version_regex "${project_name}" "${new_ver}") && \
+	perl -pi -e "${version_regex}" "${version_file}" && \
+	git add "$version_file" && \
 	git ci "Update version" && \
-	git co ${TEST_BRANCH} && \
+	git co "$test_branch" && \
 	git submodule update && \
 	git pull && \
-	git merge ${BRANCH_NAME}
+	git merge "$branch_name"
 
 	if [ ! $? -eq 0 ]; then
-		OUTPUT="$(git st | grep UU)"
+		local output="$(git st | grep UU)"
 
-		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+		if [ "$output" != "UU $version_file" ]; then
 			error "Conflict in non-version files!"
 			return 1
 		fi
@@ -513,21 +512,21 @@ git-prod-major() {
 		inform "Conflict in version file."
 		inform "Trying to resolve..."
 
-		git checkout --theirs ${VERSION_FILE} && \
-		git add ${VERSION_FILE}
+		git checkout --theirs "$version_file" && \
+		git add "$version_file"
 		git commit --file .git/MERGE_MSG
 	fi
 
 	git submodule update && \
 	git push && \
-	git co ${BRANCH_NAME} && \
+	git co "$branch_name" && \
 	git submodule update && \
-	git pull --rebase origin ${PROD_BRANCH}
+	git pull --rebase origin "$prod_branch"
 
 	if [ ! $? -eq 0 ]; then
-		OUTPUT="$(git st | grep UU)"
+		local output="$(git st | grep UU)"
 
-		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+		if [ "$output" != "UU $version_file" ]; then
 			error "Conflict in non-version files!"
 			return 1
 		fi
@@ -535,20 +534,20 @@ git-prod-major() {
 		inform "Conflict in version file."
 		inform "Trying to resolve..."
 
-		git checkout --theirs ${VERSION_FILE} && \
-		git add ${VERSION_FILE}
+		git checkout --theirs "$version_file" && \
+		git add "$version_file"
 		git rebase --continue
 	fi
 
-	git co ${PROD_BRANCH} && \
+	git co "$prod_branch" && \
 	git submodule update && \
 	git pull && \
-	git rebase ${BRANCH_NAME}
+	git rebase "$branch_name"
 
 	if [ ! $? -eq 0 ]; then
-		OUTPUT="$(git st | grep UU)"
+		local output="$(git st | grep UU)"
 
-		if [ "$OUTPUT" != "UU $VERSION_FILE" ]; then
+		if [ "$output" != "UU $version_file" ]; then
 			error "Conflict in non-version files!"
 			return 1
 		fi
@@ -556,18 +555,17 @@ git-prod-major() {
 		inform "Conflict in version file."
 		inform "Trying to resolve..."
 
-		git checkout --theirs ${VERSION_FILE} && \
-		git add ${VERSION_FILE}
+		git checkout --theirs "$version_file" && \
+		git add "$version_file"
 		git rebase --continue
 	fi
 
 	git submodule update && \
-	git br -d ${BRANCH_NAME} && \
+	git br -d "$branch_name" && \
 	git push && \
-	git t "Release $NEW_VER" ${NEW_VER} && \
+	git t "Release $new_ver" "$new_ver" && \
 	git push --tags && \
 	git describe 2>/dev/null
-	unset BRANCH_NAME PROJECT_NAME CURRENT_VER VERSION_ARRAY MINOR_VER TEST_BRANCH PROD_BRANCH VERSION_FILE VERSION_REGEX OUTPUT
 }
 
 webon() {
