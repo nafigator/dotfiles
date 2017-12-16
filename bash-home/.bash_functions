@@ -103,7 +103,7 @@ check_dependencies() {
 	local cmd_status
 
 	for i in ${@}; do
-		command -v ${i} >/dev/null 2>&1
+		command -v ${i} 2>&1 >/dev/null
 		cmd_status=$?
 
 		#status_dbg "DEPENDENCY: $i" ${cmd_status}
