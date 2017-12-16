@@ -32,7 +32,7 @@ export VIEWER=less
 export PAGER=less
 
 # Set less options
-export LESS='-MR -x4'
+export LESS='-MFRX -x4'
 
 # Enable color ls output
 export CLICOLOR=yes
