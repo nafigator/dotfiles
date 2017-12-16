@@ -34,7 +34,7 @@ alias itvaultupd="
 		--delete \
 		--delete-excluded \
 		--delete-after \
-		-Ravry $PROJECT_PATH/itvault/www/./ itvault:$WWW_ROOT/www.itvault.info/
+		-uRav $PROJECT_PATH/itvault/www/./ itvault:$WWW_ROOT/www.itvault.info/
 	ssh itvault \"php $WWW_ROOT/www.itvault.info/tools/unset-routes-cache.php;
 	cd $WWW_ROOT/www.itvault.info; tools/phinx migrate -e production\""
 
@@ -48,19 +48,7 @@ alias mantisupd="
 		--exclude-from=.rsync-exclude \
 		--delete \
 		--delete-after \
-		-Ravry $PROJECT_PATH/mantis/www/./ itvault:$WWW_ROOT/mantis.itvault.info"
-
-alias ishopupd="
-	rsync \
-		--rsync-path='doas -u www rsync' \
-		--partial \
-		--partial-dir=.rsync-partial/ \
-		--copy-unsafe-links \
-		--delay-updates \
-		--exclude-from=.rsync-exclude \
-		--delete \
-		--delete-after \
-		-Ravry $PROJECT_PATH/ishop/./ itvault:$WWW_ROOT/ishop.itvault.info"
+		-uRav $PROJECT_PATH/mantis/www/./ itvault:$WWW_ROOT/mantis.itvault.info"
 
 alias phpcs-veles='
 	phpcs -s -v --tab-width=4 \
