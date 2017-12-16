@@ -626,10 +626,10 @@ weboff() {
 
 	[ ${result} -ne 0 ] && error "$output"
 
-	output=$(sudo service gearman-job-server stop 2>&1)
-	result=$?
-
-	status "Stop gearman" ${result}
-
-	[ ${result} -ne 0 ] && error "$output"
+#	output=$(sudo service gearman-job-server stop 2>&1)
+#	result=$?
+#
+#	status "Stop gearman" ${result}
+#
+#	[ ${result} -ne 0 ] && error "$output"
 }
