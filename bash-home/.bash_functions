@@ -159,7 +159,7 @@ get_prod_branch() {
 	esac
 }
 
-# Show production branch name for current project
+# Show version filename for current project
 get_version_file() {
 	if [ -z $1 ]; then
 		error "Not found required parameters!"
@@ -182,6 +182,31 @@ get_version_regex() {
 	case $1 in
 		Veles) echo "s/badge\/release-[^-]+/badge\/release-$2/g" ;;
 		*) echo "s/current_version = [^\s]+/current_version = $2/g" ;;
+	esac
+}
+
+# Show size filename for current project
+get-repo-size-file() {
+	if [ -z $1 ]; then
+		error "Not found required parameters!"
+		return 1
+	fi
+
+	case $1 in
+		Veles) echo 'README.md' ;;
+		*) echo 'version.ini' ;;
+	esac
+}
+
+# Show version regular expression
+get-repo-size-regex() {
+	if [ -z $1 ] || [ -z $2 ]; then
+		error "Not found required parameters!"
+		return 1
+	fi
+
+	case $1 in
+		Veles) echo "s/badge\/size-[^-]+/badge\/size-$2/g" ;;
 	esac
 }
 
@@ -226,7 +251,7 @@ git-test() {
 		local output="$(git st | grep UU)"
 
 		if [ "$output" != "UU $version_file" ]; then
-			err "Conflict in non-version files!"
+			error "Conflict in non-version files!"
 			return 1
 		fi
 
@@ -308,7 +333,15 @@ git-prod-patch() {
 	local new_ver="${version_array[0]}.${version_array[1]}.$patch_ver" && \
 	local version_regex="$(get_version_regex "${project_name}" "${new_ver}")" && \
 	perl -pi -e "${version_regex}" "${version_file}" && \
-	git add "$version_file" && \
+	git add "$version_file"
+
+	local size_regex="$(get-repo-size-regex "${project_name}")"
+	local size_file="$(get-repo-size-file "${project_name}")"
+
+	if [ ! -z "$size_regex" ]; then
+		perl -pi -e "${size_regex}" "${size_file}"
+	fi
+
 	git ci "Update version" && \
 	git co "$test_branch" && \
 	git submodule update && \
@@ -319,7 +352,7 @@ git-prod-patch() {
 		local output="$(git st | grep UU)"
 
 		if [ "$output" != "UU $version_file" ]; then
-			err "Conflict in non-version files!"
+			error "Conflict in non-version files!"
 			return 1
 		fi
 
@@ -341,7 +374,7 @@ git-prod-patch() {
 		local output="$(git st | grep UU)"
 
 		if [ "$output" != "UU $version_file" ]; then
-			err "Conflict in non-version files!"
+			error "Conflict in non-version files!"
 			return 1
 		fi
 
@@ -362,7 +395,7 @@ git-prod-patch() {
 		local output="$(git st | grep UU)"
 
 		if [ "$output" != "UU $version_file" ]; then
-			err "Conflict in non-version files!"
+			error "Conflict in non-version files!"
 			return 1
 		fi
 
@@ -401,7 +434,15 @@ git-prod-minor() {
 	local new_ver="${version_array[0]}.$minor_ver.0" && \
 	local version_regex="$(get_version_regex "${project_name}" "${new_ver}")" && \
 	perl -pi -e "${version_regex}" "${version_file}" && \
-	git add "$version_file" && \
+	git add "$version_file"
+
+	local size_regex="$(get-repo-size-regex "${project_name}")"
+	local size_file="$(get-repo-size-file "${project_name}")"
+
+	if [ ! -z "$size_regex" ]; then
+		perl -pi -e "${size_regex}" "${size_file}"
+	fi
+
 	git ci "Update version" && \
 	git co "$test_branch" && \
 	git submodule update && \
@@ -494,7 +535,15 @@ git-prod-major() {
 	local new_ver="$major_ver.0.0" && \
 	local version_regex=$(get_version_regex "${project_name}" "${new_ver}") && \
 	perl -pi -e "${version_regex}" "${version_file}" && \
-	git add "$version_file" && \
+	git add "$version_file"
+
+	local size_regex="$(get-repo-size-regex "${project_name}")"
+	local size_file="$(get-repo-size-file "${project_name}")"
+
+	if [ ! -z "$size_regex" ]; then
+		perl -pi -e "${size_regex}" "${size_file}"
+	fi
+
 	git ci "Update version" && \
 	git co "$test_branch" && \
 	git submodule update && \
