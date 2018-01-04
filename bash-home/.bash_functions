@@ -185,6 +185,16 @@ get_version_regex() {
 	esac
 }
 
+# Get git-repo size
+get-repo-size() {
+	du -hs \
+		--exclude='.git' \
+		--exclude='.idea' \
+		--exclude='Tests' \
+		--exclude='tests' \
+		| cut -f1
+}
+
 # Show size filename for current project
 get-repo-size-file() {
 	if [ -z $1 ]; then
@@ -194,7 +204,6 @@ get-repo-size-file() {
 
 	case $1 in
 		Veles) echo 'README.md' ;;
-		*) echo 'version.ini' ;;
 	esac
 }
 
@@ -218,7 +227,7 @@ digga() {
 # Reload Bash dotfiles
 bash-reload() {
 	unalias -a 		&& \
-	unset -f c error inform warning parse_git_branch parse_project_name get_test_branch get_prod_branch get_version_file get_version_regex digga bash-reload calc git-test git-prod git-prod-patch git-prod-minor webon weboff && \
+	unset -f c error inform warning parse_git_branch parse_project_name get_test_branch get_prod_branch get_version_file get_version_regex get-repo-size get-repo-size-file get-repo-size-regex digga bash-reload calc git-test git-prod git-prod-patch git-prod-minor webon weboff && \
 	. $HOME/.xsessionrc	&& \
 	status 'Bash reload' $?
 }
@@ -335,11 +344,12 @@ git-prod-patch() {
 	perl -pi -e "${version_regex}" "${version_file}" && \
 	git add "$version_file"
 
-	local size_regex="$(get-repo-size-regex "${project_name}")"
 	local size_file="$(get-repo-size-file "${project_name}")"
 
-	if [ ! -z "$size_regex" ]; then
+	if [[ ! -z "$size_file" && -w "$size_file" ]]; then
+		local size_regex="$(get-repo-size-regex "${project_name}" "$(get-repo-size)")"
 		perl -pi -e "${size_regex}" "${size_file}"
+		git add "$size_file"
 	fi
 
 	git ci "Update version" && \
@@ -436,11 +446,12 @@ git-prod-minor() {
 	perl -pi -e "${version_regex}" "${version_file}" && \
 	git add "$version_file"
 
-	local size_regex="$(get-repo-size-regex "${project_name}")"
 	local size_file="$(get-repo-size-file "${project_name}")"
 
-	if [ ! -z "$size_regex" ]; then
+	if [[ ! -z "$size_file" && -w "$size_file" ]]; then
+		local size_regex="$(get-repo-size-regex "${project_name}" "$(get-repo-size)")"
 		perl -pi -e "${size_regex}" "${size_file}"
+		git add "$size_file"
 	fi
 
 	git ci "Update version" && \
@@ -537,11 +548,12 @@ git-prod-major() {
 	perl -pi -e "${version_regex}" "${version_file}" && \
 	git add "$version_file"
 
-	local size_regex="$(get-repo-size-regex "${project_name}")"
 	local size_file="$(get-repo-size-file "${project_name}")"
 
-	if [ ! -z "$size_regex" ]; then
+	if [[ ! -z "$size_file" && -w "$size_file" ]]; then
+		local size_regex="$(get-repo-size-regex "${project_name}" "$(get-repo-size)")"
 		perl -pi -e "${size_regex}" "${size_file}"
+		git add "$size_file"
 	fi
 
 	git ci "Update version" && \
