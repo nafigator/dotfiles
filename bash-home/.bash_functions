@@ -168,6 +168,7 @@ get_version_file() {
 
 	case $1 in
 		Veles) echo 'README.md' ;;
+		stolica-kamnya) echo '.version' ;;
 		*) echo 'version.ini' ;;
 	esac
 }
@@ -181,6 +182,7 @@ get_version_regex() {
 
 	case $1 in
 		Veles) echo "s/badge\/release-[^-]+/badge\/release-$2/g" ;;
+		stolica-kamnya) echo "s/.+/$2/g" ;;
 		*) echo "s/current_version = [^\s]+/current_version = $2/g" ;;
 	esac
 }
