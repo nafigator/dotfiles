@@ -72,19 +72,17 @@ alias diff="$diff_cmd $diff_options"
 unset diff_cmd diff_options options
 
 alias coverage-report-veles="
-	rm -rf $PROJECT_PATH/Veles/coverage-report;
+	if [ -d /tmp/veles/coverage-report ]; then
+		rm -rf /tmp/veles/coverage-report;
+	fi
+	mkdir -p /tmp/veles/coverage-report
 	cd $PROJECT_PATH/Veles && \
-	phpunit -c Tests/phpunit.xml --coverage-html coverage-report;
+	phpunit -c Tests/phpunit.xml --coverage-html /tmp/veles/coverage-report;
 	cd - >/dev/null"
 
 alias phpunit-veles="
 	cd $PROJECT_PATH/Veles && \
 	phpunit -c Tests/phpunit.xml --exclude-group=apc;
-	cd - >/dev/null"
-
-alias phpunit-api="
-	cd $PROJECT_PATH/api-iledebeaute/tests && \
-	phpunit -c phpunit-local.xml
 	cd - >/dev/null"
 
 unset PROJECT_PATH WWW_ROOT
