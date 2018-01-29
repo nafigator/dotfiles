@@ -55,3 +55,8 @@ Then use stow utility to create symlinks:
     cd ssh/.ssh
     # gpg --output config --decrypt config.gpg
     gpg -o config -d config.gpg
+
+#### MC section workflow:
+###### Ignore local ini changes
+
+    git update-index --assume-unchanged mc/.config/mc/ini
