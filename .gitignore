@@ -2,3 +2,5 @@
 tasks/.tasks/.tasks.txt.done
 tasks/.tasks/tasks.txt
 mysql/.mysqlopt/*.cnf
+mc-templates/.local/share/mc/history
+mc-templates/.local/share/mc/filepos
