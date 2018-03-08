@@ -85,6 +85,13 @@ alias phpunit-veles="
 	phpunit -c Tests/phpunit.xml --exclude-group=apc;
 	cd - >/dev/null"
 
+alias phpcs-veles='
+	phpcs -p --tab-width=4 \
+		--encoding=utf-8 \
+		--standard=phpcs.xml \
+		--ignore=Tests,vendor,coverage-report,.idea \
+		--colors ./'
+
 unset PROJECT_PATH WWW_ROOT
 
 alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'

@@ -51,10 +51,10 @@ alias mantisupd="
 		-uRav $PROJECT_PATH/mantis/www/./ itvault:$WWW_ROOT/mantis.itvault.info"
 
 alias phpcs-veles='
-	phpcs -s -v --tab-width=4 \
+	phpcs -p --tab-width=4 \
 		--encoding=utf-8 \
 		--standard=phpcs.xml \
-		--ignore=Tests,vendor,coverage-report \
+		--ignore=Tests,vendor,coverage-report,.idea \
 		--colors ./'
 
 # Cli task manager
