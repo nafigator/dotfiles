@@ -98,7 +98,7 @@ alias coverage-report-ingos="
 	fi
 	mkdir -p $HOME/ingos/coverage-report
 	cd $HOME/ingos && \
-	docker-compose exec php vendor/bin/phpunit --testsuite unit --coverage-html $HOME/ingos/coverage-report;
+	docker-compose exec php vendor/bin/phpunit --testsuite unit --coverage-html coverage-report && \
 	cd - >/dev/null"
 
 alias phpunit-ingos="
