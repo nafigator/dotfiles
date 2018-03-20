@@ -92,6 +92,20 @@ alias phpcs-veles='
 		--ignore=Tests,vendor,coverage-report,.idea \
 		--colors ./'
 
+alias coverage-report-ingos="
+	if [ -d $HOME/ingos/coverage-report ]; then
+		rm -rf $HOME/ingos/coverage-report;
+	fi
+	mkdir -p $HOME/ingos/coverage-report
+	cd $HOME/ingos && \
+	docker-compose exec php vendor/bin/phpunit --testsuite unit --coverage-html $HOME/ingos/coverage-report;
+	cd - >/dev/null"
+
+alias phpunit-ingos="
+	cd $HOME/ingos && \
+	docker-compose exec php vendor/bin/phpunit --testsuite unit;
+	cd - >/dev/null"
+
 unset PROJECT_PATH WWW_ROOT
 
 alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'
