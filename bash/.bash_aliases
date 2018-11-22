@@ -31,11 +31,13 @@ alias itvaultupd="
 		--copy-unsafe-links \
 		--delay-updates  \
 		--exclude-from=.rsync-exclude \
+		--filter='P /public/uploads' \
 		--delete \
 		--delete-excluded \
 		--delete-after \
-		-Ravry $PROJECT_PATH/itvault/www/./ itvault:$WWW_ROOT/www.itvault.info/
-	ssh itvault \"php $WWW_ROOT/www.itvault.info/tools/unset-routes-cache.php\""
+		-uRa $PROJECT_PATH/itvault/www/./ itvault:$WWW_ROOT/www.itvault.info/
+	ssh itvault \"php $WWW_ROOT/www.itvault.info/tools/unset-routes-cache.php;
+	cd $WWW_ROOT/www.itvault.info; tools/phinx migrate -e production\""
 
 alias mantisupd="
 	rsync \
