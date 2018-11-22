@@ -26,7 +26,7 @@ alias la="ls -Alh $ls_options"
 unset ls_options options
 
 # Cli task manager
-alias t='python ~/.tasks/t.py --task-dir ~/.tasks --list tasks.txt'
+alias t='python2 ~/.tasks/t.py --task-dir ~/.tasks --list tasks.txt'
 # Completed tasks cleanup
 alias tc='[ -w ~/.tasks/.tasks.txt.done ] && rm ~/.tasks/.tasks.txt.done'
 alias leafpad='leafpad --tab-width=4'
