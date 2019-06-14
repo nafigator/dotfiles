@@ -10,6 +10,7 @@
 #umask 022
 
 export LC_TIME=ru_RU.utf8
+export UID
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
