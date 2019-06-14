@@ -21,6 +21,7 @@ fi
 
 export MC_SKIN
 export GPG_TTY=$(tty)
+export UID
 
 # Set default editor
 export EDITOR=mcedit
