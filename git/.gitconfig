@@ -64,3 +64,4 @@
 	prompt = no
 [push]
 	default = simple
+	followTags = true
