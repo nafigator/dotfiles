@@ -8,6 +8,7 @@ equalizer_bands=1,-1,-2,-3,-1,0,0,0,1,2
 equalizer_preamp=2
 output_bit_depth=32
 repeat=TRUE
+show_interface=FALSE
 shuffle=TRUE
 
 [audgui]
