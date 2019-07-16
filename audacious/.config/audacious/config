@@ -4,11 +4,10 @@ mixer-element=Master
 
 [audacious]
 equalizer_active=TRUE
-equalizer_bands=1,-1,-2,-3,-1,0,0,0,1,2
-equalizer_preamp=2
+equalizer_bands=2,1,-2,-2,-1,0,0,1,2,3
+equalizer_preamp=3
 output_bit_depth=32
 repeat=TRUE
-show_interface=FALSE
 shuffle=TRUE
 
 [audgui]

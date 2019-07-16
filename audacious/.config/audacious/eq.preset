@@ -1,5 +1,6 @@
 [Presets]
 Preset0=Balance
+Preset1=Deep Bass
 
 [Balance]
 Preamp=2
@@ -13,3 +14,16 @@ Band6=0
 Band7=0
 Band8=1
 Band9=2
+
+[Deep Bass]
+Preamp=3
+Band0=2
+Band1=1
+Band2=-2
+Band3=-2
+Band4=-1
+Band5=0
+Band6=0
+Band7=1
+Band8=2
+Band9=3
