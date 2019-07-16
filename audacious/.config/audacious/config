@@ -3,48 +3,53 @@
 mixer-element=Master
 
 [audacious]
+chardet_detector=russian
+chardet_fallback=UTF-8
 equalizer_active=TRUE
-equalizer_bands=2,1,-2,-2,-1,0,0,1,2,3
-equalizer_preamp=3
+equalizer_bands=1,0,0,-1,-1,-1,0,1,1,2
+equalizer_preamp=2
 output_bit_depth=32
 repeat=TRUE
+show_interface=FALSE
 shuffle=TRUE
 
 [audgui]
-eq_preset_win=752,402,409,225
-equalizer_win=1252,374,301,288
-filebrowser_win=621,275,672,480
-filesel_path=/home/alex/Music
-info_win=677,319,560,391
-preset_browser_win=567,222,780,585
-url_opener_win=765,445,384,139
+eq_preset_win=752,396,409,237
+equalizer_win=818,407,311,215
+filebrowser_win=607,290,1284,532
+filesel_path=/home/alex/Downloads
+info_win=685,347,570,405
+queue_manager_win=757,390,400,250
+url_opener_win=757,451,400,127
 
 [compressor]
-center=1
-range=1
+center=0.7
+range=0.7
 
 [crystalizer]
 intensity=0.3
 
-[extra_stereo]
-intensity=1.3
-
 [gtkui]
-column_widths=10,507,328,10,250,175,10,100,128,10,275,275,275,10
+column_widths=10,653,175,10,268,175,10,100,43,10,275,275,275,10
 player_height=1004
 player_width=1914
 player_x=0
 player_y=24
 
 [gtkui-layout]
-item_count=0
+item0_name=Blur Scope
+item0_pos=-1,0,0,296,196
+item1_name=Spectrum Analyzer
+item1_pos=-1,0,0,296,196
+item2_name=Search Tool
+item2_pos=0,-1,-1,200,914
+item_count=3
 
-[resample]
-method=0
+[search-tool]
+path=/home/alex/Music
 
 [soxr]
 quality=6
 
 [statusicon]
 close_to_tray=TRUE
-disable_popup=TRUE

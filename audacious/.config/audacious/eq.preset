@@ -1,28 +1,28 @@
 [Presets]
-Preset0=Balance
-Preset1=Deep Bass
+Preset0=Drum and Bass
+Preset1=Rock
 
-[Balance]
-Preamp=2
-Band0=1
-Band1=-1
-Band2=-2
-Band3=-3
+[Drum and Bass]
+Preamp=0
+Band0=4
+Band1=3
+Band2=2
+Band3=0
 Band4=-1
-Band5=0
+Band5=-1
 Band6=0
-Band7=0
+Band7=1
 Band8=1
 Band9=2
 
-[Deep Bass]
-Preamp=3
-Band0=2
-Band1=1
-Band2=-2
-Band3=-2
+[Rock]
+Preamp=0
+Band0=3
+Band1=2
+Band2=1
+Band3=0
 Band4=-1
-Band5=0
+Band5=-1
 Band6=0
 Band7=1
 Band8=2
