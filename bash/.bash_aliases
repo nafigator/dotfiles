@@ -19,8 +19,8 @@ for i in ${options}; do
 	fi
 done
 
-alias ll="ls -lh $ls_options"
-alias la="ls -Alh $ls_options"
+alias ll="ls -lhv $ls_options"
+alias la="ls -Alhv $ls_options"
 unset ls_options options
 
 alias itvaultupd="
