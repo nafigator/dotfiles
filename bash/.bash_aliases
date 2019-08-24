@@ -10,7 +10,7 @@ if [ -x /usr/bin/dircolors ]; then
 	alias grep='grep --color=auto'
 fi
 
-options='-H -X --file-type --group-directories-first'
+options='-H -v --file-type --group-directories-first'
 # Test ls for available non-standard options
 for i in ${options}; do
 	command ls ${i} >/dev/null 2>&1
@@ -19,8 +19,8 @@ for i in ${options}; do
 	fi
 done
 
-alias ll="ls -lhv $ls_options"
-alias la="ls -Alhv $ls_options"
+alias ll="ls -lh $ls_options"
+alias la="ls -Alh $ls_options"
 unset ls_options options
 
 alias itvaultupd="
