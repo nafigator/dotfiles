@@ -65,7 +65,7 @@ alias tc='[ -w ~/.tasks/.tasks.txt.done ] && rm ~/.tasks/.tasks.txt.done'
 alias leafpad='leafpad --tab-width=4'
 
 # Check available diff options
-options='--tabsize=4'
+options='--tabsize=4 --color=always'
 diff_cmd='diff -u'
 for i in ${options}; do
 	command diff ${i} ~/.dotfiles/bash/.bashrc ~/.dotfiles/bash/.bashrc >/dev/null 2>&1
