@@ -12,6 +12,7 @@
 export LC_ALL=en_US.UTF-8
 export LC_TIME=ru_RU.UTF-8
 export LANG=en_US
+export GOPATH=$HOME/Projects/go
 
 umask 022
 
@@ -19,11 +20,11 @@ umask 022
 if [ -n "$BASH_VERSION" ]; then
 	# include .bashrc if it exists
 	if [ -f "$HOME/.bashrc" ]; then
-	. "$HOME/.bashrc"
+	    . "$HOME/.bashrc"
 	fi
 fi
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
-	PATH="$HOME/bin:$PATH:/usr/local/go/bin"
+	PATH="$HOME/bin:$PATH:/usr/local/go/bin:$GOPATH/bin"
 fi
