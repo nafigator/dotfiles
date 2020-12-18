@@ -6,6 +6,8 @@
 	excludesfile = ~/.gitignore
 	whitespace = tabsize=4,indent-with-non-tab
 	pager = less
+    quotepath = false
+    commitGraph = true
 [alias]
 	st = status -s
 	ci = commit -m
@@ -65,5 +67,7 @@
 [push]
 	default = simple
 	followTags = true
+[gc]
+    writeCommitGraph = true
 [pull]
 	ff = only
