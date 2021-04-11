@@ -36,7 +36,7 @@ alias itvaultupd="
 		--delete-excluded \
 		--delete-after \
 		-uRa $PROJECT_PATH/itvault/www/./ itvault:$WWW_ROOT/www.itvault.info/
-	ssh itvault \"php $WWW_ROOT/www.itvault.info/tools/unset-routes-cache.php;
+	ssh -tq itvault \"php $WWW_ROOT/www.itvault.info/tools/unset-routes-cache.php;
 	cd $WWW_ROOT/www.itvault.info; tools/phinx migrate -e production\""
 
 alias mantisupd="
