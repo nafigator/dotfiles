@@ -295,7 +295,7 @@ git-test() {
 	local version_regex=$(get_version_regex "$project_name" "$new_ver") && \
 	perl -pi -e "${version_regex}" "${version_file}" && \
 	git add "$version_file" && \
-	git ci "Update version" && \
+	git ci "chore: Update version" && \
 	git push && \
 	git t "Release $new_ver" "$new_ver" && \
 	git push --tags && \
@@ -354,7 +354,7 @@ git-prod-patch() {
 		git add "$size_file"
 	fi
 
-	git ci "Update version" && \
+	git ci "chore: Update version" && \
 	git co "$test_branch" && \
 	git submodule update && \
 	git pull && \
@@ -456,7 +456,7 @@ git-prod-minor() {
 		git add "$size_file"
 	fi
 
-	git ci "Update version" && \
+	git ci "chore: Update version" && \
 	git co "$test_branch" && \
 	git submodule update && \
 	git pull && \
@@ -558,7 +558,7 @@ git-prod-major() {
 		git add "$size_file"
 	fi
 
-	git ci "Update version" && \
+	git ci "chore: Update version" && \
 	git co "$test_branch" && \
 	git submodule update && \
 	git pull && \
