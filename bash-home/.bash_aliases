@@ -32,6 +32,7 @@ alias itvaultupd="
 		--delay-updates  \
 		--exclude-from=.rsync-exclude \
 		--filter='P /public/uploads' \
+		--filter='P /public/constants.php' \
 		--delete \
 		--delete-excluded \
 		--delete-after \
