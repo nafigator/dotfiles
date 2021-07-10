@@ -99,3 +99,10 @@ unset PROJECT_PATH WWW_ROOT
 
 alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias fix-resolution='xrandr --output LVDS-0 --mode 1920x1080'
+alias composer='docker run --user $(id -u):$(id -g) \
+	--volume /etc/passwd:/etc/passwd:ro \
+	--volume /etc/group:/etc/group:ro \
+	--volume $SSH_AUTH_SOCK:/ssh-auth.sock \
+	--env SSH_AUTH_SOCK=/ssh-auth.sock \
+	--env HOME=/var/www \
+	--rm -t nafigat0r/composer:2.1.3'
