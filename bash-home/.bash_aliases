@@ -100,9 +100,9 @@ unset PROJECT_PATH WWW_ROOT
 alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias fix-resolution='xrandr --output LVDS-0 --mode 1920x1080'
 alias composer='docker run --user $(id -u):$(id -g) \
-	--volume $PWD:/var/www/html \
-	--volume $HOME/.cache/composer:/var/www/.cache/composer \
-	--volume $HOME/.config/composer:/var/www/.config/composer \
+	--volume $(pwd):/var/www/html \
+	--volume $HOME/.ssh/known_hosts:/etc/ssh/ssh_known_hosts:ro \
+	--volume $HOME/.cache/composer:/var/www/.composer/cache \
 	--volume /etc/passwd:/etc/passwd:ro \
 	--volume /etc/group:/etc/group:ro \
 	--volume $SSH_AUTH_SOCK:/ssh-auth.sock \
