@@ -109,3 +109,6 @@ alias composer='docker run --user $(id -u):$(id -g) \
 	--env SSH_AUTH_SOCK=/ssh-auth.sock \
 	--env HOME=/var/www \
 	--rm -ti nafigat0r/composer:2.1.3'
+
+alias ut='ssh itvault ''uptime'''
+alias rt='ssh itvault ''tmux capture-pane -pt rtorrent'''
