@@ -696,3 +696,23 @@ weboff() {
 #
 #	[ ${result} -ne 0 ] && error "$output"
 }
+
+lch() {
+	cd "${HOME}"/go/src/bb.delivery-club.ru/logsit/logistics-courier-hiring || exit 1
+}
+
+tpg() {
+  cd "${HOME}"/go/src/bb.delivery-club.ru/logsit/tinkoff-payment-gateway || exit 1
+}
+
+leg() {
+  cd "${HOME}"/go/src/bb.delivery-club.ru/logistic/logistics-external-gateway || exit 1
+}
+
+lsfa() {
+  cd "${HOME}"/go/src/bb.delivery-club.ru/logistic/logistics-sf-adapter || exit 1
+}
+
+mag() {
+  cd "${HOME}"/go/src/bb.delivery-club.ru/logistics-mobile-api-gateway || exit 1
+}
