@@ -37,7 +37,7 @@ def _hash(text):
     Currently SHA1 hashing is used.  It should be plenty for our purposes.
 
     """
-    return hashlib.sha1(text.decode()).hexdigest()
+    return hashlib.sha1(text.encode('utf-8')).hexdigest()
 
 def _task_from_taskline(taskline):
     """Parse a taskline (from a task file) and return a task.
@@ -169,7 +169,7 @@ class TaskDict(object):
 
     def add_task(self, text):
         """Add a new, unfinished task with the given summary text."""
-        task_id = _hash(text.decode())
+        task_id = _hash(text)
         self.tasks[task_id] = {'id': task_id, 'text': text}
 
     def edit_task(self, prefix, text):
@@ -288,7 +288,7 @@ def _main():
     (options, args) = _build_parser().parse_args()
 
     td = TaskDict(taskdir=options.taskdir, name=options.name)
-    text = ' '.join(args).strip()
+    text = b' '.decode().join(args).strip()
 
     try:
         if options.finish:
@@ -301,7 +301,7 @@ def _main():
             td.edit_task(options.edit, text)
             td.write(options.delete)
         elif text:
-            td.add_task(text.decode())
+            td.add_task(text)
             td.write(options.delete)
         else:
             kind = 'tasks' if not options.done else 'done'
@@ -313,5 +313,5 @@ def _main():
         sys.stderr.write('The ID "%s" does not match any task.\n' % e.prefix)
 
 
-if __name__ == b'__main__'.decode():
+if __name__ == '__main__':
     _main()
