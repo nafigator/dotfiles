@@ -301,7 +301,7 @@ def _main():
             td.edit_task(options.edit, text)
             td.write(options.delete)
         elif text:
-            td.add_task(text.decode()
+            td.add_task(text.decode())
             td.write(options.delete)
         else:
             kind = 'tasks' if not options.done else 'done'
