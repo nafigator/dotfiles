@@ -2,16 +2,11 @@
 
 """t is for people that want do things, not organize their tasks."""
 
-from __future__ import with_statement
+from __future__ import with_statement, print_function
 
-from __future__ import absolute_import
-from __future__ import print_function
 import os, re, sys, hashlib
 from operator import itemgetter
 from optparse import OptionParser, OptionGroup
-from six.moves import map
-from six.moves import range
-from six.moves import zip
 
 
 class InvalidTaskfile(Exception):
@@ -29,6 +24,13 @@ class UnknownPrefix(Exception):
     def __init__(self, prefix):
         super(UnknownPrefix, self).__init__()
         self.prefix = prefix
+
+class BadFile(Exception):
+    """Raised when something else goes wrong trying to work with the task file."""
+    def __init__(self, path, problem):
+        super(BadFile, self).__init__()
+        self.path = path
+        self.problem = problem
 
 
 def _hash(text):
@@ -114,7 +116,7 @@ def _prefixes(ids):
         else:
             # no collision, can safely add
             ps[prefix] = id
-    ps = dict(list(zip(list(ps.values()), list(ps.keys()))))
+    ps = dict(zip(ps.values(), ps.keys()))
     if '' in ps:
         del ps['']
     return ps
@@ -139,12 +141,15 @@ class TaskDict(object):
             if os.path.isdir(path):
                 raise InvalidTaskfile
             if os.path.exists(path):
-                with open(path, 'r') as tfile:
-                    tls = [tl.strip() for tl in tfile if tl]
-                    tasks = list(map(_task_from_taskline, tls))
-                    for task in tasks:
-                        if task is not None:
-                            getattr(self, kind)[task['id']] = task
+                try:
+                    with open(path, 'r') as tfile:
+                        tls = [tl.strip() for tl in tfile if tl]
+                        tasks = map(_task_from_taskline, tls)
+                        for task in tasks:
+                            if task is not None:
+                                getattr(self, kind)[task['id']] = task
+                except IOError as e:
+                    raise BadFile(path, e.strerror)
 
     def __getitem__(self, prefix):
         """Return the unfinished task with the given prefix.
@@ -155,22 +160,27 @@ class TaskDict(object):
         If no tasks match the prefix an UnknownPrefix exception will be raised.
 
         """
-        matched = [tid for tid in list(self.tasks.keys()) if tid.startswith(prefix)]
+        matched = [tid for tid in self.tasks.keys() if tid.startswith(prefix)]
         if len(matched) == 1:
             return self.tasks[matched[0]]
         elif len(matched) == 0:
             raise UnknownPrefix(prefix)
+        elif prefix in matched:
+            return self.tasks[prefix]
         else:
-            matched = [tid for tid in list(self.tasks.keys()) if tid == prefix]
-            if len(matched) == 1:
-                return self.tasks[matched[0]]
-            else:
-                raise AmbiguousPrefix(prefix)
+            raise AmbiguousPrefix(prefix)
 
-    def add_task(self, text):
+    def add_task(self, text, verbose, quiet):
         """Add a new, unfinished task with the given summary text."""
         task_id = _hash(text)
         self.tasks[task_id] = {'id': task_id, 'text': text}
+
+        if not quiet:
+            if verbose:
+                print(task_id)
+            else:
+                prefixes = _prefixes(self.tasks)
+                print(prefixes[task_id])
 
     def edit_task(self, prefix, text):
         """Edit the task with the given prefix.
@@ -188,6 +198,7 @@ class TaskDict(object):
             text = re.sub(find, repl, task['text'])
 
         task['text'] = text
+        task['id'] = _hash(text)
 
     def finish_task(self, prefix):
         """Mark the task with the given prefix as finished.
@@ -213,14 +224,14 @@ class TaskDict(object):
 
     def print_list(self, kind='tasks', verbose=False, quiet=False, grep=''):
         """Print out a nicely formatted list of unfinished tasks."""
-        tasks = dict(list(getattr(self, kind).items()))
+        tasks = dict(getattr(self, kind).items())
         label = 'prefix' if not verbose else 'id'
 
         if not verbose:
             for task_id, prefix in _prefixes(tasks).items():
                 tasks[task_id]['prefix'] = prefix
 
-        plen = max([len(t[label]) for t in list(tasks.values())]) if tasks else 0
+        plen = max(map(lambda t: len(t[label]), tasks.values())) if tasks else 0
         for _, task in sorted(tasks.items()):
             if grep.lower() in task['text'].lower():
                 p = '%s - ' % task[label].ljust(plen) if not quiet else ''
@@ -233,14 +244,22 @@ class TaskDict(object):
             path = os.path.join(os.path.expanduser(self.taskdir), filename)
             if os.path.isdir(path):
                 raise InvalidTaskfile
-            tasks = sorted(list(getattr(self, kind).values()), key=itemgetter('id'))
+            tasks = sorted(getattr(self, kind).values(), key=itemgetter('id'))
             if tasks or not delete_if_empty:
-                with open(path, 'w') as tfile:
-                    for taskline in _tasklines_from_tasks(tasks):
-                        tfile.write(taskline)
+                try:
+                    with open(path, 'w') as tfile:
+                        for taskline in _tasklines_from_tasks(tasks):
+                            tfile.write(taskline)
+                except IOError as e:
+                    raise BadFile(path, e.strerror)
+
             elif not tasks and os.path.isfile(path):
                 os.remove(path)
 
+
+def _die(message):
+    sys.stderr.write('error: %s\n' % message)
+    sys.exit(1)
 
 def _build_parser():
     """Return a parser for the command-line interface."""
@@ -288,7 +307,10 @@ def _main():
     (options, args) = _build_parser().parse_args()
 
     td = TaskDict(taskdir=options.taskdir, name=options.name)
-    text = b' '.decode().join(args).strip()
+    text = ' '.join(args).strip()
+
+    if '\n' in text:
+        _die('task text cannot contain newlines')
 
     try:
         if options.finish:
@@ -301,16 +323,20 @@ def _main():
             td.edit_task(options.edit, text)
             td.write(options.delete)
         elif text:
-            td.add_task(text)
+            td.add_task(text, verbose=options.verbose, quiet=options.quiet)
             td.write(options.delete)
         else:
             kind = 'tasks' if not options.done else 'done'
             td.print_list(kind=kind, verbose=options.verbose, quiet=options.quiet,
                           grep=options.grep)
-    except AmbiguousPrefix as e:
-        sys.stderr.write('The ID "%s" matches more than one task.\n' % e.prefix)
-    except UnknownPrefix as e:
-        sys.stderr.write('The ID "%s" does not match any task.\n' % e.prefix)
+    except AmbiguousPrefix:
+        e = sys.exc_info()[1]
+        _die('the ID "%s" matches more than one task' % e.prefix)
+    except UnknownPrefix:
+        e = sys.exc_info()[1]
+        _die('the ID "%s" does not match any task' % e.prefix)
+    except BadFile as e:
+        _die('%s - %s' % (e.problem, e.path))
 
 
 if __name__ == '__main__':
