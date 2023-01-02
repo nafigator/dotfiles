@@ -4,9 +4,14 @@
 
 from __future__ import with_statement
 
+from __future__ import absolute_import
+from __future__ import print_function
 import os, re, sys, hashlib
 from operator import itemgetter
 from optparse import OptionParser, OptionGroup
+from six.moves import map
+from six.moves import range
+from six.moves import zip
 
 
 class InvalidTaskfile(Exception):
@@ -109,7 +114,7 @@ def _prefixes(ids):
         else:
             # no collision, can safely add
             ps[prefix] = id
-    ps = dict(zip(ps.values(), ps.keys()))
+    ps = dict(list(zip(list(ps.values()), list(ps.keys()))))
     if '' in ps:
         del ps['']
     return ps
@@ -136,7 +141,7 @@ class TaskDict(object):
             if os.path.exists(path):
                 with open(path, 'r') as tfile:
                     tls = [tl.strip() for tl in tfile if tl]
-                    tasks = map(_task_from_taskline, tls)
+                    tasks = list(map(_task_from_taskline, tls))
                     for task in tasks:
                         if task is not None:
                             getattr(self, kind)[task['id']] = task
@@ -150,13 +155,13 @@ class TaskDict(object):
         If no tasks match the prefix an UnknownPrefix exception will be raised.
 
         """
-        matched = filter(lambda tid: tid.startswith(prefix), self.tasks.keys())
+        matched = [tid for tid in list(self.tasks.keys()) if tid.startswith(prefix)]
         if len(matched) == 1:
             return self.tasks[matched[0]]
         elif len(matched) == 0:
             raise UnknownPrefix(prefix)
         else:
-            matched = filter(lambda tid: tid == prefix, self.tasks.keys())
+            matched = [tid for tid in list(self.tasks.keys()) if tid == prefix]
             if len(matched) == 1:
                 return self.tasks[matched[0]]
             else:
@@ -208,14 +213,14 @@ class TaskDict(object):
 
     def print_list(self, kind='tasks', verbose=False, quiet=False, grep=''):
         """Print out a nicely formatted list of unfinished tasks."""
-        tasks = dict(getattr(self, kind).items())
+        tasks = dict(list(getattr(self, kind).items()))
         label = 'prefix' if not verbose else 'id'
 
         if not verbose:
             for task_id, prefix in _prefixes(tasks).items():
                 tasks[task_id]['prefix'] = prefix
 
-        plen = max(map(lambda t: len(t[label]), tasks.values())) if tasks else 0
+        plen = max([len(t[label]) for t in list(tasks.values())]) if tasks else 0
         for _, task in sorted(tasks.items()):
             if grep.lower() in task['text'].lower():
                 p = '%s - ' % task[label].ljust(plen) if not quiet else ''
@@ -228,7 +233,7 @@ class TaskDict(object):
             path = os.path.join(os.path.expanduser(self.taskdir), filename)
             if os.path.isdir(path):
                 raise InvalidTaskfile
-            tasks = sorted(getattr(self, kind).values(), key=itemgetter('id'))
+            tasks = sorted(list(getattr(self, kind).values()), key=itemgetter('id'))
             if tasks or not delete_if_empty:
                 with open(path, 'w') as tfile:
                     for taskline in _tasklines_from_tasks(tasks):
@@ -302,9 +307,9 @@ def _main():
             kind = 'tasks' if not options.done else 'done'
             td.print_list(kind=kind, verbose=options.verbose, quiet=options.quiet,
                           grep=options.grep)
-    except AmbiguousPrefix, e:
+    except AmbiguousPrefix as e:
         sys.stderr.write('The ID "%s" matches more than one task.\n' % e.prefix)
-    except UnknownPrefix, e:
+    except UnknownPrefix as e:
         sys.stderr.write('The ID "%s" does not match any task.\n' % e.prefix)
 
 
