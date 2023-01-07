@@ -110,31 +110,5 @@ alias composer='docker run --user $(id -u):$(id -g) \
 	--env HOME=/var/www \
 	--rm -ti nafigat0r/composer:2.4.4'
 
-alias go='docker run \
-	--user "$(id -u):$(id -g)" \
-	--env HOME=/opt/src \
-	--env GOCACHE=/var/.cache/go-build \
-	--env GOLANGCI_LINT_CACHE=/var/.cache/golangci-lint \
-	--env GOPRIVATE=${GOPRIVATE} \
-	--env GOPROXY=${GOPROXY} \
-	--env SSH_AUTH_SOCK=/run/ssh-agent.sock \
-	--volume ${SSH_AUTH_SOCK}:/run/ssh-agent.sock \
-	--volume ${HOME}/.ssh/config:/etc/ssh/ssh_config \
-	--volume /etc/passwd:/etc/passwd:ro \
-	--volume /etc/group:/etc/group:ro \
-	--volume ${HOME}/.ssh/known_hosts:/etc/ssh/ssh_known_hosts \
-	--volume ${HOME}/.gitconfig:/etc/gitconfig \
-	--volume ${GOPATH}/bin:/go/bin \
-	--volume ${GOPATH}/mod:/go/mod \
-	--volume ${GOPATH}/pkg:/go/pkg \
-	--volume ${GOPATH}/src:/go/src \
-	--volume ${HOME}/.cache:/var/.cache \
-	--volume /var/run/docker.sock:/var/run/docker.sock \
-	--volume $(pwd):/opt/src \
-	--workdir /opt/src \
-	--network host \
-	--name go \
-	--rm -ti nafigat0r/go:1.19.4'
-
 alias itu='ssh itvault ''uptime'''
 alias itr='ssh itvault ''tmux capture-pane -pt rtorrent'''
