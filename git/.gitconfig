@@ -34,6 +34,11 @@
 	lol = log --graph --decorate --pretty=oneline --abbrev-commit
 	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
 	ign = ls-files -o -i --exclude-standard
+	# Run it like so:
+	# $ git dm [origin]
+	#
+	# If any local branch is tracking a remote branch that has been removed, the local branch will also be removed.
+	# Note that "origin" is the default parameter, but you can pass your remote name
 	dm = !bash -c '\
 		REMOTE=$1 && \
 		REMOTE=${REMOTE:="origin"} && \
