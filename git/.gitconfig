@@ -34,6 +34,12 @@
 	lol = log --graph --decorate --pretty=oneline --abbrev-commit
 	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
 	ign = ls-files -o -i --exclude-standard
+	dm = !bash -c '\
+		REMOTE=$1 && \
+		REMOTE=${REMOTE:="origin"} && \
+		echo "Fetching $REMOTE" && \
+		git fetch $REMOTE --prune  && \
+		git branch -vv | grep "gone]" | awk \"{ print \\$1 }\" | xargs git branch -d' -
 [color]
 	branch = auto
 	diff = auto
