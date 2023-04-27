@@ -697,22 +697,11 @@ weboff() {
 #	[ ${result} -ne 0 ] && error "$output"
 }
 
-lch() {
-	cd ~/go/src/bb.delivery-club.ru/logsit/logistics-courier-hiring || exit 1
-}
+yd() {
+	if [ -z "$1" ]; then
+		error "Not found required parameters!"
+		return 1
+	fi
 
-tpg() {
-  cd ~/go/src/bb.delivery-club.ru/logsit/tinkoff-payment-gateway || exit 1
-}
-
-leg() {
-  cd ~/go/src/bb.delivery-club.ru/logistic/logistics-external-gateway || exit 1
-}
-
-lsfa() {
-  cd ~/go/src/bb.delivery-club.ru/logistic/logistics-sf-adapter || exit 1
-}
-
-mag() {
-  cd ~/go/src/bb.delivery-club.ru/logistics-mobile-api-gateway || exit 1
+	youtube-dl -x --audio-format vorbis "$1"
 }
