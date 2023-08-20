@@ -14,11 +14,11 @@ show_interface=FALSE
 shuffle=TRUE
 
 [audgui]
-eq_preset_win=752,396,409,237
+eq_preset_win=752,396,409,231
 equalizer_win=818,407,311,215
 filebrowser_win=607,290,1284,532
-filesel_path=/home/alex/Downloads
-info_win=685,347,570,405
+filesel_path=/home/alex/Music
+info_win=978,241,587,436
 queue_manager_win=757,390,400,250
 url_opener_win=757,451,400,127
 
@@ -29,12 +29,15 @@ range=0.7
 [crystalizer]
 intensity=0.3
 
+[extra_stereo]
+intensity=1.8
+
 [gtkui]
-column_widths=10,653,175,10,268,175,10,100,43,10,275,275,275,10
-player_height=1004
+column_widths=10,653,340,10,268,175,10,100,43,10,275,275,275,10,275
+player_height=1001
 player_width=1914
 player_x=0
-player_y=24
+player_y=27
 
 [gtkui-layout]
 item0_name=Blur Scope
