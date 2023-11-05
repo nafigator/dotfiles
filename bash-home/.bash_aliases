@@ -98,7 +98,8 @@ alias phpunit-veles="
 unset PROJECT_PATH WWW_ROOT
 
 alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'
-alias fr='xrandr --output HDMI-A-0 --primary --mode 1920x1080 --scale 1x1 -r 75 --panning 0x0'
+# Restore resolution
+alias rr='xrandr --output HDMI-A-0 --primary --mode 1920x1080 --scale 1x1 -r 75 --panning 0x0'
 alias composer='docker run --user $(id -u):$(id -g) \
 	--volume $(pwd):/var/www/html \
 	--volume $HOME/.ssh/known_hosts:/etc/ssh/ssh_known_hosts:ro \
