@@ -31,12 +31,11 @@
 	pom = pull --rebase origin master
 	# Go pseudo-version
 	# https://go.dev/ref/mod#pseudo-versions
-	pv = !bash -c '\
-		TZ=UTC git --no-pager show \
-			--quiet \
-			--abbrev=12 \
-			--date='format-local:%Y%m%d%H%M%S' \
-			--format="$(git describe --abbrev=0 --tags)-%cd-%h"' -
+	pv = !bash -c 'TZ=UTC git --no-pager show \
+		--quiet \
+		--abbrev=12 \
+		--date=format-local:%Y%m%d%H%M%S \
+		--format="$(git describe --abbrev=0 --tags)-%cd-%h" | sed -r \"s|^v0(\\.[0-9]+)+|v0.0.0|\"' -
 	show = show -w
 	amend = commit --amend -c HEAD
 	lol = log --graph --decorate --pretty=oneline --abbrev-commit
