@@ -99,7 +99,7 @@ unset PROJECT_PATH WWW_ROOT
 
 alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'
 # Restore resolution
-alias rr='xrandr --output HDMI-A-0 --primary --mode 1920x1080 --scale 1x1 -r 75 --panning 0x0'
+alias rr='xrandr --output HDMI-A-0 --primary --mode 1920x1080 --scale 1x1 --panning 0x0'
 alias composer='docker run --user $(id -u):$(id -g) \
 	--volume $(pwd):/var/www/html \
 	--volume $HOME/.ssh/known_hosts:/etc/ssh/ssh_known_hosts:ro \
@@ -113,3 +113,7 @@ alias composer='docker run --user $(id -u):$(id -g) \
 
 alias itu='ssh itvault ''uptime'''
 alias itr='ssh itvault ''tmux capture-pane -pt rtorrent'''
+# Unload Unneeded Services
+alias uus='service speech-dispatcher stop; service openvpn stop; service vipnetclient stop; service vboxweb-service stop; service vboxdrv stop; service  vboxballoonctrl-service stop; service tor stop; service bluetooth stop; service cups-browsed stop; service cups stop; service docker stop; service pcscd stop;'
+# Start Unneeded Services
+alias sus='service speech-dispatcher start; service openvpn start; service vipnetclient start; service vboxweb-service start; service vboxdrv start; service  vboxballoonctrl-service start; service tor start; service bluetooth start; service cups-browsed start; service cups start; service docker start; service pcscd start;'
