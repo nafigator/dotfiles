@@ -24,7 +24,7 @@ if [ -d "$HOME/.local/bin" ] ; then
 	PATH="$HOME/.local/bin:$PATH"
 fi
 
-export GOPATH=$HOME/go
+export GOPATH=$HOME/.local/go
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 
 # Created by `pipx` on 2022-11-04 05:12:42

@@ -116,7 +116,7 @@ fi
 export PS1="\[\e[0;33m\]\$(t | wc -l | sed -e 's/^\([1-9][0-9]*\)$/[\1] /' | sed -e 's/^[0]$//')\[\e[0m\]$PS1"
 
 # Go env-variables
-export GOPATH=$HOME/go
+export GOPATH=$HOME/.local/go
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 
 # Created by `pipx` on 2022-11-04 05:12:42
