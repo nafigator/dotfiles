@@ -26,6 +26,3 @@ fi
 
 export GOPATH=$HOME/.local/go
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
-
-# Created by `pipx` on 2022-11-04 05:12:42
-export PATH="$PATH:/home/alex/.local/bin"
