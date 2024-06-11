@@ -1,6 +1,6 @@
 #@IgnoreInspection BashAddShebang
 # Set path to project dir
-PROJECT_PATH="$HOME/dev"
+PROJECT_PATH="$HOME/.local/dev"
 WWW_ROOT='/var/www/vhosts'
 
 # enable color support of ls and also add handy aliases
@@ -52,13 +52,6 @@ alias mantisupd="
 		--delete-after \
 		-uRav $PROJECT_PATH/mantis/www/./ itvault:$WWW_ROOT/mantis.itvault.info"
 
-alias phpcs-veles='
-	phpcs -p --tab-width=4 \
-		--encoding=utf-8 \
-		--standard=phpcs.xml \
-		--ignore=Tests,vendor,coverage-report,.idea \
-		--colors ./'
-
 # Cli task manager
 alias t='python ~/.tasks/t.py --task-dir ~/.tasks --list tasks.txt'
 # Completed tasks cleanup
@@ -80,20 +73,6 @@ if [ $? -eq 0 ]; then diff_cmd='colordiff -u'; fi
 
 alias diff="$diff_cmd $diff_options"
 unset diff_cmd diff_options options
-
-alias coverage-report-veles="
-	if [ -d /tmp/veles/coverage-report ]; then
-		rm -rf /tmp/veles/coverage-report;
-	fi
-	mkdir -p /tmp/veles/coverage-report
-	cd $PROJECT_PATH/Veles && \
-	phpunit -c Tests/phpunit.xml --coverage-html /tmp/veles/coverage-report;
-	cd - >/dev/null"
-
-alias phpunit-veles="
-	cd $PROJECT_PATH/Veles && \
-	phpunit -c Tests/phpunit.xml --exclude-group=apc;
-	cd - >/dev/null"
 
 unset PROJECT_PATH WWW_ROOT
 
