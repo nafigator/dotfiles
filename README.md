@@ -1,4 +1,4 @@
-[![GitHub license][License img]][License src]
+[![GitHub license][License img]][License src] [![Conventional Commits][Conventional commits badge]][Conventional commits src]
 
 # dotfiles
 
@@ -37,10 +37,6 @@ Then use stow utility to create symlinks:
     $ stow git
     $ . ~/.profile
 
-  [GNU stow]: https://www.gnu.org/software/stow
-  [License img]: https://img.shields.io/badge/license-MIT-brightgreen.svg
-  [License src]: https://tldrlegal.com/license/mit-license
-
 #### SSH section workflow:
 ###### Save config changes
 
@@ -60,3 +56,9 @@ Then use stow utility to create symlinks:
 ###### Ignore local ini changes
 
     git update-index --assume-unchanged mc/.config/mc/ini
+
+[GNU stow]: https://www.gnu.org/software/stow
+[License img]: https://img.shields.io/github/license/nafigator/dotfiles?color=teal
+[License src]: https://tldrlegal.com/license/mit-license
+[Conventional commits src]: https://conventionalcommits.org
+[Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-teal.svg
