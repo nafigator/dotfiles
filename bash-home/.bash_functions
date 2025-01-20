@@ -533,5 +533,5 @@ yd() {
 		return 1
 	fi
 
-	youtube-dl -x --audio-format vorbis "$1"
+	proxychains yt-dlp --cookies-from-browser firefox -x --audio-format vorbis "$1"
 }
