@@ -40,18 +40,6 @@ alias itvaultupd="
 	ssh -tq itvault \"php $WWW_ROOT/www.itvault.info/tools/unset-routes-cache.php;
 	cd $WWW_ROOT/www.itvault.info; tools/phinx migrate -e production\""
 
-alias mantisupd="
-	rsync \
-		--rsync-path='doas -u www rsync' \
-		--partial \
-		--partial-dir=.rsync-partial/ \
-		--copy-unsafe-links \
-		--delay-updates \
-		--exclude-from=.rsync-exclude \
-		--delete \
-		--delete-after \
-		-uRav $PROJECT_PATH/mantis/www/./ itvault:$WWW_ROOT/mantis.itvault.info"
-
 # Cli task manager
 alias t='python ~/.tasks/t.py --task-dir ~/.tasks --list tasks.txt'
 # Completed tasks cleanup
