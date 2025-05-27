@@ -13,7 +13,7 @@
 	ci = commit -m
 	co = checkout
 	br = branch
-	rom = reset --hard origin/master
+	rom = reset --hard origin/main
 	rop = reset --hard origin/prod
 	rot = reset --hard origin/test
 	rh = reset --hard HEAD
@@ -28,7 +28,7 @@
 	tree = log --graph --pretty=oneline --decorate
 	t = tag -m
 	td = tag -d
-	pom = pull --rebase origin master
+	pom = pull --rebase origin main
 	# Go pseudo-version
 	# https://go.dev/ref/mod#pseudo-versions
 	pv = !bash -c 'TZ=UTC git --no-pager show \
@@ -51,7 +51,7 @@
 		REMOTE=${REMOTE:="origin"} && \
 		echo "Fetching $REMOTE" && \
 		git fetch $REMOTE --prune  && \
-		git branch -vv | grep "gone]" | awk \"{ print \\$1 }\" | xargs git branch -d' -
+		git branch -vv | grep "gone]" | awk \"{ print \\$1 }\" | xargs git branch -D' -
 [color]
 	branch = auto
 	diff = auto
