@@ -3,6 +3,8 @@
 [[ -e /usr/local/lib/bash/includes/bash-helpers.sh ]] && \
   . /usr/local/lib/bash/includes/bash-helpers.sh
 
+INTERACTIVE=1
+
 # Screen cleanup
 c() {
 	printf "\033c";
