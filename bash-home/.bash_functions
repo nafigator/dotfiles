@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
 
-RED="\e[31m"
-GREEN="\e[32m"
-YELLOW="\e[33m"
-GRAY="\e[38;5;242m"
-BOLD="\e[1m"
-CLR="\e[0m"
-DEBUG=
-STATUS_LENGTH=60
+[[ -e /usr/local/lib/bash/includes/bash-helpers.sh ]] && \
+  . /usr/local/lib/bash/includes/bash-helpers.sh
 
 # Screen cleanup
 c() {
