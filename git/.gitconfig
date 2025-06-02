@@ -82,6 +82,8 @@
 [difftool]
 	promt = false
 	prompt = no
+[init]
+	defaultBranch = main
 [push]
 	default = simple
 	followTags = true
