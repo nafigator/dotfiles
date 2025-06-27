@@ -22,8 +22,8 @@
 	g  = grep -npz
 	lg = log -p
 	standup = log --since='5 day ago' --oneline --author='Yancharuk Alexander'
-	hi  = log --pretty=format:\"%C(yellow)%h %C(cyan)%ad %C(blue)%G?%C(green bold)%d %C(reset)%s %C(green dim)[%cn]\" --date=short
-	his = log --pretty=format:\"%C(yellow)%h %C(cyan)%ad %C(yellow bold)%d%C(reset)%s %C(green dim)[%cn]\" --date=short --stat
+	hi  = log --pretty=format:\"%C(yellow)%h %C(cyan)%ad %C(green bold)%d%C(reset)%s %C(green dim)[%cn]\" --date=short
+	his = log --pretty=format:\"%C(yellow)%h %C(cyan)%ad%C(blue)%G?%C(yellow bold)%d%C(reset)%s %C(green dim)[%cn]\" --date=short --stat
 	ls  = log --pretty=format:\"%C(yellow)%h %C(blue)%ad%C(red)%d %C(reset)%s%C(green) [%cn]\" --decorate --date=short
 	tree = log --graph --pretty=oneline --decorate
 	t = tag -m
