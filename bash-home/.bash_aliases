@@ -75,3 +75,9 @@ alias uus='service speech-dispatcher stop; service openvpn stop; service vipnetc
 alias sus='service speech-dispatcher start; service openvpn start; service vipnetclient start; service vboxweb-service start; service vboxdrv start; service  vboxballoonctrl-service start; service tor start; service bluetooth start; service cups-browsed start; service cups start; service docker start; service pcscd start; service avahi-daemon start; service winbind start; service saned start;'
 # Rsync with progress
 alias psync='rsync -avPh --skip-compress=gz/jpg/mp[34]/7z/bz2/ba2/bsa/avi/esm/mkv/mpg/pdf --info=progress2 --info=name0 --no-inc-recursive'
+# Update dxvk. Requires exported WINEPREFIX env.
+alias dxvkupd='test -z "$WINEPREFIX" \
+	&& echo "Error: WINEPREFIX is empty" \
+	|| curl -H "Cache-Control: no-cache, no-store" \
+		-s https://raw.githubusercontent.com/nafigator/dxvk-setup/refs/heads/main/setup.sh | \
+		WINE=~/.local/share/wine-builds/wine-9.21-staging-tkg-amd64/bin/wine64 bash'
