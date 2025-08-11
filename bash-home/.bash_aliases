@@ -70,9 +70,9 @@ alias rr='xrandr --output HDMI-A-0 --primary --mode 1920x1080 --scale 1x1 --pann
 alias itu='ssh itvault ''uptime'''
 alias itr='ssh itvault ''tmux capture-pane -pt aria2c'''
 # Unload Unneeded Services
-alias uus='service speech-dispatcher stop; service openvpn stop; service vipnetclient stop; service vboxweb-service stop; service vboxdrv stop; service  vboxballoonctrl-service stop; service tor stop; service bluetooth stop; service cups-browsed stop; service cups stop; service docker stop; service pcscd stop; service avahi-daemon stop; service winbind stop; service saned stop;'
+alias uus='service speech-dispatcher stop; service openvpn stop; service vipnetclient stop; service vboxweb-service stop; service vboxdrv stop; service  vboxballoonctrl-service stop; service tor stop; service bluetooth stop; service cups-browsed stop; service cups stop; service docker stop; service pcscd stop; service avahi-daemon stop; service winbind stop; service saned stop; swapoff -a;'
 # Start Unneeded Services
-alias sus='service speech-dispatcher start; service openvpn start; service vipnetclient start; service vboxweb-service start; service vboxdrv start; service  vboxballoonctrl-service start; service tor start; service bluetooth start; service cups-browsed start; service cups start; service docker start; service pcscd start; service avahi-daemon start; service winbind start; service saned start;'
+alias sus='service speech-dispatcher start; service openvpn start; service vipnetclient start; service vboxweb-service start; service vboxdrv start; service  vboxballoonctrl-service start; service tor start; service bluetooth start; service cups-browsed start; service cups start; service docker start; service pcscd start; service avahi-daemon start; service winbind start; service saned start; swapon -a;'
 # Rsync with progress
 alias psync='rsync -avPh --skip-compress=gz/jpg/mp[34]/7z/bz2/ba2/bsa/avi/esm/mkv/mpg/pdf --info=progress2 --info=name0 --no-inc-recursive'
 # Update dxvk. Requires exported WINEPREFIX env.
