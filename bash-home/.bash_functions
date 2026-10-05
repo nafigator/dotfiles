@@ -11,6 +11,18 @@ c() {
 	[[ "$(uname -s)" == "Linux" ]] && env TERM=linux setterm -regtabs 4
 }
 
+# Fix bug with COLUMN calculation and scroll with.
+man() {
+	local width
+	width=$(tput cols 2>/dev/null)
+
+	if [ -n "$width" ] && [ "$width" -gt 2 ]; then
+		MANWIDTH=$((width - 2)) command man "$@"
+	else
+		command man "$@"
+	fi
+}
+
 # Show current git branch
 parse_git_branch() {
 	if [ -z $1 ]; then
