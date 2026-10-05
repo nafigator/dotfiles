@@ -133,7 +133,7 @@ digga() {
 # Reload Bash dotfiles
 bash-reload() {
 	unalias -a 		&& \
-	unset -f c error inform warning parse_git_branch parse_project_name get_test_branch get_prod_branch get_version_file get_version_regex get-repo-size get-repo-size-file get-repo-size-regex digga bash-reload calc git-test git-prod git-prod-patch git-prod-minor webon weboff && \
+	unset -f c man error inform warning parse_git_branch parse_project_name get_test_branch get_prod_branch get_version_file get_version_regex get-repo-size get-repo-size-file get-repo-size-regex digga bash-reload calc git-test git-prod git-prod-patch git-prod-minor webon weboff && \
 	. $HOME/.xsessionrc	&& \
 	status 'Bash reload' $?
 }
