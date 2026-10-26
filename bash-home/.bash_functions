@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-[[ -e /usr/local/lib/bash/includes/bash-helpers.sh ]] && \
-  . /usr/local/lib/bash/includes/bash-helpers.sh
+[[ -r $HOME/.local/lib/bash/includes/bash-helpers.sh ]] && \
+  . $HOME/.local/lib/bash/includes/bash-helpers.sh
 
+# shellcheck disable=SC2034
 INTERACTIVE=1
 
 # Screen cleanup
