@@ -13,5 +13,11 @@ documentation/
 # PhpStorm files
 .idea
 
+# Qwen code
+.qwen
+
+# Visual Studio Code
+.vscode
+
 # ssh configuration
 ssh/.ssh/config
