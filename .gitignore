@@ -4,6 +4,7 @@ tasks/.tasks/tasks.txt
 mysql/.mysqlopt/*.cnf
 mc-templates/.local/share/mc/history
 mc-templates/.local/share/mc/filepos
+mc-templates/.local/share/mc/mcedit/mcedit.clip
 audacious/.config/audacious/playlists/
 audacious/.config/audacious/playlist-state
 audacious/.config/audacious/plugin-registry
