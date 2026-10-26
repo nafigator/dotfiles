@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 [[ -r $HOME/.local/lib/bash/includes/bash-helpers.sh ]] && \
-  . $HOME/.local/lib/bash/includes/bash-helpers.sh
+  . "$HOME"/.local/lib/bash/includes/bash-helpers.sh
 
 # shellcheck disable=SC2034
 INTERACTIVE=1
