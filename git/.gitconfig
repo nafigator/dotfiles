@@ -28,7 +28,7 @@
 	tree = log --graph --pretty=oneline --decorate
 	t = tag -m
 	td = tag -d
-	poh = push -u origin HEAD
+	puh = push -u origin HEAD
 	pom = pull --rebase origin main
 	# Go pseudo-version
 	# https://go.dev/ref/mod#pseudo-versions
