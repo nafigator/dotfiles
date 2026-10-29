@@ -6,8 +6,8 @@
 	excludesfile = ~/.gitignore
 	whitespace = tabsize=4,indent-with-non-tab
 	pager = less
-    quotepath = false
-    commitGraph = true
+	quotepath = false
+	commitGraph = true
 [alias]
 	st = status -s
 	ci = commit -m
@@ -32,7 +32,8 @@
 	pom = pull --rebase origin main
 	# Go pseudo-version
 	# https://go.dev/ref/mod#pseudo-versions
-	pv = !bash -c 'TZ=UTC git --no-pager show \
+	pv = !bash -c '\
+		TZ=UTC git --no-pager show \
 		--quiet \
 		--abbrev=12 \
 		--date=format-local:%Y%m%d%H%M%S \
@@ -48,11 +49,15 @@
 	# If any local branch is tracking a remote branch that has been removed, the local branch will also be removed.
 	# Note that "origin" is the default parameter, but you can pass your remote name
 	dm = !bash -c '\
-		REMOTE=$1 && \
-		REMOTE=${REMOTE:="origin"} && \
-		echo "Fetching $REMOTE" && \
-		git fetch $REMOTE --prune  && \
-		git branch -vv | grep "gone]" | awk \"{ print \\$1 }\" | xargs git branch -D' -
+		source \"$HOME\"/.local/lib/bash/includes/bash-helpers.sh\n\
+		REMOTE=$1 && REMOTE=${REMOTE:=origin}\n\
+		inform \"Fetching $REMOTE\"\n\
+		git fetch $REMOTE --prune\n\
+		status \"Fetching\" $? || exit 1\n\
+		DELETED_BRANCHES=$(git branch -vv | grep \"gone]\" | cut -c3- | awk \"{ print \\$1 }\")\n\
+		[[ -z $DELETED_BRANCHES ]] && { status \"All branches\" OK\n exit 0\n }\n\
+		echo \"$DELETED_BRANCHES\" | xargs git branch -D \n\
+		status \"Cleanup\" $?\n' -
 [color]
 	branch = auto
 	diff = auto
@@ -89,6 +94,6 @@
 	default = simple
 	followTags = true
 [gc]
-    writeCommitGraph = true
+	writeCommitGraph = true
 [pull]
 	ff = only
