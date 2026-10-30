@@ -14,8 +14,6 @@
 	co = checkout
 	br = branch
 	rom = reset --hard origin/main
-	rop = reset --hard origin/prod
-	rot = reset --hard origin/test
 	rh = reset --hard HEAD
 	df = diff -w
 	dc = diff --cached -w
