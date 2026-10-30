@@ -63,7 +63,7 @@
 		FETCH_OUTPUT=\"$(git fetch \"$REMOTE\" --prune 2>&1)\"\n\
 		status \"Fetching\" $? || { error "$FETCH_OUTPUT"\n exit 1\n }\n\
 		DELETED_BRANCHES=$(git branch -vv | awk \"/gone]/ && \\$1 != \\\"*\\\" {print \\$1}\")\n\
-		[[ -z $DELETED_BRANCHES ]] && { inform \"No branches for cleanup\"\n exit 0\n }\n\
+		[[ -z $DELETED_BRANCHES ]] && { inform \"No branches to clean up\"\n exit 0\n }\n\
 		DELETE_OUTPUT=$(printf \"%s\\n\" \"$DELETED_BRANCHES\" | xargs git branch -D 2>&1)\n\
 		status \"$(echo \"Cleanup $DELETED_BRANCHES\" | tr \"\n\" \" \")\" $? || { error \"$DELETE_OUTPUT\"\n exit 1\n }\n' -
 [color]
