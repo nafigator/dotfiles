@@ -43,6 +43,17 @@
 	lol = log --graph --decorate --pretty=oneline --abbrev-commit
 	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
 	ign = ls-files -o -i --exclude-standard
+	# Merge current branch into main and push
+	mm = !bash -c '\
+	if CURRENT_BRANCH=$(git symbolic-ref --short -q HEAD 2>&1)\n then\n\
+		inform "Branch: $CURRENT_BRANCH"\n\
+	else\n\
+		error "$CURRENT_BRANCH"\n exit 1\n\
+	fi\n\
+	MERGE_OUTPUT="$(git pom && git co main && git merge $CURRENT_BRANCH 2>&1)"\n\
+	status "Merge" $? || { error "$MERGE_OUTPUT"\n exit 1\n }\n\
+	PUSH_OUTPUT="$(git push 2>&1)"\n\
+	status "Push" $? || { error "$PUSH_OUTPUT"\n exit 1\n }\n' -
 	# Run it like so:
 	# $ git dm [origin]
 	#
