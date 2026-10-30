@@ -48,7 +48,7 @@
 	#
 	# If any local branch is tracking a remote branch that has been removed, the local branch will also be removed.
 	# Note that "origin" is the default parameter, but you can pass your remote name
-	dm = !bash -c '\
+	dm = !bash -c 'exec 2>&1 \
 		source \"$HOME\"/.local/lib/bash/includes/bash-helpers.sh\n\
 		REMOTE=$1 && REMOTE=${REMOTE:=origin}\n\
 		inform \"Fetching $REMOTE\"\n\
