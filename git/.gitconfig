@@ -60,11 +60,10 @@
 	dm = !bash -c '\
 		source \"$HOME\"/.local/lib/bash/includes/bash-helpers.sh\n\
 		REMOTE=\"$1\" && REMOTE=\"${REMOTE:=origin}\"\n\
-		inform \"Fetching ${REMOTE}...\"\n\
 		FETCH_OUTPUT="$(git fetch $REMOTE --prune 2>&1)"\n\
 		status \"Fetching\" $? || { error "$FETCH_OUTPUT"\n exit 1\n }\n\
 		DELETED_BRANCHES=$(git branch -vv | grep \"gone]\" | cut -c3- | awk \"{ print \\$1 }\")\n\
-		[[ -z $DELETED_BRANCHES ]] && { status \"Cleanup\" OK\n exit 0\n }\n\
+		[[ -z $DELETED_BRANCHES ]] && { inform \"No branches for cleanup\"\n exit 0\n }\n\
 		DELETE_OUTPUT=$(echo \"$DELETED_BRANCHES\" | xargs git branch -D 2>&1)\n\
 		status \"Cleanup\" $? || { error "$DELETE_OUTPUT"\n exit 1\n }\n' -
 [color]
