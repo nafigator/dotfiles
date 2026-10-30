@@ -24,9 +24,11 @@
 	ls  = log --pretty=format:\"%C(yellow)%h %C(blue)%ad%C(red)%d %C(reset)%s%C(green) [%cn]\" --decorate --date=short
 	t = tag -m
 	td = tag -d
+	# git puh (Push set Upstream Head)
 	puh = push -u origin HEAD
+	# git pom (Push Origin Main)
 	pom = pull --rebase origin main
-	# Go pseudo-version
+	# git pv (go Pseudo Version)
 	# https://go.dev/ref/mod#pseudo-versions
 	pv = !bash -c '\
 		TZ=UTC git --no-pager show \
@@ -39,6 +41,7 @@
 	lol = log --graph --decorate --pretty=oneline --abbrev-commit
 	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
 	ign = ls-files -o -i --exclude-standard
+	# git mm (Merge into Master)
 	# Merge current branch into main and push
 	mm = !bash -c '\
 		source \"$HOME\"/.local/lib/bash/includes/bash-helpers.sh\n\
@@ -52,6 +55,7 @@
 		status \"Merge $CURRENT_BRANCH\" $? || { error \"$MERGE_OUTPUT\"\n exit 1\n }\n\
 		PUSH_OUTPUT=$(git push 2>&1)\n\
 		status \"Push\" $? || { error \"$PUSH_OUTPUT\"\n exit 1\n }\n' -
+	# git dm (Delete Missing)
 	# Run it like so:
 	# $ git dm [origin]
 	#
