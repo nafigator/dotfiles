@@ -21,11 +21,9 @@
 	dc = diff --cached -w
 	g  = grep -npz
 	lg = log -p
-	standup = log --since='5 day ago' --oneline --author='Yancharuk Alexander'
 	hi  = log --pretty=format:\"%C(yellow)%h %C(cyan)%ad%C(green bold)%d %C(reset)%s %C(green dim)[%cn]\" --date=short
 	his = log --pretty=format:\"%C(yellow)%h %C(cyan)%ad %C(blue)%G?%C(yellow bold)%d %C(reset)%s %C(green dim)[%cn]\" --date=short --stat
 	ls  = log --pretty=format:\"%C(yellow)%h %C(blue)%ad%C(red)%d %C(reset)%s%C(green) [%cn]\" --decorate --date=short
-	tree = log --graph --pretty=oneline --decorate
 	t = tag -m
 	td = tag -d
 	puh = push -u origin HEAD
@@ -51,7 +49,7 @@
 	else\n\
 		error "$CURRENT_BRANCH"\n exit 1\n\
 	fi\n\
-	REBASE_OUTPUT="$(git pom2>&1)"\n\
+	REBASE_OUTPUT="$(git pom 2>&1)"\n\
 	status "Rebase" $? || { error "$REBASE_OUTPUT"\n exit 1\n }\n\
 	MERGE_OUTPUT="$(git pom && git co main && git merge $CURRENT_BRANCH 2>&1)"\n\
 	status "Merge" $? || { error "$MERGE_OUTPUT"\n exit 1\n }\n\
