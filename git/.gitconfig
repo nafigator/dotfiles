@@ -43,15 +43,15 @@
 	mm = !bash -c '\
 		source \"$HOME\"/.local/lib/bash/includes/bash-helpers.sh\n\
 		CURRENT_BRANCH=$(git symbolic-ref --short -q HEAD 2>&1)\n\
-		status "Branch: $CURRENT_BRANCH" $? || { error "$CURRENT_BRANCH"\n exit 1\n }\n\
-		REBASE_OUTPUT="$(git pom 2>&1)"\n\
-		status "Rebase" $? || { error "$REBASE_OUTPUT"\n exit 1\n }\n\
-		CHECKOUT_OUTPUT="$(git co main 2>&1)"\n\
-		status "Checkout main" $? || { error "$CHECKOUT_OUTPUT"\n exit 1\n }\n\
-		MERGE_OUTPUT="$(git merge $CURRENT_BRANCH 2>&1)"\n\
-		status "Merge $CURRENT_BRANCH" $? || { error "$MERGE_OUTPUT"\n exit 1\n }\n\
-		PUSH_OUTPUT="$(git push 2>&1)"\n\
-		status "Push" $? || { error "$PUSH_OUTPUT"\n exit 1\n }\n' -
+		status \"Branch: $CURRENT_BRANCH\" $? || { error \"$CURRENT_BRANCH\"\n exit 1\n }\n\
+		REBASE_OUTPUT=$(git pom 2>&1)\n\
+		status \"Rebase\" $? || { error \"$REBASE_OUTPUT\"\n exit 1\n }\n\
+		CHECKOUT_OUTPUT=$(git co main 2>&1)\n\
+		status \"Checkout main\" $? || { error \"$CHECKOUT_OUTPUT\"\n exit 1\n }\n\
+		MERGE_OUTPUT=$(git merge \"$CURRENT_BRANCH\" 2>&1)\n\
+		status \"Merge $CURRENT_BRANCH\" $? || { error \"$MERGE_OUTPUT\"\n exit 1\n }\n\
+		PUSH_OUTPUT=$(git push 2>&1)\n\
+		status \"Push\" $? || { error \"$PUSH_OUTPUT\"\n exit 1\n }\n' -
 	# Run it like so:
 	# $ git dm [origin]
 	#
@@ -65,7 +65,7 @@
 		status \"Fetching\" $? || { error "$FETCH_OUTPUT"\n exit 1\n }\n\
 		DELETED_BRANCHES=$(git branch -vv | grep \"gone]\" | cut -c3- | awk \"{ print \\$1 }\")\n\
 		[[ -z $DELETED_BRANCHES ]] && { status \"Cleanup\" OK\n exit 0\n }\n\
-		DELETE_OUTPUT="$(echo \"$DELETED_BRANCHES\" | xargs git branch -D 2>&1)"\n\
+		DELETE_OUTPUT=$(echo \"$DELETED_BRANCHES\" | xargs git branch -D 2>&1)\n\
 		status \"Cleanup\" $? || { error "$DELETE_OUTPUT"\n exit 1\n }\n' -
 [color]
 	branch = auto
