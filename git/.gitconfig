@@ -41,15 +41,15 @@
 	ign = ls-files -o -i --exclude-standard
 	# Merge current branch into main and push
 	mm = !bash -c '\
-	source \"$HOME\"/.local/lib/bash/includes/bash-helpers.sh\n\
-	CURRENT_BRANCH=$(git symbolic-ref --short -q HEAD 2>&1)\n\
-	status "Branch: $CURRENT_BRANCH" || { error "$CURRENT_BRANCH"\n exit 1\n }\n\
-	REBASE_OUTPUT="$(git pom 2>&1)"\n\
-	status "Rebase" $? || { error "$REBASE_OUTPUT"\n exit 1\n }\n\
-	MERGE_OUTPUT="$(git pom && git co main && git merge $CURRENT_BRANCH 2>&1)"\n\
-	status "Merge" $? || { error "$MERGE_OUTPUT"\n exit 1\n }\n\
-	PUSH_OUTPUT="$(git push 2>&1)"\n\
-	status "Push" $? || { error "$PUSH_OUTPUT"\n exit 1\n }\n' -
+		source \"$HOME\"/.local/lib/bash/includes/bash-helpers.sh\n\
+		CURRENT_BRANCH=$(git symbolic-ref --short -q HEAD 2>&1)\n\
+		status "Branch: $CURRENT_BRANCH" || { error "$CURRENT_BRANCH"\n exit 1\n }\n\
+		REBASE_OUTPUT="$(git pom 2>&1)"\n\
+		status "Rebase" $? || { error "$REBASE_OUTPUT"\n exit 1\n }\n\
+		MERGE_OUTPUT="$(git pom && git co main && git merge $CURRENT_BRANCH 2>&1)"\n\
+		status "Merge" $? || { error "$MERGE_OUTPUT"\n exit 1\n }\n\
+		PUSH_OUTPUT="$(git push 2>&1)"\n\
+		status "Push" $? || { error "$PUSH_OUTPUT"\n exit 1\n }\n' -
 	# Run it like so:
 	# $ git dm [origin]
 	#
