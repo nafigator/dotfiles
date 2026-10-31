@@ -26,9 +26,9 @@ man() {
 
 # Show current git branch
 parse_git_branch() {
-	if [ -z $1 ]; then
+	if [[ -z $1 ]]; then
 		git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
-	elif [ $1 -eq 1 ]; then
+	elif [[ $1 -eq 1 ]]; then
 		git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/[\1]/'
 	fi
 }
@@ -131,12 +131,116 @@ digga() {
 	dig +nocmd "$1" any +multiline +noall +answer;
 }
 
+# Upload latest bash-helpers.sh.
+update-bash-helpers() {
+	local -r lib="$HOME"/.local/lib/bash/includes/bash-helpers.sh
+
+	# shellcheck source=/stub.sh
+	source "$lib" || {
+		echo "Source bash-helpers error"
+		return 1
+	}
+
+	inform "Current version: $BASH_HELPERS_VERSION"
+
+	check_dependencies jq sha256sum || return 1
+
+	local -r release_api_url=https://api.github.com/repos/nafigator/bash-helpers/releases/latest
+	local -r jq_download_url='.assets[0].browser_download_url'
+
+	local release_latest_resp
+	release_latest_resp="$(curl -fsSL --retry 3 -m 10 "$release_api_url" 2>&1)"
+	status 'Latest release request' $? || {
+		error "$release_latest_resp"
+		return 1
+	}
+
+	#check version
+	local version
+	version=$(printf '%s' "$release_latest_resp" | jq -er  ".tag_name") || {
+		error "Unable to parse version"
+		return 1
+	}
+
+	inform "Latest version: $version"
+
+	# shellcheck disable=SC2053
+	[[ $version = $BASH_HELPERS_VERSION ]] && {
+		inform 'Already latest version'
+		return 0
+	}
+
+	local download_url
+	download_url=$(printf '%s' "$release_latest_resp" | jq -er "$jq_download_url") || {
+		error "Unable to parse download URL"
+		return 1
+	}
+
+	local download_sum_url
+	download_sum_url=$(printf '%s' "$release_latest_resp" |
+		jq -er '.assets[] | select(.name=="sha256sum.txt") |
+		.browser_download_url' ||
+		true
+	)
+
+	if [[ -z "$download_sum_url" ]]; then
+		error "Unable to get sum download URL"
+		return 1
+	fi
+
+	local tmp tmpdir sum
+	tmpdir=$(mktemp -d) || {
+		error 'mktemp fail'
+		return 1
+	}
+	tmp="$tmpdir/bash-helpers.sh"
+
+	sum=$(curl -fsSL --retry 3 -m 10 "$download_sum_url") || {
+		error 'Get bash-helpers sum failed'
+		rm -rf "$tmpdir"; return 1
+	}
+
+	[[ -n $sum ]] || {
+		error 'Empty bash-helpers checksum'
+		rm -rf "$tmpdir"; return 1
+	}
+
+	status 'Sum download' OK
+
+	local stub=$(curl -fsSL --retry 3 -m 10 -o "$tmp" "$download_url") || {
+		error 'Download bash-helpers failed'
+		rm -rf "$tmpdir"; return 1
+	}
+
+	status 'Lib download' OK
+
+	# For Linux sha256sum
+	( cd "$tmpdir" || exit 1; printf '%s\n' "$sum" | sha256sum -c --status ) || {
+		error 'Check bash-helpers sum failed'
+		rm -rf "$tmpdir"; return 1
+	}
+
+	status 'Checksum' OK
+
+	# install -D param GNU specific
+	install -D -m 0644 "$tmp" "$lib"
+	status 'Install' $? || {
+		error 'Install bash-helpers failed'
+		rm -rf "$tmpdir"; return 1
+	}
+
+	rm -rf "$tmpdir"
+	unset stub
+
+	return 0
+}
+
 # Reload Bash dotfiles
 bash-reload() {
 	unalias -a && \
 	unset -f c man parse_git_branch parse_project_name get_test_branch get_prod_branch get_version_file \
 		get_version_regex get-repo-size get-repo-size-file get-repo-size-regex digga bash-reload calc git-test \
-		git-prod git-prod-patch git-prod-minor webon weboff && \
+		git-prod git-prod-patch git-prod-minor update-bash-helpers webon weboff && \
 		. "$HOME"/.xsessionrc && \
 	status 'Bash reload' $?
 }
