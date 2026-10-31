@@ -8,6 +8,18 @@ hook: #? Setup git hooks
 	@chmod 0750 -R $(CURDIR)/.githooks/*
 	@echo Setup complete
 
+.PHONY: ssh-cfg-save
+ssh-cfg-save: #? Save ssh config
+	$(info Save ssh config)
+	@gpg -o ssh/.ssh/config.gpg -e -r itvault ~/.ssh/config
+	@echo Save complete
+
+.PHONY: ssh-cfg-load
+ssh-cfg-load: #? Load ssh config
+	$(info Load ssh config)
+	@gpg -o ~/.ssh/config -d ssh/.ssh/config.gpg
+	@echo Load complete
+
 .PHONY: help
 help: #? Show this message
 	@printf "\033[34;01mApplication management:\033[0m\n"
