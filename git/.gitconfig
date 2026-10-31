@@ -98,8 +98,7 @@
 [diff]
 	tool = meld
 [difftool]
-	promt = false
-	prompt = no
+	prompt = false
 [init]
 	defaultBranch = main
 [push]

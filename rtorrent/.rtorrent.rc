@@ -10,7 +10,7 @@ max_peers = 100
 min_peers_seed = 10
 max_peers_seed = 50
 
-# Maximum number of simultanious uploads per torrent.
+# Maximum number of simultaneous uploads per torrent.
 max_uploads = 15
 
 # Global upload and download rate in KiB. "0" for unlimited.
@@ -53,7 +53,7 @@ port_range = 55888-55888
 # Start opening ports at a random position within the port range.
 #port_random = no
 
-# Check hash for finished torrents. Might be usefull until the bug is
+# Check hash for finished torrents. Might be useful until the bug is
 # fixed that causes lack of diskspace not to be properly reported.
 #check_hash = no
 
