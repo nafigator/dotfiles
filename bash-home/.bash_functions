@@ -133,7 +133,7 @@ digga() {
 
 # Upload latest bash-helpers.sh.
 update-bash-helpers() {
-	local -r lib="$HOME"/.local/lib/bash/includes/bash-helpers.sh
+	local -r lib="${HOME}/.local/lib/bash/includes/bash-helpers.sh"
 
 	# shellcheck source=/stub.sh
 	source "$lib" || {
@@ -155,7 +155,7 @@ update-bash-helpers() {
 		return 1
 	}
 
-	#check version
+	# check version
 	local version
 	version=$(printf '%s' "$release_latest_resp" | jq -er  ".tag_name") || {
 		error "Unable to parse version"
@@ -207,7 +207,9 @@ update-bash-helpers() {
 
 	status 'Sum download' OK
 
-	local stub=$(curl -fsSL --retry 3 -m 10 -o "$tmp" "$download_url") || {
+	local stub
+	# shellcheck disable=SC2034 # Used for curl line ending cleanup
+	stub=$(curl -fsSL --retry 3 -m 10 -o "$tmp" "$download_url") || {
 		error 'Download bash-helpers failed'
 		rm -rf "$tmpdir"; return 1
 	}
@@ -230,7 +232,6 @@ update-bash-helpers() {
 	}
 
 	rm -rf "$tmpdir"
-	unset stub
 
 	return 0
 }
