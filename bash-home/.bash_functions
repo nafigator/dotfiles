@@ -207,9 +207,7 @@ update-bash-helpers() {
 
 	status 'Sum download' OK
 
-	local stub
-	# shellcheck disable=SC2034 # Used for curl line ending cleanup
-	stub=$(curl -fsSL --retry 3 -m 10 -o "$tmp" "$download_url") || {
+	curl -fsSL --retry 3 -m 10 -o "$tmp" "$download_url" || {
 		error 'Download bash-helpers failed'
 		rm -rf "$tmpdir"; return 1
 	}
