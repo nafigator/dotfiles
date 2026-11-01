@@ -234,12 +234,51 @@ update-bash-helpers() {
 	return 0
 }
 
+# Timer function
+timer() {
+	local -r lib="${HOME}/.local/lib/bash/includes/bash-helpers.sh"
+
+	# shellcheck source=/stub.sh
+	source "$lib" || {
+		echo "Source bash-helpers error"
+		return 1
+	}
+
+	check_dependencies paplay sleep || return 1
+
+	[[ -z $1 ]] && {
+		error 'Time interval required. See man sleep'
+		return 2
+	}
+
+	local -r snd=/usr/share/sounds/freedesktop/stereo/complete.oga
+
+	[[ -r $snd ]] || {
+		error "Sound file $snd not readable"
+		return 1
+	}
+
+	inform "Timer start: $*"
+
+	local sleep_error
+	sleep_error=$(sleep "$@" 2>&1)
+	# shellcheck disable=SC2181
+	[[ $? -eq 0 ]] || {
+		error "$sleep_error"
+		return 1
+	}
+
+	inform 'Timer end'
+
+	paplay "$snd"
+}
+
 # Reload Bash dotfiles
 bash-reload() {
 	unalias -a && \
 	unset -f c man parse_git_branch parse_project_name get_test_branch get_prod_branch get_version_file \
 		get_version_regex get-repo-size get-repo-size-file get-repo-size-regex digga bash-reload calc git-test \
-		git-prod git-prod-patch git-prod-minor update-bash-helpers webon weboff && \
+		git-prod git-prod-patch git-prod-minor update-bash-helpers timer webon weboff && \
 		. "$HOME"/.xsessionrc && \
 	status 'Bash reload' $?
 }
