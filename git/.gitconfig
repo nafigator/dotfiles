@@ -41,7 +41,7 @@
 	lol = log --graph --decorate --pretty=oneline --abbrev-commit
 	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
 	ign = ls-files -o -i --exclude-standard
-	# git mm (Merge into Master)
+	# git mm (Merge into Main)
 	# Merge current branch into main and push. Alias for commands:
 	#   git pull --rebase origin main
 	#   git checkout main
