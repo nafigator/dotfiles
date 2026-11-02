@@ -51,7 +51,7 @@
 		source \"$HOME\"/.local/lib/bash/includes/bash-helpers.sh\n\
 		CURRENT_BRANCH=$(git symbolic-ref --short -q HEAD 2>&1)\n\
 		status \"Branch: $CURRENT_BRANCH\" $? || { error \"$CURRENT_BRANCH\"\n exit 1\n }\n\
-		[[ CURRENT_BRANCH = \"main\" ]] && { warn \"Runs on feature branch only\"\n exit 0 }\n\
+		[[ CURRENT_BRANCH=\"main\" ]] && { warn \"Runs on feature branch only\"\n exit 0\n }\n\
 		REBASE_OUTPUT=$(git pom 2>&1)\n\
 		status \"Rebase\" $? || { error \"$REBASE_OUTPUT\"\n exit 1\n }\n\
 		CHECKOUT_OUTPUT=$(git co main 2>&1)\n\
