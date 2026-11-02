@@ -42,11 +42,16 @@
 	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
 	ign = ls-files -o -i --exclude-standard
 	# git mm (Merge into Master)
-	# Merge current branch into main and push
+	# Merge current branch into main and push. Alias for commands:
+	#   git pull --rebase origin main
+	#   git checkout main
+	#   git merge <feature_branch>
+	#   git push
 	mm = !bash -c '\
 		source \"$HOME\"/.local/lib/bash/includes/bash-helpers.sh\n\
 		CURRENT_BRANCH=$(git symbolic-ref --short -q HEAD 2>&1)\n\
 		status \"Branch: $CURRENT_BRANCH\" $? || { error \"$CURRENT_BRANCH\"\n exit 1\n }\n\
+		[[ CURRENT_BRANCH = \"main\" ]] && { warn \"Runs on feature branch only\"\n exit 0 }\n\
 		REBASE_OUTPUT=$(git pom 2>&1)\n\
 		status \"Rebase\" $? || { error \"$REBASE_OUTPUT\"\n exit 1\n }\n\
 		CHECKOUT_OUTPUT=$(git co main 2>&1)\n\
