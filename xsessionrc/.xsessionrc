@@ -25,3 +25,20 @@ fi
 if [ -d "$HOME/.local/bin" ] ; then
 	PATH="$HOME/.local/bin:$PATH"
 fi
+
+# Ждем появления базового каталога (до 10 секунд)
+for i in $(seq 1 100); do
+    [ -d "$XDG_RUNTIME_DIR" ] && break
+    sleep 0.1
+done
+
+# Создаем подкаталог pulse, если его еще нет
+if [ -d "$XDG_RUNTIME_DIR" ] && [ ! -d "$XDG_RUNTIME_DIR/pulse" ]; then
+    mkdir -p "$XDG_RUNTIME_DIR/pulse"
+    chmod 700 "$XDG_RUNTIME_DIR/pulse"
+fi
+
+# Запускаем PulseAudio, если он еще не запущен
+if ! pgrep -x pulseaudio >/dev/null; then
+    /usr/bin/start-pulseaudio-x11
+fi
