@@ -33,8 +33,8 @@ intensity=0.3
 intensity=1.8
 
 [gtkui]
-column_widths=10,653,340,10,268,175,10,100,43,10,275,275,275,10,275
-player_height=1001
+column_widths=10,653,340,10,268,175,10,100,43,10,275,275,275,10,275,175,75,10
+player_height=1000
 player_width=1914
 player_x=0
 player_y=27
