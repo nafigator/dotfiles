@@ -192,13 +192,19 @@ class TaskDict(object):
 
         """
         task = self[prefix]
+        old_id = task['id']
+
         if text.startswith('s/') or text.startswith('/'):
             text = re.sub('^s?/', '', text).rstrip('/')
             find, _, repl = text.partition('/')
             text = re.sub(find, repl, task['text'])
 
+        new_id = _hash(text)
         task['text'] = text
-        task['id'] = _hash(text)
+        task['id'] = new_id
+
+        del self.tasks[old_id]
+        self.tasks[new_id] = task
 
     def finish_task(self, prefix):
         """Mark the task with the given prefix as finished.
