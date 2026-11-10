@@ -135,6 +135,14 @@ class TaskDict(object):
         self.done = {}
         self.name = name
         self.taskdir = taskdir
+
+        if (not name or name in ('.', '..')
+                or os.path.basename(name) != name
+                or os.sep in name
+                or (os.altsep and os.altsep in name)):
+            path = os.path.join(os.path.expanduser(taskdir), name)
+            raise BadFile(path, 'invalid list name')
+
         filemap = (('tasks', self.name), ('done', '.%s.done' % self.name))
         for kind, filename in filemap:
             path = os.path.join(os.path.expanduser(self.taskdir), filename)
