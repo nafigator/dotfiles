@@ -44,7 +44,7 @@ export TERM=xterm-256color
 export QT_STYLE_OVERRIDE=adwaita-dark
 
 # Set localhost as psql host by default
-export PGHOST=localhost
+export PGHOST=127.0.0.1
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -117,7 +117,3 @@ fi
 
 # Show tasks
 export PS1="\[\e[0;33m\]\$(t | wc -l | sed -e 's/^\([1-9][0-9]*\)$/[\1] /' | sed -e 's/^[0]$//')\[\e[0m\]$PS1"
-
-# Go env-variables
-export GOPATH=$HOME/.local/go
-export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
