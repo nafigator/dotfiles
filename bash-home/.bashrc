@@ -43,6 +43,9 @@ export TERM=xterm-256color
 # Set dark theme for QT-applications
 export QT_STYLE_OVERRIDE=adwaita-dark
 
+# Set localhost as psql host by default
+export PGHOST=localhost
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
