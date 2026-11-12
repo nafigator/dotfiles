@@ -239,16 +239,15 @@ class TaskDict(object):
     def print_list(self, kind='tasks', verbose=False, quiet=False, grep=''):
         """Print out a nicely formatted list of unfinished tasks."""
         tasks = dict(getattr(self, kind).items())
-        label = 'prefix' if not verbose else 'id'
+        prefixes = {} if verbose else _prefixes(tasks)
 
-        if not verbose:
-            for task_id, prefix in _prefixes(tasks).items():
-                tasks[task_id]['prefix'] = prefix
+        def label_for(task_id):
+            return task_id if verbose else prefixes[task_id]
 
-        plen = max(map(lambda t: len(t[label]), tasks.values())) if tasks else 0
-        for _, task in sorted(tasks.items()):
+        plen = max((len(label_for(tid)) for tid in tasks), default=0)
+        for task_id, task in sorted(tasks.items()):
             if grep.lower() in task['text'].lower():
-                p = '%s - ' % task[label].ljust(plen) if not quiet else ''
+                p = '%s - ' % label_for(task_id).ljust(plen) if not quiet else ''
                 print(p + task['text'])
 
     def write(self, delete_if_empty=False):
