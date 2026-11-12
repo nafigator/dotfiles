@@ -1,0 +1,37 @@
+-- hide startup chatter
+\set QUIET 1
+
+-- vertical output only when the row does not fit
+\x auto
+
+-- show query timing
+\timing on
+
+-- make NULL distinct from an empty string
+\pset null '[NULL]'
+
+-- readable prompt: database, transaction state, user
+\set PROMPT1 '%/%R%# '
+\set PROMPT2 '%/%R%# '
+
+-- per-database history, no duplicates
+\set HISTFILE ~/.psql_history-:DBNAME
+\set HISTCONTROL ignoredups
+\set HISTSIZE 65535
+
+-- upper-case keywords in completion
+\set COMP_KEYWORD_CASE upper
+
+-- detailed error messages
+\set VERBOSITY verbose
+
+-- handy shortcuts
+\set version 'SELECT version();'
+\set whoami 'SELECT current_user, current_database();'
+\set locks 'SELECT pid, state, wait_event_type, left(query, 60) AS query FROM pg_stat_activity WHERE state <> ''idle'';'
+\set longq 'SELECT pid, now() - query_start AS duration, left(query, 60) FROM pg_stat_activity WHERE state = ''active'' AND now() - query_start > interval ''5 seconds'';'
+
+-- machine-specific overrides, not tracked in git
+\i ~/.psqlrc.local
+
+\unset QUIET
